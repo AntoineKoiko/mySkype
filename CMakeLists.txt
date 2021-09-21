@@ -19,7 +19,8 @@ include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 conan_basic_setup(${NAME})
 
 set(SRCS
-        src/main.cpp
+        src/newMain.cpp
+        src/Audio.cpp
         )
 
 add_executable(${NAME} ${SRCS})
