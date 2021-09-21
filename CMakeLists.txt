@@ -13,6 +13,7 @@ set(NAME record)
 
 project(${NAME} LANGUAGES CXX)
 
+include_directories(./includes)
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 
 conan_basic_setup(${NAME})

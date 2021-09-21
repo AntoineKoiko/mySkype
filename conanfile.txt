@@ -8,7 +8,6 @@ qt/5.15.2
 [options]
 opus:shared = True
 qt:shared = True
-portaudio:shared = True
 
 [imports]
 lib, *.so* -> lib
