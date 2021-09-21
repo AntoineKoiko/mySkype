@@ -9,4 +9,4 @@ else
     return_code=`mkdir build`
 fi
 
-cd build && conan install .. && cmake -G "Unix Makefiles" .. && cmake --build .
+cd build && conan install .. --build=missing && cmake -G "Unix Makefiles" .. && cmake --build .
