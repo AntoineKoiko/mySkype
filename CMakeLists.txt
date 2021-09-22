@@ -8,7 +8,7 @@
 cmake_minimum_required(VERSION 3.17)
 add_definitions("-fPIC")
 
-set(CMAKE_BUILD_TYPE Release)
+set(CMAKE_BUILD_TYPE Debug)
 set(NAME record)
 
 project(${NAME} LANGUAGES CXX)
@@ -21,6 +21,7 @@ conan_basic_setup(${NAME})
 set(SRCS
         src/newMain.cpp
         src/Audio.cpp
+        src/Codec.cpp
         )
 
 add_executable(${NAME} ${SRCS})
