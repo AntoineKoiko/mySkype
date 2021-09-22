@@ -174,8 +174,8 @@
        data.recordedSamples = (SAMPLE *) malloc( numBytes ); /* From now on, recordedSamples is initialised. */
        if( data.recordedSamples == NULL )
        {
-           printf("Could not allocate record array.\n");
-           goto done;
+            printf("Could not allocate record array.\n");
+            return 84;
        }
        for( i=0; i<numSamples; i++ ) data.recordedSamples[i] = 0;
 
@@ -189,7 +189,7 @@
            Pa_Sleep(1000);
            printf("index = %d\n", data.frameIndex ); fflush(stdout);
        }
-       if( err < 0 ) goto done;
+       if( err < 0 ) return 84;
 
         audio.Close();
 
@@ -245,7 +245,8 @@
            printf("Waiting for playback to finish.\n"); fflush(stdout);
 
            while( ( err = Pa_IsStreamActive(audio.stream)) == 1 ) Pa_Sleep(100);
-           if( err < 0 ) goto done;
+           if( err < 0 )
+            return 84;
 
            audio.Close();
 
