@@ -11,7 +11,8 @@
 #include <iostream>
 #include "portaudio.h"
 #define PA_SAMPLE_TYPE  paFloat32
-#define FRAMES_PER_BUFFER (512)
+#define FRAMES_PER_BUFFER (480)
+#define SAMPLE_RATE (48000)
 
 class AudioException : public std::runtime_error {
     public:

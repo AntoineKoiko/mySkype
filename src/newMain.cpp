@@ -2,10 +2,11 @@
 #include <stdlib.h>
 #include "portaudio.h"
 #include "Audio.hpp"
+#include "Codec.hpp"
 
 /* #define SAMPLE_RATE  (17932) // Test failure to open with this value. */
-#define SAMPLE_RATE (44100)
-#define FRAMES_PER_BUFFER (512)
+//#define SAMPLE_RATE (44100)
+//#define FRAMES_PER_BUFFER (512)
 #define NUM_SECONDS (5)
 #define NUM_CHANNELS (2)
 /* #define DITHER_FLAG     (paDitherOff) */
@@ -55,7 +56,7 @@ int recordCallback(const void *inputBuffer, [[maybe_unused]] void *outputBuffer,
                    [[maybe_unused]] PaStreamCallbackFlags statusFlags,
                    void *userData)
 {
-    std::cout << "Record Callback" << std::endl;
+    //std::cout << "Record Callback" << std::endl;
     //ON RECUP LA STRUCTURE DU USER (pouvant contenir 5seconds de son à 44khz)
     paTestData *data = (paTestData *)userData;
 
@@ -79,8 +80,6 @@ int recordCallback(const void *inputBuffer, [[maybe_unused]] void *outputBuffer,
         framesToCalc = framesPerBuffer; //ON VA TRAITER TOUTES LES FRAMES DU BUFFER
         finished = paContinue;          //ON CONTINUE LA CALLBACK
     }
-
-    std::cout << "On ecrit a cet index" << data->frameIndex_input << std::endl;
     if (inputBuffer == NULL)
     { //SI LE BUFFER EST NULL ALORS  ON LE REMPLIS AVEC RIEN
         for (i = 0; i < framesToCalc; i++)
@@ -122,13 +121,7 @@ int playCallback([[maybe_unused]] const void *inputBuffer, void *outputBuffer,
     int finished;
     unsigned int framesLeft = data->maxFrameIndex - data->frameIndex_output;
 
-    std::cout << "On playCallback: " << data->frameIndex_input << std::endl;
-    if (rptr[0] != 0 && rptr[1] != 0 && rptr[2] != 0) {
-
-    } else {
-        return paContinue;
-    }
-    std::cout << "On passe" << std::endl;
+    std::cout << "FramesPerBuffer" << framesPerBuffer << std::endl;
     if (framesLeft < framesPerBuffer)
     { //LE NOMBRE DE FRAMES RESTANTES EST INFERIEUR A LA TAILLE DU BUFFER
         /* final buffer... */
@@ -167,8 +160,10 @@ int playCallback([[maybe_unused]] const void *inputBuffer, void *outputBuffer,
 int main(void);
 int main(void)
 {
+    std::vector<std::pair<unsigned char[4096], int>> audioEncoded;
     Audio audio_input;
     Audio audio_output;
+    Codec AudioCodec;
     PaError err = paNoError;
     paTestData data;
     int i;
@@ -180,7 +175,8 @@ int main(void)
 
     printf("patest_record.c\n");
     fflush(stdout);
-
+    AudioCodec.createEncoder();
+    AudioCodec.createDecoder();
     data.maxFrameIndex = totalFrames = NUM_SECONDS * SAMPLE_RATE; /* Record for a few seconds. */
     data.frameIndex_input = 0;
     data.frameIndex_output = 0;
@@ -188,7 +184,8 @@ int main(void)
     numSamples = totalFrames * NUM_CHANNELS;
     numBytes = numSamples * sizeof(SAMPLE);
     data.recordedSamples = (SAMPLE *)malloc(numBytes); /* From now on, recordedSamples is initialised. */
-
+    printf("maxFrame: %d\n", data.maxFrameIndex);
+    printf("numSamples: %d\nnumBytes: %d\n", numSamples, numBytes);
     if (data.recordedSamples == NULL)
     {
         printf("Could not allocate record array.\n");
@@ -198,14 +195,14 @@ int main(void)
         data.recordedSamples[i] = 0;
 
     audio_input.OpenInputStream(recordCallback, &data);
-    audio_output.OpenOutputStream(playCallback, &data);
+    //audio_output.OpenOutputStream(playCallback, &data);
     audio_input.StartRecording();
-    audio_output.StartPlaying();
+    //audio_output.StartPlaying();
 
     printf("\n=== Now recording!! Please speak into the microphone. ===\n");
     fflush(stdout);
 
-    while ((err = Pa_IsStreamActive(audio_input.stream)) == 1 || (err = Pa_IsStreamActive(audio_output.stream)) == 1)
+    while ((err = Pa_IsStreamActive(audio_input.stream)) == 1)
     {
         Pa_Sleep(1000);
         printf("index = %d\n", data.frameIndex_input);
@@ -236,29 +233,34 @@ int main(void)
     /* Playback recorded data.  -------------------------------------------- */
     //data.frameIndex = 0;
 
+    audioEncoded = AudioCodec.encodeAudio(data.recordedSamples, numSamples);
+    memset(data.recordedSamples, 0, numBytes);
+    AudioCodec.decodeAudio(audioEncoded, data.recordedSamples);
     printf("\n=== Now playing back. ===\n");
     fflush(stdout);
 
-    //audio_output.OpenOutputStream(playCallback, &data);
+    audio_output.OpenOutputStream(playCallback, &data);
 
-    // if (audio_output.stream)
-    // {
-    //     // audio_output.StartPlaying();
+    if (audio_output.stream)
+    {
+        audio_output.StartPlaying();
 
-    //     printf("Waiting for playback to finish.\n");
-    //     fflush(stdout);
+        printf("Waiting for playback to finish.\n");
+        fflush(stdout);
 
-    //     while ((err = Pa_IsStreamActive(audio_output.stream)) == 1)
-    //         Pa_Sleep(100);
-    //     if (err < 0)
-    //         return 84;
+        while ((err = Pa_IsStreamActive(audio_output.stream)) == 1)
+            Pa_Sleep(100);
+        if (err < 0)
+            return 84;
 
-    //     audio_output.Close();
+        audio_output.Close();
 
-    //     printf("Done.\n");
-    //     fflush(stdout);
-    // }
+        printf("Done.\n");
+        fflush(stdout);
+    }
     if (data.recordedSamples) /* Sure it is NULL or valid. */
         free(data.recordedSamples);
+    AudioCodec.destroyDecoder();
+    AudioCodec.destroyEncoder();
     return err;
 }

@@ -13,13 +13,14 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include <vector>
 
 #include "opus.h"
 
 #define SAMPLING_RATE (48000)
 #define FRAME_SIZE (480)
 #define NUMBER_OF_CHANNELS (2)
-#define MAX_DATA_BYTES (1000)
+#define MAX_DATA_BYTES (4096)
 #define DECODE_FEC (0)
 
 class CodecException : public std::runtime_error
@@ -37,15 +38,15 @@ class Codec
         void createEncoder();
         void destroyEncoder();
 
-        unsigned char *encodeAudio(float *input);
+        std::vector<std::pair<unsigned char[4096], int>> encodeAudio(float *input, int numSamples);
 
         void createDecoder();
         void destroyDecoder();
 
-        void decodeAudio(unsigned char *output, float **input);
+        void decodeAudio(std::vector<std::pair<unsigned char[4096], int>> encoded, float *decoded);
 
     protected:
-    
+
     private:
         OpusEncoder *_encoder;
         OpusDecoder *_decoder;

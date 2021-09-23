@@ -28,20 +28,27 @@ void Codec::destroyEncoder()
 }
 
 
-unsigned char *Codec::encodeAudio(float *input)
+std::vector<std::pair<unsigned char[4096], int>> Codec::encodeAudio(float *input, int numSamples)
 {
+    std::vector<std::pair<unsigned char[4096], int>> audioEncoded = {};
+    float *tmpBuff = (float *)malloc(FRAME_SIZE * NUMBER_OF_CHANNELS * sizeof(float));
     unsigned char *output = (unsigned char *) malloc(sizeof(unsigned char) * MAX_DATA_BYTES);
     int return_value = 0;
+    int encoded_length = 0;
+    int totalSizeEncoded = 0;
 
-    memset(output, 0, MAX_DATA_BYTES * sizeof(unsigned char));
-    std::cout << "PRE ENCODE" << std::endl;
-    return_value = opus_encode_float(_encoder, input, FRAME_SIZE, output, MAX_DATA_BYTES);
-    std::cout << "POST ENCODE" << std::endl;
-    std::cout << "RV = " << return_value << std::endl;
-    for (size_t i = 0; i < MAX_DATA_BYTES * 2; i += 2) {
-        std::cout << "OUTPUT -> " << (int) output[i] << " - " << (int) output[i + 1] << std::endl;
+    for (int i = 0; i < numSamples; i+= FRAME_SIZE * 2) {
+        std::pair<unsigned char[4096], int> p1;
+
+        memset(tmpBuff, 0, FRAME_SIZE * NUMBER_OF_CHANNELS * sizeof(float));
+        memcpy(tmpBuff, &input[i], FRAME_SIZE * NUMBER_OF_CHANNELS * sizeof(float));
+        p1.second = opus_encode_float(_encoder, tmpBuff, FRAME_SIZE, p1.first, MAX_DATA_BYTES);
+        std::cout << "origin: " << FRAME_SIZE * NUMBER_OF_CHANNELS * sizeof(float) << " to: " << p1.second << std::endl;
+        audioEncoded.push_back(p1);
+        totalSizeEncoded += p1.second;
     }
-    return output;
+    std::cout << "Total Size Encoded: " << totalSizeEncoded << std::endl;
+    return audioEncoded;
 }
 
 void Codec::createDecoder()
@@ -54,13 +61,15 @@ void Codec::destroyDecoder()
     opus_decoder_destroy(_decoder);
 }
 
-void Codec::decodeAudio(unsigned char *output, float **input)
+void Codec::decodeAudio(std::vector<std::pair<unsigned char[4096], int>> encoded, float *decoded)
 {
-/*    free(*input);
-    *input = (float *) malloc(sizeof(float) * FRAME_SIZE * NUMBER_OF_CHANNELS);
-    std::cout << "PRE DECODE" << std::endl;
-    int opus_decode_float(_decoder, output, MAX_DATA_BYTES, *input, FRAME_SIZE, DECODE_FEC);
-    std::cout << "POST DECODE" << std::endl;
-*/
-    free(output);
+    int i = 0;
+    int return_value = 0;
+
+    std::cout << "Starting decoding" << std::endl;
+    for (std::pair<unsigned char[4096], int> element : encoded) {
+        return_value = opus_decode_float(_decoder, element.first, element.second, &decoded[i], FRAME_SIZE, DECODE_FEC);
+        std::cout << "ret: " << return_value << std::endl;
+        i += FRAME_SIZE * 2;
+    }
 }
