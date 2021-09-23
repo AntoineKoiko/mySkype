@@ -1,11 +1,15 @@
 #include <QApplication>
-#include <QTextEdit>
+#include <QPushButton>
 
-int main(int argv, char **args)
+#include <QWidget>
+#include "MyWindow.hpp"
+
+int main(int argc, char *argv[])
 {
-    QApplication app(argv, args);
+    QApplication app(argc, argv);
 
-    QTextEdit textEdit;
-    textEdit.show();
+    MyWindow window;
+
+    window.showMaximized();
     return app.exec();
 }

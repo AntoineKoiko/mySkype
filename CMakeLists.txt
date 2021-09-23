@@ -20,8 +20,16 @@ conan_basic_setup(${NAME})
 
 set(SRCS
         src/main.cpp
+        src/MyWindow.cpp
+        )
+
+set(MY_INCLUDE
+        ${PROJECT_SOURCE_DIR}/include
         )
 
 add_executable(${NAME} ${SRCS})
+
+target_include_directories(${NAME} BEFORE PUBLIC ${MY_INCLUDE})
+
 
 conan_target_link_libraries(${NAME} portaudio opus qt)
