@@ -14,8 +14,9 @@
 #include <vector>
 #include <QWidget>
 #include <QLabel>
+#include <QMainWindow>
 
-class MyWindow : public QWidget
+class MyWindow : public QMainWindow
 {
 public:
     MyWindow();

@@ -21,6 +21,7 @@ conan_basic_setup(${NAME})
 set(SRCS
         src/main.cpp
         src/MyWindow.cpp
+        src/LoginScreen.cpp
         )
 
 set(MY_INCLUDE
