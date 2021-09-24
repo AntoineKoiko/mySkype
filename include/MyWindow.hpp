@@ -15,6 +15,8 @@
 #include <QWidget>
 #include <QLabel>
 #include <QMainWindow>
+#include "HomeScreen.hpp"
+#include "LoginScreen.hpp"
 
 class MyWindow : public QMainWindow
 {
@@ -34,6 +36,16 @@ private:
     std::vector<QPushButton *> buttons{};
 
     int offset = 0;
+
+private:
+    void connect_buttons() noexcept;
+
+private:
+    void on_login_button_clicked();
+
+private:
+    HomeScreen *_home;
+    LoginScreen *_login;
 };
 
 #endif /* !MYWINDOW_HPP_ */

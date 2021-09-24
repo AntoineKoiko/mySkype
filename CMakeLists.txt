@@ -22,6 +22,7 @@ set(SRCS
         src/main.cpp
         src/MyWindow.cpp
         src/LoginScreen.cpp
+        src/HomeScreen.cpp
         )
 
 set(MY_INCLUDE
