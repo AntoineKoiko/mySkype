@@ -15,7 +15,7 @@ MyWindow::MyWindow() : QMainWindow(),
                        _login(new LoginScreen)
 
 {
-    setFixedSize(1200, 800);
+    resize(1200, 800);
     setWindowTitle("Babel");
 
     connect_buttons();

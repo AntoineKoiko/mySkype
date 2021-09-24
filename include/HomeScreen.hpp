@@ -9,8 +9,12 @@
 #define HOMESCREEN_HPP_
 
 #include <QWidget>
-#include <QLabel>
 #include <QListWidget>
+#include <QLineEdit>
+#include <QGridLayout>
+#include <QBoxLayout>
+#include <QPushButton>
+
 #include <vector>
 
 class HomeScreen : public QWidget
@@ -20,8 +24,19 @@ public:
     ~HomeScreen();
 
 private:
-    QLabel *_homeText;
+    void on_addToCallButton_clicked();
+    void on_cancelToCallButton_clicked();
+
+private:
     QListWidget *_contactsList;
+    QListWidget *_toCallList;
+
+    QLineEdit *_searchContactField;
+    QPushButton *_addToCallButton;
+    QPushButton *_cancelToCallButton;
+
+    QVBoxLayout *_vLayout;
+    QGridLayout *_mainLayout;
 };
 
 #endif /* !HOMESCREEN_HPP_ */
