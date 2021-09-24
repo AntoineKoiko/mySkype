@@ -12,6 +12,7 @@
 #include <QLabel>
 #include <QLineEdit>
 #include <QPushButton>
+#include <QBoxLayout>
 
 class LoginScreen : public QWidget
 {
@@ -26,6 +27,8 @@ private:
     QLabel *_welcomeText;
     QLineEdit *_usernameField;
     QPushButton *_loginButton;
+
+    QVBoxLayout *_layout;
 };
 
 #endif /* !LOGINSCREEN_HPP_ */

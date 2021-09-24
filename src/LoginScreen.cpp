@@ -10,7 +10,8 @@
 LoginScreen::LoginScreen() : QWidget(),
                              _usernameField(new QLineEdit(this)),
                              _welcomeText(new QLabel(this)),
-                             _loginButton(new QPushButton(this))
+                             _loginButton(new QPushButton(this)),
+                             _layout(new QVBoxLayout)
 {
     _welcomeText->setText("Welcome on Babel VOIP Application!");
     _welcomeText->move(100, 100);
@@ -21,9 +22,14 @@ LoginScreen::LoginScreen() : QWidget(),
     _loginButton->move(100, 300);
     _loginButton->setText("login");
 
-    _loginButton->show();
-    _welcomeText->show();
-    _usernameField->show();
+    _layout->addWidget(_welcomeText, 1);
+    _layout->addWidget(_usernameField, 1);
+    _layout->addWidget(_loginButton, 1);
+
+    setLayout(_layout);
+    // _loginButton->show();
+    // _welcomeText->show();
+    // _usernameField->show();
 }
 
 LoginScreen::~LoginScreen()
