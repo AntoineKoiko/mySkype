@@ -15,6 +15,6 @@ int main(int argc, char *argv[])
     // home.show();
     MyWindow window;
 
-    window.showMaximized();
+    window.show();
     return app.exec();
 }

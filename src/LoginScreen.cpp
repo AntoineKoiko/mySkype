@@ -6,6 +6,7 @@
 */
 
 #include "LoginScreen.hpp"
+#include <QFont>
 
 LoginScreen::LoginScreen() : QWidget(),
                              _usernameField(new QLineEdit(this)),
@@ -15,6 +16,9 @@ LoginScreen::LoginScreen() : QWidget(),
 {
     _welcomeText->setText("Welcome on Babel VOIP Application!");
     _welcomeText->move(100, 100);
+    _welcomeText->setAlignment(Qt::AlignCenter);
+    _welcomeText->setFrameStyle(QFrame::Panel | QFrame::Sunken);
+    _welcomeText->setFont(QFont("Arial", 24, QFont::Bold));
 
     _usernameField->move(100, 200);
     _usernameField->setPlaceholderText("Username");
@@ -22,14 +26,16 @@ LoginScreen::LoginScreen() : QWidget(),
     _loginButton->move(100, 300);
     _loginButton->setText("login");
 
-    _layout->addWidget(_welcomeText, 1);
-    _layout->addWidget(_usernameField, 1);
-    _layout->addWidget(_loginButton, 1);
+    _layout->addWidget(_welcomeText, Qt::AlignCenter);
+    _layout->addWidget(_usernameField, Qt::AlignCenter);
+    _layout->addWidget(_loginButton, Qt::AlignCenter);
 
     setLayout(_layout);
     // _loginButton->show();
     // _welcomeText->show();
     // _usernameField->show();
+
+    this->setStyleSheet("background-color:black;color:white");
 }
 
 LoginScreen::~LoginScreen()

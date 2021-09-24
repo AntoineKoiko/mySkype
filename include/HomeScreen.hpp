@@ -10,6 +10,8 @@
 
 #include <QWidget>
 #include <QLabel>
+#include <QListWidget>
+#include <vector>
 
 class HomeScreen : public QWidget
 {
@@ -19,6 +21,7 @@ public:
 
 private:
     QLabel *_homeText;
+    QListWidget *_contactsList;
 };
 
 #endif /* !HOMESCREEN_HPP_ */

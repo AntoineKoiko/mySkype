@@ -15,9 +15,12 @@ MyWindow::MyWindow() : QMainWindow(),
                        _login(new LoginScreen)
 
 {
-    setCentralWidget(_login);
+    setFixedSize(1200, 800);
+    setWindowTitle("Babel");
+
     connect_buttons();
-    // setFixedSize(300, 150);
+
+    setCentralWidget(_login);
 }
 
 MyWindow::~MyWindow()
