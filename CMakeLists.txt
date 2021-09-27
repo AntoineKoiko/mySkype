@@ -14,6 +14,12 @@ set(NAME babel)
 set(NAME_SERVER babel_server)
 set(NAME_CLIENT babel_client)
 
+# QT
+set(CMAKE_AUTOUIC ON)
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+
 project(${NAME} VERSION 0.0.0 LANGUAGES CXX)
 
 ## INCLUDES
@@ -24,9 +30,14 @@ include_directories(./includes/client/Audio)
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 conan_basic_setup()
 
+find_package(Qt5 COMPONENTS Widgets Network REQUIRED)
+
 ## SOURCES
 set(SRCS_SERVER
-        src/server/main.cpp
+        src/test_udp/main.cpp
+        src/test_udp/Udp.cpp
+        src/test_udp/Console.cpp
+        src/test_udp/App.cpp
 )
 
 set(SRCS_CLIENT
@@ -50,7 +61,7 @@ endif ()
 set_target_properties(${NAME_SERVER} PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}")
 set_target_properties(${NAME_CLIENT} PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}")
 
-target_link_libraries(${NAME_SERVER} ${CONAN_LIBS})
+target_link_libraries(${NAME_SERVER} ${CONAN_LIBS} Qt5::Widgets Qt5::Network)
 target_link_libraries(${NAME_CLIENT} ${CONAN_LIBS})
 target_link_directories(${NAME_SERVER} PRIVATE ${CONAN_INCLUDE_DIRS})
 target_link_directories(${NAME_CLIENT} PRIVATE ${CONAN_INCLUDE_DIRS})
