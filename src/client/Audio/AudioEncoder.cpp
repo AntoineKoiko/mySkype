@@ -38,6 +38,6 @@ SoundEncoded AudioEncoder::encodeAudio(const Audio::SoundFrameBuffer &buffer)
     }
     encoded.size = nbBytesEncoded;
     encoded.encodedSound.resize(nbBytesEncoded);
-    std::cout << "DEBUG: nbBytesEncoded: " << nbBytesEncoded << "BufferSize: " << encoded.encodedSound.size() << std::endl;
+    //std::cout << "DEBUG: nbBytesEncoded: " << nbBytesEncoded << "BufferSize: " << encoded.encodedSound.size() << std::endl;
     return encoded;
 }

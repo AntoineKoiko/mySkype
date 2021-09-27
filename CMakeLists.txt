@@ -35,6 +35,8 @@ set(SRCS_CLIENT
         src/client/Audio/AudioEncoder.cpp
         src/client/Audio/SoundEncoded.cpp
         src/client/Audio/SoundFrameBuffer.cpp
+        src/client/Audio/AudioInput.cpp
+        src/client/Audio/AudioOutput.cpp
 )
 ## Execs
 add_executable(${NAME_SERVER} ${SRCS_SERVER})
