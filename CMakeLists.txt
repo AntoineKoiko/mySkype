@@ -18,6 +18,7 @@ project(${NAME} VERSION 0.0.0 LANGUAGES CXX)
 
 ## INCLUDES
 include_directories(./includes)
+include_directories(./includes/client/Audio)
 
 ## CONAN (le barbare)
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
@@ -30,6 +31,10 @@ set(SRCS_SERVER
 
 set(SRCS_CLIENT
         src/client/main.cpp
+        src/client/Audio/AudioDecoder.cpp
+        src/client/Audio/AudioEncoder.cpp
+        src/client/Audio/SoundEncoded.cpp
+        src/client/Audio/SoundFrameBuffer.cpp
 )
 ## Execs
 add_executable(${NAME_SERVER} ${SRCS_SERVER})
