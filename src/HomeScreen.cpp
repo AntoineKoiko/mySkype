@@ -20,6 +20,14 @@ HomeScreen::HomeScreen() : QWidget(),
                            _contactAddedLabel(std::make_unique<QLabel>(this)),
                            _pendingLIstLabel(std::make_unique<QLabel>(this))
 {
+    setUp_widget();
+    setup_layout();
+    connect_buttons();
+    setLayout(_mainLayout.get());
+}
+
+void HomeScreen::setUp_widget() noexcept
+{
     for (int i = 0; i < 200; i++)
     {
         _contactWidget->get_list()->addItem(QString::number(i));
@@ -36,14 +44,32 @@ HomeScreen::HomeScreen() : QWidget(),
     _callButton->setText("Call");
     _pendingLIstLabel->setText("Pending LIst");
 
+    _contactWidget->get_title()->setText("Contact List");
+    _contactWidget->get_button()->setText("Add to Call");
+
+    _toCallWidget->get_title()->setText("People to Call");
+    _toCallWidget->get_button()->setText("Cancel to Call");
+}
+
+void HomeScreen::connect_buttons() noexcept
+{
+    connect(_contactWidget->get_button(), &QPushButton::clicked,
+            this, &HomeScreen::on_addToCallButton_clicked);
+    connect(_toCallWidget->get_button(), &QPushButton::clicked,
+            this, &HomeScreen::on_cancelToCallButton_clicked);
+}
+
+void HomeScreen::setup_layout() noexcept
+{
     _mainLayout->addWidget(_searchContactField.get(), 0, 0, 1, 1);
     _mainLayout->addWidget(_addContactButton.get(), 0, 1, 1, 1);
+    _mainLayout->addWidget(_contactAddedLabel.get(), 1, 0, 1, 1);
+
     _mainLayout->addWidget(_pendingLIstLabel.get(), 1, 3, 1, 1);
     _mainLayout->addWidget(_newContactList.get(), 2, 3, 2, 1);
-
-    _mainLayout->addWidget(_contactAddedLabel.get(), 1, 0, 1, 1);
     _mainLayout->addWidget(_acceptContactButton.get(), 2, 4, 1, 1);
     _mainLayout->addWidget(_dismissContactButton.get(), 3, 4, 1, 1);
+
     _mainLayout->addWidget(_callButton.get(), 5, 4, 1, 1);
 
     _mainLayout->addWidget(_contactWidget->get_title(), 4, 0, 1, 1);
@@ -53,13 +79,6 @@ HomeScreen::HomeScreen() : QWidget(),
     _mainLayout->addWidget(_toCallWidget->get_title(), 4, 3, 1, 1);
     _mainLayout->addWidget(_toCallWidget->get_list(), 5, 3, 1, 2);
     _mainLayout->addWidget(_toCallWidget->get_button(), 6, 3, 1, 1);
-
-    setLayout(_mainLayout.get());
-
-    connect(_contactWidget->get_button(), &QPushButton::clicked,
-            this, &HomeScreen::on_addToCallButton_clicked);
-    connect(_toCallWidget->get_button(), &QPushButton::clicked,
-            this, &HomeScreen::on_cancelToCallButton_clicked);
 }
 
 HomeScreen::~HomeScreen()

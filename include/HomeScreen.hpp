@@ -30,8 +30,14 @@ public:
     QPushButton *get_call_button() const noexcept;
 
 private:
+    //buttons callback
     void on_addToCallButton_clicked();
     void on_cancelToCallButton_clicked();
+
+    //setup
+    void setUp_widget() noexcept;
+    void connect_buttons() noexcept;
+    void setup_layout() noexcept;
 
 private:
     std::unique_ptr<QListWidget> _newContactList;
