@@ -97,3 +97,8 @@ void HomeScreen::on_cancelToCallButton_clicked()
     if (select)
         delete selected;
 }
+
+QPushButton *HomeScreen::get_call_button() const noexcept
+{
+    return _callButton.get();
+}

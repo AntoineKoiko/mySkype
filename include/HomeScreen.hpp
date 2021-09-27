@@ -25,6 +25,8 @@ public:
     HomeScreen();
     ~HomeScreen();
 
+    QPushButton *get_call_button() const noexcept;
+
 private:
     void on_addToCallButton_clicked();
     void on_cancelToCallButton_clicked();

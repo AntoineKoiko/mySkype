@@ -38,6 +38,7 @@ private:
 
 private:
     void on_login_button_clicked();
+    void on_call_button_clicked();
 
 private:
     std::unique_ptr<HomeScreen> _home;
