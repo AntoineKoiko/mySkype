@@ -16,6 +16,7 @@
 #include <QPushButton>
 #include <QLabel>
 
+#include <memory>
 #include <vector>
 
 class HomeScreen : public QWidget
@@ -29,24 +30,24 @@ private:
     void on_cancelToCallButton_clicked();
 
 private:
-    QListWidget *_contactsList;
-    QListWidget *_toCallList;
-    QListWidget *_newContactList;
+    std::unique_ptr<QListWidget> _contactsList;
+    std::unique_ptr<QListWidget> _toCallList;
+    std::unique_ptr<QListWidget> _newContactList;
 
-    QLabel *_contactAddedLabel;
-    QLabel *_contactListLabel;
-    QLabel *_callListLabel;
-    QLabel *_pendingLIstLabel;
+    std::unique_ptr<QLabel> _contactAddedLabel;
+    std::unique_ptr<QLabel> _contactListLabel;
+    std::unique_ptr<QLabel> _callListLabel;
+    std::unique_ptr<QLabel> _pendingLIstLabel;
 
-    QLineEdit *_searchContactField;
-    QPushButton *_addToCallButton;
-    QPushButton *_cancelToCallButton;
-    QPushButton *_addContactButton;
-    QPushButton *_dismissContactButton;
-    QPushButton *_acceptContactButton;
-    QPushButton *_callButton;
+    std::unique_ptr<QLineEdit> _searchContactField;
+    std::unique_ptr<QPushButton> _addToCallButton;
+    std::unique_ptr<QPushButton> _cancelToCallButton;
+    std::unique_ptr<QPushButton> _addContactButton;
+    std::unique_ptr<QPushButton> _dismissContactButton;
+    std::unique_ptr<QPushButton> _acceptContactButton;
+    std::unique_ptr<QPushButton> _callButton;
 
-    QGridLayout *_mainLayout;
+    std::unique_ptr<QGridLayout> _mainLayout;
 };
 
 #endif /* !HOMESCREEN_HPP_ */

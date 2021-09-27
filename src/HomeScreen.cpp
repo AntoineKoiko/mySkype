@@ -8,21 +8,21 @@
 #include "HomeScreen.hpp"
 
 HomeScreen::HomeScreen() : QWidget(),
-                           _contactsList(new QListWidget(this)),
-                           _newContactList(new QListWidget(this)),
-                           _searchContactField(new QLineEdit(this)),
-                           _mainLayout(new QGridLayout(this)),
-                           _addToCallButton(new QPushButton(this)),
-                           _cancelToCallButton(new QPushButton(this)),
-                           _toCallList(new QListWidget(this)),
-                           _addContactButton(new QPushButton(this)),
-                           _dismissContactButton(new QPushButton(this)),
-                           _acceptContactButton(new QPushButton(this)),
-                           _callButton(new QPushButton(this)),
-                           _contactAddedLabel(new QLabel(this)),
-                           _contactListLabel(new QLabel(this)),
-                           _callListLabel(new QLabel(this)),
-                           _pendingLIstLabel(new QLabel(this))
+                           _contactsList(std::make_unique<QListWidget>(this)),
+                           _newContactList(std::make_unique<QListWidget>(this)),
+                           _searchContactField(std::make_unique<QLineEdit>(this)),
+                           _mainLayout(std::make_unique<QGridLayout>(this)),
+                           _addToCallButton(std::make_unique<QPushButton>(this)),
+                           _cancelToCallButton(std::make_unique<QPushButton>(this)),
+                           _toCallList(std::make_unique<QListWidget>(this)),
+                           _addContactButton(std::make_unique<QPushButton>(this)),
+                           _dismissContactButton(std::make_unique<QPushButton>(this)),
+                           _acceptContactButton(std::make_unique<QPushButton>(this)),
+                           _callButton(std::make_unique<QPushButton>(this)),
+                           _contactAddedLabel(std::make_unique<QLabel>(this)),
+                           _contactListLabel(std::make_unique<QLabel>(this)),
+                           _callListLabel(std::make_unique<QLabel>(this)),
+                           _pendingLIstLabel(std::make_unique<QLabel>(this))
 {
     for (int i = 0; i < 200; i++)
     {
@@ -44,31 +44,31 @@ HomeScreen::HomeScreen() : QWidget(),
     _callListLabel->setText("Call list");
     _pendingLIstLabel->setText("Pending LIst");
 
-    _mainLayout->addWidget(_searchContactField, 0, 0, 1, 1);
-    _mainLayout->addWidget(_addContactButton, 0, 1, 1, 1);
-    _mainLayout->addWidget(_pendingLIstLabel, 1, 3, 1, 1);
-    _mainLayout->addWidget(_callListLabel, 4, 3, 1, 1);
-    _mainLayout->addWidget(_contactListLabel, 4, 0, 1, 1);
+    _mainLayout->addWidget(_searchContactField.get(), 0, 0, 1, 1);
+    _mainLayout->addWidget(_addContactButton.get(), 0, 1, 1, 1);
+    _mainLayout->addWidget(_pendingLIstLabel.get(), 1, 3, 1, 1);
+    _mainLayout->addWidget(_callListLabel.get(), 4, 3, 1, 1);
+    _mainLayout->addWidget(_contactListLabel.get(), 4, 0, 1, 1);
 
-    _mainLayout->addWidget(_contactAddedLabel, 1, 0, 1, 1);
-    _mainLayout->addWidget(_newContactList, 2, 3, 2, 1);
-    _mainLayout->addWidget(_acceptContactButton, 2, 4, 1, 1);
-    _mainLayout->addWidget(_dismissContactButton, 3, 4, 1, 1);
-    _mainLayout->addWidget(_contactsList, 5, 0, 1, 2);
-    _mainLayout->addWidget(_toCallList, 5, 3, 1, 1);
-    _mainLayout->addWidget(_addToCallButton, 6, 0, 1, 1);
-    _mainLayout->addWidget(_cancelToCallButton, 6, 3, 1, 1);
-    _mainLayout->addWidget(_callButton, 5, 4, 1, 1);
+    _mainLayout->addWidget(_contactAddedLabel.get(), 1, 0, 1, 1);
+    _mainLayout->addWidget(_newContactList.get(), 2, 3, 2, 1);
+    _mainLayout->addWidget(_acceptContactButton.get(), 2, 4, 1, 1);
+    _mainLayout->addWidget(_dismissContactButton.get(), 3, 4, 1, 1);
+    _mainLayout->addWidget(_contactsList.get(), 5, 0, 1, 2);
+    _mainLayout->addWidget(_toCallList.get(), 5, 3, 1, 1);
+    _mainLayout->addWidget(_addToCallButton.get(), 6, 0, 1, 1);
+    _mainLayout->addWidget(_cancelToCallButton.get(), 6, 3, 1, 1);
+    _mainLayout->addWidget(_callButton.get(), 5, 4, 1, 1);
 
     // _mainLayout->addWidget(_ContactField, 2, 1);
 
     // _mainLayout->addWidget();
 
-    setLayout(_mainLayout);
+    setLayout(_mainLayout.get());
 
-    connect(_addToCallButton, &QPushButton::clicked,
+    connect(_addToCallButton.get(), &QPushButton::clicked,
             this, &HomeScreen::on_addToCallButton_clicked);
-    connect(_cancelToCallButton, &QPushButton::clicked,
+    connect(_cancelToCallButton.get(), &QPushButton::clicked,
             this, &HomeScreen::on_cancelToCallButton_clicked);
 }
 

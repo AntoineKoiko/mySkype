@@ -14,6 +14,8 @@
 #include <QPushButton>
 #include <QBoxLayout>
 
+#include <memory>
+
 class LoginScreen : public QWidget
 {
 public:
@@ -24,11 +26,11 @@ public:
     QLineEdit *get_username_field() const noexcept;
 
 private:
-    QLabel *_welcomeText;
-    QLineEdit *_usernameField;
-    QPushButton *_loginButton;
+    std::unique_ptr<QLabel> _welcomeText;
+    std::unique_ptr<QLineEdit> _usernameField;
+    std::unique_ptr<QPushButton> _loginButton;
 
-    QVBoxLayout *_layout;
+    std::unique_ptr<QVBoxLayout> _layout;
 };
 
 #endif /* !LOGINSCREEN_HPP_ */

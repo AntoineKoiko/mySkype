@@ -15,6 +15,9 @@
 #include <QWidget>
 #include <QLabel>
 #include <QMainWindow>
+
+#include <memory>
+
 #include "HomeScreen.hpp"
 #include "LoginScreen.hpp"
 
@@ -31,21 +34,14 @@ private:
     void init_buttons();
 
 private:
-    std::unique_ptr<QPushButton> m_bouton = nullptr;
-    std::vector<QLabel *> labels{};
-    std::vector<QPushButton *> buttons{};
-
-    int offset = 0;
-
-private:
     void connect_buttons() noexcept;
 
 private:
     void on_login_button_clicked();
 
 private:
-    HomeScreen *_home;
-    LoginScreen *_login;
+    std::unique_ptr<HomeScreen> _home;
+    std::unique_ptr<LoginScreen> _login;
 };
 
 #endif /* !MYWINDOW_HPP_ */

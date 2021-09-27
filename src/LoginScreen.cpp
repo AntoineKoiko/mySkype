@@ -9,10 +9,10 @@
 #include <QFont>
 
 LoginScreen::LoginScreen() : QWidget(),
-                             _usernameField(new QLineEdit(this)),
-                             _welcomeText(new QLabel(this)),
-                             _loginButton(new QPushButton(this)),
-                             _layout(new QVBoxLayout)
+                             _usernameField(std::make_unique<QLineEdit>(this)),
+                             _welcomeText(std::make_unique<QLabel>(this)),
+                             _loginButton(std::make_unique<QPushButton>(this)),
+                             _layout(std::make_unique<QVBoxLayout>())
 {
     _welcomeText->setText("Welcome on Babel VOIP Application!");
     _welcomeText->move(100, 100);
@@ -26,11 +26,11 @@ LoginScreen::LoginScreen() : QWidget(),
     _loginButton->move(100, 300);
     _loginButton->setText("login");
 
-    _layout->addWidget(_welcomeText, Qt::AlignCenter);
-    _layout->addWidget(_usernameField, Qt::AlignCenter);
-    _layout->addWidget(_loginButton, Qt::AlignCenter);
+    _layout->addWidget(_welcomeText.get(), Qt::AlignCenter);
+    _layout->addWidget(_usernameField.get(), Qt::AlignCenter);
+    _layout->addWidget(_loginButton.get(), Qt::AlignCenter);
 
-    setLayout(_layout);
+    setLayout(_layout.get());
     // _loginButton->show();
     // _welcomeText->show();
     // _usernameField->show();
@@ -44,10 +44,10 @@ LoginScreen::~LoginScreen()
 
 QPushButton *LoginScreen::get_login_button() const noexcept
 {
-    return _loginButton;
+    return _loginButton.get();
 }
 
 QLineEdit *LoginScreen::get_username_field() const noexcept
 {
-    return _usernameField;
+    return _usernameField.get();
 }
