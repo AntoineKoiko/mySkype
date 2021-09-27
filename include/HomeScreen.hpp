@@ -14,6 +14,7 @@
 #include <QGridLayout>
 #include <QBoxLayout>
 #include <QPushButton>
+#include <QLabel>
 
 #include <vector>
 
@@ -30,12 +31,21 @@ private:
 private:
     QListWidget *_contactsList;
     QListWidget *_toCallList;
+    QListWidget *_newContactList;
+
+    QLabel *_contactAddedLabel;
+    QLabel *_contactListLabel;
+    QLabel *_callListLabel;
+    QLabel *_pendingLIstLabel;
 
     QLineEdit *_searchContactField;
     QPushButton *_addToCallButton;
     QPushButton *_cancelToCallButton;
+    QPushButton *_addContactButton;
+    QPushButton *_dismissContactButton;
+    QPushButton *_acceptContactButton;
+    QPushButton *_callButton;
 
-    QVBoxLayout *_vLayout;
     QGridLayout *_mainLayout;
 };
 
