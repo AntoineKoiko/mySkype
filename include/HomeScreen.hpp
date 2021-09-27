@@ -16,6 +16,8 @@
 #include <QPushButton>
 #include <QLabel>
 
+#include "TitledListWithButton.hpp"
+
 #include <memory>
 #include <vector>
 
@@ -32,22 +34,19 @@ private:
     void on_cancelToCallButton_clicked();
 
 private:
-    std::unique_ptr<QListWidget> _contactsList;
-    std::unique_ptr<QListWidget> _toCallList;
     std::unique_ptr<QListWidget> _newContactList;
 
     std::unique_ptr<QLabel> _contactAddedLabel;
-    std::unique_ptr<QLabel> _contactListLabel;
-    std::unique_ptr<QLabel> _callListLabel;
     std::unique_ptr<QLabel> _pendingLIstLabel;
 
     std::unique_ptr<QLineEdit> _searchContactField;
-    std::unique_ptr<QPushButton> _addToCallButton;
-    std::unique_ptr<QPushButton> _cancelToCallButton;
     std::unique_ptr<QPushButton> _addContactButton;
     std::unique_ptr<QPushButton> _dismissContactButton;
     std::unique_ptr<QPushButton> _acceptContactButton;
     std::unique_ptr<QPushButton> _callButton;
+
+    std::unique_ptr<TitledListWithButton> _contactWidget;
+    std::unique_ptr<TitledListWithButton> _toCallWidget;
 
     std::unique_ptr<QGridLayout> _mainLayout;
 };

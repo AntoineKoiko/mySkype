@@ -15,11 +15,15 @@ MyWindow::MyWindow() : QMainWindow(),
                        _login(std::make_unique<LoginScreen>())
 
 {
-    resize(1200, 800);
-    setWindowTitle("Babel");
+    this->setUp_winodw();
 
     connect_buttons();
+}
 
+void MyWindow::setUp_winodw()
+{
+    resize(1200, 800);
+    setWindowTitle("Babel");
     setCentralWidget(_login.get());
 }
 

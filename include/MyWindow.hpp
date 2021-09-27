@@ -34,9 +34,11 @@ private:
     void init_buttons();
 
 private:
+    void setUp_winodw();
     void connect_buttons() noexcept;
 
 private:
+    //callback functions
     void on_login_button_clicked();
     void on_call_button_clicked();
 
