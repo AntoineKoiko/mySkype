@@ -43,6 +43,7 @@ find_package(Qt5 COMPONENTS Widgets Network REQUIRED)
 set(SRCS_SERVER
         src/test_sqlite/main.cpp
         src/test_sqlite/Database.cpp
+        src/test_sqlite/DatabaseError.cpp
 )
 
 set(SRCS_CLIENT
