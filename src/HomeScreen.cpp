@@ -88,11 +88,25 @@ HomeScreen::~HomeScreen()
 void HomeScreen::on_addToCallButton_clicked()
 {
     QList<QListWidgetItem *> selected = _contactWidget->get_list()->selectedItems();
+    QListWidget *toCallList = _toCallWidget->get_list();
 
     if (selected.size() != 0)
     {
         for (const auto lt : selected)
         {
+            bool exist = false;
+
+            for (int i = 0; i < toCallList->count(); ++i)
+            {
+                QListWidgetItem *item = toCallList->item(i);
+                if (item->text() == lt->text())
+                {
+                    exist = true;
+                    break;
+                }
+            }
+            if (exist)
+                break;
             _toCallWidget->get_list()->addItem(lt->text());
         }
     }
