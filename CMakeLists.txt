@@ -33,11 +33,16 @@ conan_basic_setup()
 find_package(Qt5 COMPONENTS Widgets Network REQUIRED)
 
 ## SOURCES
+#set(SRCS_SERVER
+#        src/test_udp/main.cpp
+#        src/test_udp/Udp.cpp
+#        src/test_udp/Console.cpp
+#        src/test_udp/App.cpp
+#)
+
 set(SRCS_SERVER
-        src/test_udp/main.cpp
-        src/test_udp/Udp.cpp
-        src/test_udp/Console.cpp
-        src/test_udp/App.cpp
+        src/test_sqlite/main.cpp
+        src/test_sqlite/Database.cpp
 )
 
 set(SRCS_CLIENT
