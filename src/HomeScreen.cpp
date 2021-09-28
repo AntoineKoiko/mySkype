@@ -111,3 +111,8 @@ QPushButton *HomeScreen::get_call_button() const noexcept
 {
     return _callButton.get();
 }
+
+QListWidget *HomeScreen::get_toCallList() const noexcept
+{
+    return _toCallWidget->get_list();
+}

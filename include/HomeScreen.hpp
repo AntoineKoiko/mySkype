@@ -28,6 +28,7 @@ public:
     ~HomeScreen();
 
     QPushButton *get_call_button() const noexcept;
+    QListWidget *get_toCallList() const noexcept;
 
 private:
     //buttons callback

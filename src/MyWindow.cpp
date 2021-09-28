@@ -9,6 +9,7 @@
 #include <iostream>
 #include <QDebug>
 #include <QtWidgets/QStackedWidget>
+#include <QListWidget>
 
 MyWindow::MyWindow() : QMainWindow(),
                        _home(std::make_unique<HomeScreen>()),
@@ -51,8 +52,15 @@ void MyWindow::on_call_button_clicked()
     QMessageBox::StandardButton reply;
     reply = QMessageBox::question(this, "Call", "Are you sure to want to make a call?",
                                   QMessageBox::Yes | QMessageBox::No);
+
     qDebug()
         << "call";
+    QListWidget *callList = _home->get_toCallList();
+    for (int i = 0; i < callList->count(); ++i)
+    {
+        QListWidgetItem *item = callList->item(i);
+        qDebug() << item->text();
+    }
 
     _callHandler.make_call("toto");
 }
