@@ -15,8 +15,12 @@
 #include <QWidget>
 #include <QLabel>
 #include <QMainWindow>
+#include <QMessageBox>
 
 #include <memory>
+
+#include "CallHandler.hpp"
+#include "ContactHandler.hpp"
 
 #include "HomeScreen.hpp"
 #include "LoginScreen.hpp"
@@ -45,6 +49,9 @@ private:
 private:
     std::unique_ptr<HomeScreen> _home;
     std::unique_ptr<LoginScreen> _login;
+
+    CallHandler _callHandler;
+    ContactHandler _contactHandler;
 };
 
 #endif /* !MYWINDOW_HPP_ */

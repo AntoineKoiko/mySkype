@@ -24,6 +24,8 @@ set(SRCS
         src/LoginScreen.cpp
         src/HomeScreen.cpp
         src/TitledListWithButton.cpp
+        src/CallHandler.cpp
+        src/ContactHandler.cpp
         )
 
 set(MY_INCLUDE

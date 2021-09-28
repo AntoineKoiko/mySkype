@@ -8,6 +8,7 @@
 #ifndef LOGINSCREEN_HPP_
 #define LOGINSCREEN_HPP_
 
+#include <QMessageBox>
 #include <QWidget>
 #include <QLabel>
 #include <QLineEdit>

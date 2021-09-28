@@ -48,5 +48,11 @@ void MyWindow::on_login_button_clicked()
 
 void MyWindow::on_call_button_clicked()
 {
-    qDebug() << "call";
+    QMessageBox::StandardButton reply;
+    reply = QMessageBox::question(this, "Call", "Are you sure to want to make a call?",
+                                  QMessageBox::Yes | QMessageBox::No);
+    qDebug()
+        << "call";
+
+    _callHandler.make_call("toto");
 }

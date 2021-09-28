@@ -41,14 +41,14 @@ private:
 
 private:
     std::unique_ptr<QListWidget> _newContactList;
-
-    std::unique_ptr<QLabel> _contactAddedLabel;
     std::unique_ptr<QLabel> _pendingLIstLabel;
-
-    std::unique_ptr<QLineEdit> _searchContactField;
-    std::unique_ptr<QPushButton> _addContactButton;
     std::unique_ptr<QPushButton> _dismissContactButton;
     std::unique_ptr<QPushButton> _acceptContactButton;
+
+    std::unique_ptr<QLabel> _contactAddedLabel;
+    std::unique_ptr<QPushButton> _addContactButton;
+    std::unique_ptr<QLineEdit> _searchContactField;
+
     std::unique_ptr<QPushButton> _callButton;
 
     std::unique_ptr<TitledListWithButton> _contactWidget;
