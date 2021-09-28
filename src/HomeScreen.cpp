@@ -32,9 +32,8 @@ void HomeScreen::setUp_widget() noexcept
     {
         _contactWidget->get_list()->addItem(QString::number(i));
     }
-    _toCallWidget->get_list()->setMaximumSize(100, 500);
 
-    _contactAddedLabel->setText("Conttact Added");
+    _contactAddedLabel->setText("Contact Added");
 
     _searchContactField->setPlaceholderText("Search New Contact");
 
@@ -42,7 +41,7 @@ void HomeScreen::setUp_widget() noexcept
     _acceptContactButton->setText("Accept Contact");
     _dismissContactButton->setText("Dismiss Contact");
     _callButton->setText("Call");
-    _pendingLIstLabel->setText("Pending LIst");
+    _pendingLIstLabel->setText("Pending List");
 
     _contactWidget->get_title()->setText("Contact List");
     _contactWidget->get_button()->setText("Add to Call");
@@ -77,7 +76,7 @@ void HomeScreen::setup_layout() noexcept
     _mainLayout->addWidget(_contactWidget->get_button(), 6, 0, 1, 1);
 
     _mainLayout->addWidget(_toCallWidget->get_title(), 4, 3, 1, 1);
-    _mainLayout->addWidget(_toCallWidget->get_list(), 5, 3, 1, 2);
+    _mainLayout->addWidget(_toCallWidget->get_list(), 5, 3, 1, 1);
     _mainLayout->addWidget(_toCallWidget->get_button(), 6, 3, 1, 1);
 }
 

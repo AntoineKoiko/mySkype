@@ -28,16 +28,16 @@ void MyWindow::setUp_winodw()
     setCentralWidget(_login.get());
 }
 
-MyWindow::~MyWindow()
-{
-}
-
 void MyWindow::connect_buttons() noexcept
 {
     connect(_login->get_login_button(), &QPushButton::released,
             this, &MyWindow::on_login_button_clicked);
     connect(_home->get_call_button(), &QPushButton::released,
             this, &MyWindow::on_call_button_clicked);
+}
+
+MyWindow::~MyWindow()
+{
 }
 
 void MyWindow::on_login_button_clicked()
