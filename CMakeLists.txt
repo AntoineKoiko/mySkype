@@ -16,9 +16,6 @@ set(NAME_CLIENT babel_client)
 
 project(${NAME} VERSION 0.0.0 LANGUAGES CXX)
 
-## INCLUDES
-include_directories(./includes)
-
 ## CONAN (le barbare)
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 conan_basic_setup()
@@ -26,14 +23,21 @@ conan_basic_setup()
 ## SOURCES
 set(SRCS_SERVER
         src/server/main.cpp
+        src/server/AsioTCPServer.cpp
+        src/server/AsioTCPCli.cpp
 )
 
 set(SRCS_CLIENT
         src/client/main.cpp
 )
+
 ## Execs
 add_executable(${NAME_SERVER} ${SRCS_SERVER})
 add_executable(${NAME_CLIENT} ${SRCS_CLIENT})
+
+## INCLUDES
+target_include_directories(${NAME_SERVER} BEFORE PUBLIC ./includes/server)
+target_include_directories(${NAME_CLIENT} BEFORE PUBLIC ./includes/client)
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
     target_compile_options(${NAME_SERVER} PRIVATE -Wall -Wextra)
