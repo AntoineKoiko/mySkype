@@ -5,7 +5,6 @@
 ** AudioDecoder
 */
 
-// #include "client/Audio/AudioDecoder.hpp"
 #include "AudioDecoder.hpp"
 
 using namespace Babel::Client::Audio;
@@ -27,7 +26,7 @@ AudioDecoder::~AudioDecoder()
     }
 }
 
-SoundFrameBuffer AudioDecoder::decodeAudio(const SoundEncoded &encoded)
+SoundFrameBuffer AudioDecoder::decodeAudio(const SoundEncoded &encoded) const
 {
     SoundFrameBuffer soundbuffer;
     int nbBytesDecoded = 0;
