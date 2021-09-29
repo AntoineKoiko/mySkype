@@ -13,6 +13,7 @@
 #include <algorithm>
 #include <memory>
 #include <deque>
+#include "babel.hpp"
 #include "AsioTCPCli.hpp"
 
 class AsioTCPServer {
