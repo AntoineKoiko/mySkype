@@ -9,15 +9,12 @@
 #define HOMESCREEN_HPP_
 
 #include <QWidget>
-#include <QListWidget>
-#include <QLineEdit>
 #include <QGridLayout>
-#include <QBoxLayout>
 #include <QPushButton>
-#include <QLabel>
 
 #include "TitledListWithButton.hpp"
 #include "ContactRequestWidget.hpp"
+#include "AddContactWidget.hpp"
 
 #include <memory>
 #include <vector>
@@ -42,15 +39,12 @@ private:
     void setup_layout() noexcept;
 
 private:
-    std::unique_ptr<QLabel> _contactAddedLabel;
-    std::unique_ptr<QPushButton> _addContactButton;
-    std::unique_ptr<QLineEdit> _searchContactField;
-
     std::unique_ptr<QPushButton> _callButton;
 
     std::unique_ptr<TitledListWithButton> _contactWidget;
     std::unique_ptr<TitledListWithButton> _toCallWidget;
     std::unique_ptr<ContactRequestWidget> _contactRequestWidget;
+    std::unique_ptr<AddContactWidget> _addContactWidget;
 
     std::unique_ptr<QGridLayout> _mainLayout;
 };

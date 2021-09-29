@@ -11,11 +11,9 @@ HomeScreen::HomeScreen() : QWidget(),
                            _contactWidget(std::make_unique<TitledListWithButton>()),
                            _toCallWidget(std::make_unique<TitledListWithButton>()),
                            _contactRequestWidget(std::make_unique<ContactRequestWidget>()),
-                           _searchContactField(std::make_unique<QLineEdit>(this)),
+                           _addContactWidget(std::make_unique<AddContactWidget>()),
                            _mainLayout(std::make_unique<QGridLayout>(this)),
-                           _addContactButton(std::make_unique<QPushButton>(this)),
-                           _callButton(std::make_unique<QPushButton>(this)),
-                           _contactAddedLabel(std::make_unique<QLabel>(this))
+                           _callButton(std::make_unique<QPushButton>(this))
 {
     setUp_widget();
     setup_layout();
@@ -30,11 +28,6 @@ void HomeScreen::setUp_widget() noexcept
         _contactWidget->get_list()->addItem(QString::number(i));
     }
 
-    _contactAddedLabel->setText("Contact Added");
-
-    _searchContactField->setPlaceholderText("Search New Contact");
-
-    _addContactButton->setText("Add to your contact");
     _callButton->setText("Call");
 
     _contactWidget->get_title()->setText("Contact List");
@@ -54,9 +47,9 @@ void HomeScreen::connect_buttons() noexcept
 
 void HomeScreen::setup_layout() noexcept
 {
-    _mainLayout->addWidget(_searchContactField.get(), 0, 0, 1, 1);
-    _mainLayout->addWidget(_addContactButton.get(), 0, 1, 1, 1);
-    _mainLayout->addWidget(_contactAddedLabel.get(), 1, 0, 1, 1);
+    _mainLayout->addWidget(_addContactWidget->get_searchField(), 0, 0, 1, 1);
+    _mainLayout->addWidget(_addContactWidget->get_addButton(), 0, 1, 1, 1);
+    _mainLayout->addWidget(_addContactWidget->get_label(), 1, 0, 1, 1);
 
     _mainLayout->addWidget(_contactRequestWidget->get_title(), 1, 3, 1, 1);
     _mainLayout->addWidget(_contactRequestWidget->get_requestsList(), 2, 3, 2, 1);

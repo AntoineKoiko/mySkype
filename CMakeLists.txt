@@ -27,6 +27,7 @@ set(SRCS
         src/CallHandler.cpp
         src/ContactHandler.cpp
         src/ContactRequestWidget.cpp
+        src/AddContactWidget.cpp
         )
 
 set(MY_INCLUDE
