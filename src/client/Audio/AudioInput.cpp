@@ -75,6 +75,20 @@ void AudioInput::startRecording()
     }
 }
 
+SoundFrameBuffer AudioInput::getSound()
+{
+    SoundFrameBuffer soundBuffer;
+
+    soundBuffer = _sound.front();
+    _sound.pop();
+    return soundBuffer;
+}
+
+bool AudioInput::isEmpty() const
+{
+    return _sound.empty();
+}
+
 void AudioInput::stopRecording()
 {
     if (_isRecording) {

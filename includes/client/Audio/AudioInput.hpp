@@ -25,15 +25,16 @@ namespace Babel::Client::Audio
 
             void openInputStream();
             void startRecording();
+            SoundFrameBuffer getSound();
+            bool isEmpty() const;
             void stopRecording();
             void close();
-
-            std::queue<SoundFrameBuffer> _sound;
-            PaStream *_stream;
 
         protected:
         private:
             PaStreamParameters _params;
+            PaStream *_stream;
+            std::queue<SoundFrameBuffer> _sound;
             bool _isRecording;
 
             static int callback(const void *inputBuffer, void *outputBuffer,
