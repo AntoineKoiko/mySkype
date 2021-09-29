@@ -20,7 +20,7 @@ namespace Babel::Client::Audio
             AudioEncoder();
             ~AudioEncoder();
 
-            SoundEncoded encodeAudio(const Audio::SoundFrameBuffer &buffer);
+            SoundEncoded encodeAudio(const Audio::SoundFrameBuffer &buffer) const;
 
         protected:
         private:

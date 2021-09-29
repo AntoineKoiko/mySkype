@@ -26,8 +26,8 @@ AudioEncoder::~AudioEncoder()
         opus_encoder_destroy(this->_encoder);
     }
 }
-#include <iostream>
-SoundEncoded AudioEncoder::encodeAudio(const Audio::SoundFrameBuffer &buffer)
+
+SoundEncoded AudioEncoder::encodeAudio(const Audio::SoundFrameBuffer &buffer) const
 {
     Audio::SoundEncoded encoded;
     int nbBytesEncoded = 0;
@@ -38,6 +38,5 @@ SoundEncoded AudioEncoder::encodeAudio(const Audio::SoundFrameBuffer &buffer)
     }
     encoded.size = nbBytesEncoded;
     encoded.encodedSound.resize(nbBytesEncoded);
-    //std::cout << "DEBUG: nbBytesEncoded: " << nbBytesEncoded << "BufferSize: " << encoded.encodedSound.size() << std::endl;
     return encoded;
 }
