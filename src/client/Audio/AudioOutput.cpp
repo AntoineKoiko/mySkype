@@ -76,6 +76,17 @@ void AudioOutput::startPlaying()
     }
 }
 
+void AudioOutput::addSound(const SoundFrameBuffer &sound)
+{
+    _sound.push(sound);
+}
+
+//TODO REMOVE: TEST FUNCTION SEEMS USELESS FOR BABEL
+bool AudioOutput::isEmpty() const
+{
+    return _sound.empty();
+}
+
 void AudioOutput::stopPlaying()
 {
     if (_isPlaying) {
@@ -88,7 +99,7 @@ void AudioOutput::stopPlaying()
         _isPlaying = false;
     }
 }
-#include <iostream>
+
 int AudioOutput::callback([[maybe_unused]] const void *inputBuffer, void *outputBuffer,
                    [[maybe_unused]] unsigned long framesPerBuffer,
                    [[maybe_unused]] const PaStreamCallbackTimeInfo *timeInfo,

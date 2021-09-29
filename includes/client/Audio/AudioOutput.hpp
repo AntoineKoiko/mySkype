@@ -24,15 +24,16 @@ namespace Babel::Client::Audio
 
             void openOutputStream();
             void startPlaying();
+            void addSound(const SoundFrameBuffer &sound);
+            bool isEmpty() const;
             void stopPlaying();
             void close();
-
-            PaStream *_stream;
-            std::queue<SoundFrameBuffer> _sound;
 
         protected:
         private:
             PaStreamParameters _params;
+            PaStream *_stream;
+            std::queue<SoundFrameBuffer> _sound;
             bool _isPlaying;
 
             static int callback(const void *inputBuffer, void *outputBuffer,
@@ -40,7 +41,5 @@ namespace Babel::Client::Audio
                    PaStreamCallbackFlags statusFlags, void *userData);
     };
 }
-
-
 
 #endif /* !AUDIOOUTPUT_HPP_ */
