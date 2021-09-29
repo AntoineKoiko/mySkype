@@ -5,7 +5,6 @@
 ** AudioEncoder
 */
 
-// #include "client/Audio/AudioEncoder.hpp"
 #include "AudioEncoder.hpp"
 
 using namespace Babel::Client::Audio;
