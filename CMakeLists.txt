@@ -26,7 +26,7 @@ project(${NAME} VERSION 0.0.0 LANGUAGES CXX)
 ## INCLUDES
 include_directories(./includes)
 include_directories(./includes/client/Audio)
-include_directories(./include)
+include_directories(./includes/client/Windows)
 
 ## CONAN (le barbare)
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
@@ -51,14 +51,14 @@ set(SRCS_CLIENT
         src/client/Audio/SoundFrameBuffer.cpp
         src/client/Audio/AudioInput.cpp
         src/client/Audio/AudioOutput.cpp
-        src/MyWindow.cpp
-        src/LoginScreen.cpp
-        src/HomeScreen.cpp
-        src/TitledListWithButton.cpp
-        src/CallHandler.cpp
-        src/ContactHandler.cpp
-        src/ContactRequestWidget.cpp
-        src/AddContactWidget.cpp
+        src/client/Windows/MyWindow.cpp
+        src/client/Windows/LoginScreen.cpp
+        src/client/Windows/HomeScreen.cpp
+        src/client/Windows/TitledListWithButton.cpp
+        src/client/Windows/CallHandler.cpp
+        src/client/Windows/ContactHandler.cpp
+        src/client/Windows/ContactRequestWidget.cpp
+        src/client/Windows/AddContactWidget.cpp
 )
 ## Execs
 add_executable(${NAME_SERVER} ${SRCS_SERVER})
