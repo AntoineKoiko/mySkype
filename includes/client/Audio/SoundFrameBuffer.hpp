@@ -25,6 +25,4 @@ namespace Babel::Client::Audio
     };
 }
 
-
-
 #endif /* !SOUNDFRAMEBUFFER_HPP_ */

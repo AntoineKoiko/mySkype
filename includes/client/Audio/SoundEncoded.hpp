@@ -26,6 +26,4 @@ namespace Babel::Client::Audio
     };
 }
 
-
-
 #endif /* !SOUNDENCODED_HPP_ */
