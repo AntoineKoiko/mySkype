@@ -10,15 +10,12 @@
 HomeScreen::HomeScreen() : QWidget(),
                            _contactWidget(std::make_unique<TitledListWithButton>()),
                            _toCallWidget(std::make_unique<TitledListWithButton>()),
-                           _newContactList(std::make_unique<QListWidget>(this)),
+                           _contactRequestWidget(std::make_unique<ContactRequestWidget>()),
                            _searchContactField(std::make_unique<QLineEdit>(this)),
                            _mainLayout(std::make_unique<QGridLayout>(this)),
                            _addContactButton(std::make_unique<QPushButton>(this)),
-                           _dismissContactButton(std::make_unique<QPushButton>(this)),
-                           _acceptContactButton(std::make_unique<QPushButton>(this)),
                            _callButton(std::make_unique<QPushButton>(this)),
-                           _contactAddedLabel(std::make_unique<QLabel>(this)),
-                           _pendingLIstLabel(std::make_unique<QLabel>(this))
+                           _contactAddedLabel(std::make_unique<QLabel>(this))
 {
     setUp_widget();
     setup_layout();
@@ -38,10 +35,7 @@ void HomeScreen::setUp_widget() noexcept
     _searchContactField->setPlaceholderText("Search New Contact");
 
     _addContactButton->setText("Add to your contact");
-    _acceptContactButton->setText("Accept Contact");
-    _dismissContactButton->setText("Dismiss Contact");
     _callButton->setText("Call");
-    _pendingLIstLabel->setText("Pending List");
 
     _contactWidget->get_title()->setText("Contact List");
     _contactWidget->get_button()->setText("Add to Call");
@@ -64,10 +58,10 @@ void HomeScreen::setup_layout() noexcept
     _mainLayout->addWidget(_addContactButton.get(), 0, 1, 1, 1);
     _mainLayout->addWidget(_contactAddedLabel.get(), 1, 0, 1, 1);
 
-    _mainLayout->addWidget(_pendingLIstLabel.get(), 1, 3, 1, 1);
-    _mainLayout->addWidget(_newContactList.get(), 2, 3, 2, 1);
-    _mainLayout->addWidget(_acceptContactButton.get(), 2, 4, 1, 1);
-    _mainLayout->addWidget(_dismissContactButton.get(), 3, 4, 1, 1);
+    _mainLayout->addWidget(_contactRequestWidget->get_title(), 1, 3, 1, 1);
+    _mainLayout->addWidget(_contactRequestWidget->get_requestsList(), 2, 3, 2, 1);
+    _mainLayout->addWidget(_contactRequestWidget->get_acceptButton(), 2, 4, 1, 1);
+    _mainLayout->addWidget(_contactRequestWidget->get_dismissButton(), 3, 4, 1, 1);
 
     _mainLayout->addWidget(_callButton.get(), 5, 4, 1, 1);
 
