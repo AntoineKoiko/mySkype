@@ -6,8 +6,9 @@
 ##
 
 cmake_minimum_required(VERSION 3.17)
+add_definitions("-fPIC")
 
-# set(CMAKE_BUILD_TYPE Release)
+set(CMAKE_BUILD_TYPE Release)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 set(NAME babel)
@@ -25,19 +26,21 @@ project(${NAME} VERSION 0.0.0 LANGUAGES CXX)
 ## INCLUDES
 include_directories(./includes)
 include_directories(./includes/client/Audio)
+include_directories(./include)
 
 ## CONAN (le barbare)
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
-conan_basic_setup()
+conan_basic_setup(${NAME})
 
 find_package(Qt5 COMPONENTS Widgets Network REQUIRED)
 
 ## SOURCES
 set(SRCS_SERVER
-        src/test_udp/main.cpp
-        src/test_udp/Udp.cpp
-        src/test_udp/Console.cpp
-        src/test_udp/App.cpp
+        # src/test_udp/main.cpp
+        # src/test_udp/Udp.cpp
+        # src/test_udp/Console.cpp
+        # src/test_udp/App.cpp
+        src/server/main.cpp
 )
 
 set(SRCS_CLIENT
@@ -48,6 +51,14 @@ set(SRCS_CLIENT
         src/client/Audio/SoundFrameBuffer.cpp
         src/client/Audio/AudioInput.cpp
         src/client/Audio/AudioOutput.cpp
+        src/MyWindow.cpp
+        src/LoginScreen.cpp
+        src/HomeScreen.cpp
+        src/TitledListWithButton.cpp
+        src/CallHandler.cpp
+        src/ContactHandler.cpp
+        src/ContactRequestWidget.cpp
+        src/AddContactWidget.cpp
 )
 ## Execs
 add_executable(${NAME_SERVER} ${SRCS_SERVER})
@@ -62,6 +73,6 @@ set_target_properties(${NAME_SERVER} PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${PROJ
 set_target_properties(${NAME_CLIENT} PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}")
 
 target_link_libraries(${NAME_SERVER} ${CONAN_LIBS} Qt5::Widgets Qt5::Network)
-target_link_libraries(${NAME_CLIENT} ${CONAN_LIBS})
+target_link_libraries(${NAME_CLIENT} ${CONAN_LIBS} Qt5::Widgets Qt5::Network)
 target_link_directories(${NAME_SERVER} PRIVATE ${CONAN_INCLUDE_DIRS})
 target_link_directories(${NAME_CLIENT} PRIVATE ${CONAN_INCLUDE_DIRS})
