@@ -7,7 +7,9 @@
 
 #include "Database.hpp"
 
-Database::Database(const std::string name) : _name(name)
+using namespace Babel;
+
+Database::Database(const std::string &name) : _name(name)
 {
     int rc = 0;
     char *errMsg = NULL;
@@ -25,9 +27,9 @@ Database::~Database()
     sqlite3_close(_db);
 }
 
-void Database::createTable(const std::string tableName,
-const std::string tableKeyName,
-std::vector<std::pair<const std::string /*NAME*/, const std::string /*TYPE*/>> tableDescription) const
+void Database::createTable(const std::string &tableName,
+const std::string &tableKeyName,
+std::vector<std::pair<const std::string /*NAME*/, const std::string /*TYPE*/>> &tableDescription) const
 {
     sqlite3_stmt *stmt;
     std::string sql = "CREATE TABLE \"";
@@ -35,11 +37,11 @@ std::vector<std::pair<const std::string /*NAME*/, const std::string /*TYPE*/>> t
 
     sql += tableName + "\" (";
     sql += "\"" + tableKeyName + "\" INTEGER PRIMARY KEY NOT NULL";
-    for (size_t i = 0; i < tableDescription.size(); i++) {
-        if (tableDescription[i].second.compare(INTEGER_IN_TABLE) == 0)
-            sql += ", \"" + tableDescription[i].first + "\" INTEGER NOT NULL";
-        if (tableDescription[i].second.compare(TEXT_IN_TABLE) == 0)
-            sql += ", \"" + tableDescription[i].first + "\" TEXT NOT NULL";
+    for (auto &element : tableDescription) {
+        if (element.second.compare(INTEGER_IN_TABLE) == 0)
+            sql += ", \"" + element.first + "\" INTEGER NOT NULL";
+        if (element.second.compare(TEXT_IN_TABLE) == 0)
+            sql += ", \"" + element.first + "\" TEXT NOT NULL";
     }
     sql += ")";
     rc = sqlite3_prepare_v2(_db, sql.data(), -1, &stmt, NULL);
@@ -53,7 +55,7 @@ std::vector<std::pair<const std::string /*NAME*/, const std::string /*TYPE*/>> t
     sqlite3_finalize(stmt);
 }
 
-void Database::deleteTable(const std::string tableName) const
+void Database::deleteTable(const std::string &tableName) const
 {
     sqlite3_stmt *stmt;
     std::string sql = "DROP TABLE " + tableName;
@@ -70,6 +72,29 @@ void Database::deleteTable(const std::string tableName) const
     sqlite3_finalize(stmt);
 }
 
+size_t Database::getTableSize(const std::string &tableName) const
+{
+    sqlite3_stmt *stmt;
+    std::string sql = "SELECT * FROM " + tableName;
+    int rc = 0;
+    size_t tableSize = 0;
+
+    rc = sqlite3_prepare_v2(_db, sql.data(), -1, &stmt, NULL);
+    if (rc != SQLITE_OK)
+        throw DatabaseError("Get table size - Prepare fail !");
+    rc = sqlite3_step(stmt);
+    if (rc != SQLITE_ROW && rc != SQLITE_DONE) {
+        sqlite3_finalize(stmt);
+        throw DatabaseError(sqlite3_errmsg(_db));
+    }
+    while (rc != SQLITE_DONE) {
+        tableSize += 1;
+        rc = sqlite3_step(stmt);
+    }
+    sqlite3_finalize(stmt);
+    return tableSize;
+}
+
 static int callback(void *notUsed, int argc, char **argv, char **colName)
 {
     (void) notUsed;
@@ -79,7 +104,7 @@ static int callback(void *notUsed, int argc, char **argv, char **colName)
     return 0;
 }
 
-void Database::printTable(const std::string tableName) const
+void Database::printTable(const std::string &tableName) const
 {
     int rc = 0;
     char *sqlErrMsg = NULL;
@@ -95,15 +120,17 @@ void Database::printTable(const std::string tableName) const
     }
 }
 
-bool Database::checkIfEntryExist(const std::string tableName,
+bool Database::checkIfEntryExist(const std::string &tableName,
 std::vector<std::tuple<const std::string /*NAME*/,
                        const std::string /*TYPE*/,
-                       const std::string /*VALUE*/>> entryDescription) const
+                       const std::string /*VALUE*/>> &entryDescription) const
 {
     sqlite3_stmt *stmt;
-    std::string sql = "SELECT * FROM " + tableName + " WHERE ";
+    std::string sql = "SELECT * FROM " + tableName;
     int rc = 0;
 
+    if (entryDescription.size() != 0)
+        sql += " WHERE ";
     for (size_t i = 0; i < entryDescription.size(); i++) {
         if (i != 0)
             sql += " AND ";
@@ -129,9 +156,9 @@ std::vector<std::tuple<const std::string /*NAME*/,
     return true;
 }
 
-void Database::addEntryIntoTable(const std::string tableName,
+void Database::addEntry(const std::string &tableName,
 std::vector<std::tuple<const std::string /*TYPE*/,
-                       const std::string /*VALUE*/>> entryDescription) const
+                       const std::string /*VALUE*/>> &entryDescription) const
 {
     sqlite3_stmt *stmt;
     std::string sql = "INSERT INTO " + tableName + " VALUES(";
@@ -158,15 +185,17 @@ std::vector<std::tuple<const std::string /*TYPE*/,
     sqlite3_finalize(stmt);
 }
 
-void Database::deleteEntryIntoTable(const std::string tableName,
+void Database::deleteEntry(const std::string &tableName,
 std::vector<std::tuple<const std::string /*NAME*/,
                        const std::string /*TYPE*/,
-                       const std::string /*VALUE*/>> entryDescription) const
+                       const std::string /*VALUE*/>> &entryDescription) const
 {
     sqlite3_stmt *stmt;
-    std::string sql = "DELETE FROM " + tableName + " WHERE ";
+    std::string sql = "DELETE FROM " + tableName;
     int rc = 0;
 
+    if (entryDescription.size() != 0)
+        sql += " WHERE ";
     for (size_t i = 0; i < entryDescription.size(); i++) {
         if (i != 0)
             sql += " AND ";
@@ -185,4 +214,50 @@ std::vector<std::tuple<const std::string /*NAME*/,
         throw DatabaseError(sqlite3_errmsg(_db));
     }
     sqlite3_finalize(stmt);
+}
+
+std::vector<std::vector<std::string>> Database::getEntry(const std::string &tableName,
+std::vector<std::tuple<const std::string /*NAME*/,
+                       const std::string /*TYPE*/,
+                       const std::string /*VALUE*/>> &entryDescription) const
+{
+    sqlite3_stmt *stmt;
+    std::string sql = "SELECT * FROM " + tableName;
+    int rc = 0;
+    std::vector<std::vector<std::string>> returnEntries = {{}};
+    std::vector<std::string> returnEntry = {};
+    std::string element = "";
+    size_t entrySize = 0;
+
+    if (entryDescription.size() != 0)
+        sql += " WHERE ";
+    for (size_t i = 0; i < entryDescription.size(); i++) {
+        if (i != 0)
+            sql += " AND ";
+        sql += std::get<0>(entryDescription[i]) + " = ";
+        if (std::get<1>(entryDescription[i]).compare(INTEGER_IN_TABLE) == 0)
+            sql += std::get<2>(entryDescription[i]);
+        if (std::get<1>(entryDescription[i]).compare(TEXT_IN_TABLE) == 0)
+            sql += "\'" + std::get<2>(entryDescription[i]) + "\'";
+    }
+    rc = sqlite3_prepare_v2(_db, sql.data(), -1, &stmt, NULL);
+    if (rc != SQLITE_OK)
+        throw DatabaseError("Get entry - Prepare fail !");
+    rc = sqlite3_step(stmt);
+    if (rc != SQLITE_ROW && rc != SQLITE_DONE) {
+        sqlite3_finalize(stmt);
+        throw DatabaseError(sqlite3_errmsg(_db));
+    }
+    entrySize = sqlite3_column_count(stmt);
+    while (rc != SQLITE_DONE) {
+        for (size_t i = 0; i < entrySize; i++) {
+            element = reinterpret_cast<char const*>(sqlite3_column_text(stmt, i/* + entrySize * entryNum*/));
+            returnEntry.push_back(element);
+        }
+        returnEntries.push_back(returnEntry);
+        rc = sqlite3_step(stmt);
+        returnEntry.clear();
+    }
+    sqlite3_finalize(stmt);
+    return returnEntries;
 }

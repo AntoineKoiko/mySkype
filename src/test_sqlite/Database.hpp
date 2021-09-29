@@ -20,43 +20,46 @@
 #define INTEGER_IN_TABLE "int"
 #define TEXT_IN_TABLE "text"
 
-class Database
-{
-    public :
-        Database(const std::string name);
-        ~Database();
+namespace Babel {
+    class Database
+    {
+        public :
+            Database(const std::string &name);
+            ~Database();
 
-        void createTable(const std::string tableName,
-        const std::string tableKeyName,
-        std::vector<std::pair<const std::string /*NAME*/, const std::string /*TYPE*/>> tableDescription) const;
-        void deleteTable(const std::string tableName) const;
+            void createTable(const std::string &tableName,
+            const std::string &tableKeyName,
+            std::vector<std::pair<const std::string /*NAME*/, const std::string /*TYPE*/>> &tableDescription) const;
+            void deleteTable(const std::string &tableName) const;
 
-        void printTable(const std::string tableName) const;
+            size_t getTableSize(const std::string &tableName) const;
 
-        bool checkIfEntryExist(const std::string tableName,
-        std::vector<std::tuple<const std::string /*NAME*/,
-                               const std::string /*TYPE*/,
-                               const std::string /*VALUE*/>> entryDescription) const;
+            void printTable(const std::string &tableName) const;
 
-        void addEntryIntoTable(const std::string tableName,
-        std::vector<std::tuple<const std::string /*TYPE*/,
-                               const std::string /*VALUE*/>> entryDescription) const;
-        void deleteEntryIntoTable(const std::string tableName,
-        std::vector<std::tuple<const std::string /*NAME*/,
-                               const std::string /*TYPE*/,
-                               const std::string /*VALUE*/>> entryDescription) const;
+            void addEntry(const std::string &tableName,
+            std::vector<std::tuple<const std::string /*TYPE*/,
+                                const std::string /*VALUE*/>> &entryDescription) const;
+            void deleteEntry(const std::string &tableName,
+            std::vector<std::tuple<const std::string /*NAME*/,
+                                const std::string /*TYPE*/,
+                                const std::string /*VALUE*/>> &entryDescription) const;
 
-    protected :
+            bool checkIfEntryExist(const std::string &tableName,
+            std::vector<std::tuple<const std::string /*NAME*/,
+                                   const std::string /*TYPE*/,
+                                   const std::string /*VALUE*/>> &entryDescription) const;
 
-    private :
-        sqlite3 *_db;
-        const std::string _name;
-};
+            std::vector<std::vector<std::string>> getEntry(const std::string &tableName,
+            std::vector<std::tuple<const std::string /*NAME*/,
+                                const std::string /*TYPE*/,
+                                const std::string /*VALUE*/>> &entryDescription) const;
 
-/*
-NAMESPACE
-RECUP UNE ENTREE
-RECUP LES TYPES D'UNE TABLE ?
-*/
+        protected :
+
+        private :
+            sqlite3 *_db;
+            const std::string _name;
+    };
+}
 
 #endif /* !DATABASE_HPP */
