@@ -2,11 +2,11 @@
 ** EPITECH PROJECT, 2021
 ** B-CPP-500-REN-5-1-babel-aurelien.joncour
 ** File description:
-** Databse
+** Database Manager
 */
 
-#ifndef DATABASE_HPP
-#define DATABASE_HPP
+#ifndef DATABASE_MANAGER_HPP
+#define DATABASE_MANAGER_HPP
 
 #include <iostream>
 #include <vector>
@@ -15,17 +15,17 @@
 #include <stdio.h>
 #include <sqlite3.h>
 
-#include "DatabaseError.hpp"
+#include "DatabaseManagerError.hpp"
 
 #define INTEGER_IN_TABLE "int"
 #define TEXT_IN_TABLE "text"
 
 namespace Babel {
-    class Database
+    class DatabaseManager
     {
         public :
-            Database(const std::string &name);
-            ~Database();
+            DatabaseManager(const std::string &name);
+            ~DatabaseManager();
 
             void createTable(const std::string &tableName,
             const std::string &tableKeyName,
@@ -62,4 +62,4 @@ namespace Babel {
     };
 }
 
-#endif /* !DATABASE_HPP */
+#endif /* !DATABASE_MANAGER_HPP */

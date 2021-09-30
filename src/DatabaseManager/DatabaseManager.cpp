@@ -2,14 +2,14 @@
 ** EPITECH PROJECT, 2021
 ** B-CPP-500-REN-5-1-babel-aurelien.joncour
 ** File description:
-** Database
+** DatabaseManager
 */
 
-#include "Database.hpp"
+#include "DatabaseManager.hpp"
 
 using namespace Babel;
 
-Database::Database(const std::string &name) : _name(name)
+DatabaseManager::DatabaseManager(const std::string &name) : _name(name)
 {
     int rc = 0;
     char *errMsg = NULL;
@@ -18,16 +18,16 @@ Database::Database(const std::string &name) : _name(name)
     if (rc) {
         sqlite3_close(_db);
         sprintf(errMsg, "Can't open the database : %s\n", sqlite3_errmsg(_db));
-        throw DatabaseError(errMsg);
+        throw DatabaseManagerError(errMsg);
     }
 }
 
-Database::~Database()
+DatabaseManager::~DatabaseManager()
 {
     sqlite3_close(_db);
 }
 
-void Database::createTable(const std::string &tableName,
+void DatabaseManager::createTable(const std::string &tableName,
 const std::string &tableKeyName,
 std::vector<std::pair<const std::string /*NAME*/, const std::string /*TYPE*/>> &tableDescription) const
 {
@@ -46,16 +46,16 @@ std::vector<std::pair<const std::string /*NAME*/, const std::string /*TYPE*/>> &
     sql += ")";
     rc = sqlite3_prepare_v2(_db, sql.data(), -1, &stmt, NULL);
     if (rc != SQLITE_OK)
-        throw DatabaseError("Create table - Prepare fail !");
+        throw DatabaseManagerError("Create table - Prepare fail !");
     rc = sqlite3_step(stmt);
     if (rc != SQLITE_DONE) {
         sqlite3_finalize(stmt);
-        throw DatabaseError(sqlite3_errmsg(_db));
+        throw DatabaseManagerError(sqlite3_errmsg(_db));
     }
     sqlite3_finalize(stmt);
 }
 
-void Database::deleteTable(const std::string &tableName) const
+void DatabaseManager::deleteTable(const std::string &tableName) const
 {
     sqlite3_stmt *stmt;
     std::string sql = "DROP TABLE " + tableName;
@@ -63,16 +63,16 @@ void Database::deleteTable(const std::string &tableName) const
 
     rc = sqlite3_prepare_v2(_db, sql.data(), -1, &stmt, NULL);
     if (rc != SQLITE_OK)
-        throw DatabaseError("Delete table - Prepare fail !");
+        throw DatabaseManagerError("Delete table - Prepare fail !");
     rc = sqlite3_step(stmt);
     if (rc != SQLITE_DONE) {
         sqlite3_finalize(stmt);
-        throw DatabaseError(sqlite3_errmsg(_db));
+        throw DatabaseManagerError(sqlite3_errmsg(_db));
     }
     sqlite3_finalize(stmt);
 }
 
-size_t Database::getTableSize(const std::string &tableName) const
+size_t DatabaseManager::getTableSize(const std::string &tableName) const
 {
     sqlite3_stmt *stmt;
     std::string sql = "SELECT * FROM " + tableName;
@@ -81,11 +81,11 @@ size_t Database::getTableSize(const std::string &tableName) const
 
     rc = sqlite3_prepare_v2(_db, sql.data(), -1, &stmt, NULL);
     if (rc != SQLITE_OK)
-        throw DatabaseError("Get table size - Prepare fail !");
+        throw DatabaseManagerError("Get table size - Prepare fail !");
     rc = sqlite3_step(stmt);
     if (rc != SQLITE_ROW && rc != SQLITE_DONE) {
         sqlite3_finalize(stmt);
-        throw DatabaseError(sqlite3_errmsg(_db));
+        throw DatabaseManagerError(sqlite3_errmsg(_db));
     }
     while (rc != SQLITE_DONE) {
         tableSize += 1;
@@ -104,7 +104,7 @@ static int callback(void *notUsed, int argc, char **argv, char **colName)
     return 0;
 }
 
-void Database::printTable(const std::string &tableName) const
+void DatabaseManager::printTable(const std::string &tableName) const
 {
     int rc = 0;
     char *sqlErrMsg = NULL;
@@ -116,11 +116,11 @@ void Database::printTable(const std::string &tableName) const
     if(rc != SQLITE_OK) {
       errMsg += sqlErrMsg;
       sqlite3_free(sqlErrMsg);
-      throw DatabaseError(errMsg);
+      throw DatabaseManagerError(errMsg);
     }
 }
 
-bool Database::checkIfEntryExist(const std::string &tableName,
+bool DatabaseManager::checkIfEntryExist(const std::string &tableName,
 std::vector<std::tuple<const std::string /*NAME*/,
                        const std::string /*TYPE*/,
                        const std::string /*VALUE*/>> &entryDescription) const
@@ -142,11 +142,11 @@ std::vector<std::tuple<const std::string /*NAME*/,
     }
     rc = sqlite3_prepare_v2(_db, sql.data(), -1, &stmt, NULL);
     if (rc != SQLITE_OK)
-        throw DatabaseError("Check if entry exist - Prepare fail !");
+        throw DatabaseManagerError("Check if entry exist - Prepare fail !");
     rc = sqlite3_step(stmt);
     if (rc != SQLITE_ROW && rc != SQLITE_DONE) {
         sqlite3_finalize(stmt);
-        throw DatabaseError(sqlite3_errmsg(_db));
+        throw DatabaseManagerError(sqlite3_errmsg(_db));
     }
     if (rc == SQLITE_DONE) {
         sqlite3_finalize(stmt);
@@ -156,7 +156,7 @@ std::vector<std::tuple<const std::string /*NAME*/,
     return true;
 }
 
-void Database::addEntry(const std::string &tableName,
+void DatabaseManager::addEntry(const std::string &tableName,
 std::vector<std::tuple<const std::string /*TYPE*/,
                        const std::string /*VALUE*/>> &entryDescription) const
 {
@@ -176,16 +176,16 @@ std::vector<std::tuple<const std::string /*TYPE*/,
     std::cerr << "ADD ENTRY SQL = " << sql << std::endl;
     rc = sqlite3_prepare_v2(_db, sql.data(), -1, &stmt, NULL);
     if (rc != SQLITE_OK)
-        throw DatabaseError("Add entry - Prepare fail !");
+        throw DatabaseManagerError("Add entry - Prepare fail !");
     rc = sqlite3_step(stmt);
     if (rc != SQLITE_DONE) {
         sqlite3_finalize(stmt);
-        throw DatabaseError(sqlite3_errmsg(_db));
+        throw DatabaseManagerError(sqlite3_errmsg(_db));
     }
     sqlite3_finalize(stmt);
 }
 
-void Database::deleteEntry(const std::string &tableName,
+void DatabaseManager::deleteEntry(const std::string &tableName,
 std::vector<std::tuple<const std::string /*NAME*/,
                        const std::string /*TYPE*/,
                        const std::string /*VALUE*/>> &entryDescription) const
@@ -207,16 +207,16 @@ std::vector<std::tuple<const std::string /*NAME*/,
     }
     rc = sqlite3_prepare_v2(_db, sql.data(), -1, &stmt, NULL);
     if (rc != SQLITE_OK)
-        throw DatabaseError("Delete entry - Prepare fail !");
+        throw DatabaseManagerError("Delete entry - Prepare fail !");
     rc = sqlite3_step(stmt);
     if (rc != SQLITE_DONE) {
         sqlite3_finalize(stmt);
-        throw DatabaseError(sqlite3_errmsg(_db));
+        throw DatabaseManagerError(sqlite3_errmsg(_db));
     }
     sqlite3_finalize(stmt);
 }
 
-std::vector<std::vector<std::string>> Database::getEntry(const std::string &tableName,
+std::vector<std::vector<std::string>> DatabaseManager::getEntry(const std::string &tableName,
 std::vector<std::tuple<const std::string /*NAME*/,
                        const std::string /*TYPE*/,
                        const std::string /*VALUE*/>> &entryDescription) const
@@ -242,11 +242,11 @@ std::vector<std::tuple<const std::string /*NAME*/,
     }
     rc = sqlite3_prepare_v2(_db, sql.data(), -1, &stmt, NULL);
     if (rc != SQLITE_OK)
-        throw DatabaseError("Get entry - Prepare fail !");
+        throw DatabaseManagerError("Get entry - Prepare fail !");
     rc = sqlite3_step(stmt);
     if (rc != SQLITE_ROW && rc != SQLITE_DONE) {
         sqlite3_finalize(stmt);
-        throw DatabaseError(sqlite3_errmsg(_db));
+        throw DatabaseManagerError(sqlite3_errmsg(_db));
     }
     entrySize = sqlite3_column_count(stmt);
     while (rc != SQLITE_DONE) {
