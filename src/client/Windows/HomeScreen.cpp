@@ -12,8 +12,8 @@ HomeScreen::HomeScreen() : QWidget(),
                            _toCallWidget(std::make_unique<TitledListWithButton>()),
                            _contactRequestWidget(std::make_unique<ContactRequestWidget>()),
                            _addContactWidget(std::make_unique<AddContactWidget>()),
-                           _mainLayout(std::make_unique<QGridLayout>(this)),
-                           _callButton(std::make_unique<QPushButton>(this))
+                           _callButton(std::make_unique<QPushButton>(this)),
+                           _mainLayout(std::make_unique<QGridLayout>(this))
 {
     setUp_widget();
     setup_layout();
@@ -60,7 +60,7 @@ void HomeScreen::setup_layout() noexcept
 
     _mainLayout->addWidget(_contactWidget->get_title(), 4, 0, 1, 1);
     _mainLayout->addWidget(_contactWidget->get_list(), 5, 0, 1, 2);
-    _mainLayout->addWidget(_contactWidget->get_button(), 6, 0, 1, 1);
+    _mainLayout->addWidget(_contactWidget->get_button(), 6, 0, 1, 2);
 
     _mainLayout->addWidget(_toCallWidget->get_title(), 4, 3, 1, 1);
     _mainLayout->addWidget(_toCallWidget->get_list(), 5, 3, 1, 1);
@@ -103,7 +103,7 @@ void HomeScreen::on_cancelToCallButton_clicked()
     int row = _toCallWidget->get_list()->currentRow();
     QListWidgetItem *selected = _toCallWidget->get_list()->takeItem(row);
 
-    if (select)
+    if (selected)
         delete selected;
 }
 

@@ -53,6 +53,15 @@ void MyWindow::on_call_button_clicked()
     reply = QMessageBox::question(this, "Call", "Are you sure to want to make a call?",
                                   QMessageBox::Yes | QMessageBox::No);
 
+    if (reply == QMessageBox::Yes)
+    {
+        qDebug() << "Say Yes";
+    }
+    else
+    {
+        qDebug() << "Say no";
+    }
+
     qDebug()
         << "call";
     QListWidget *callList = _home->get_toCallList();
