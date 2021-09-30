@@ -27,6 +27,7 @@ project(${NAME} VERSION 0.0.0 LANGUAGES CXX)
 include_directories(./includes)
 include_directories(./includes/client/Audio)
 include_directories(./includes/client/Windows)
+include_directories(./includes/client/Network)
 
 ## CONAN (le barbare)
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
@@ -59,6 +60,8 @@ set(SRCS_CLIENT
         src/client/Windows/ContactHandler.cpp
         src/client/Windows/ContactRequestWidget.cpp
         src/client/Windows/AddContactWidget.cpp
+        src/client/Network/SoundPacketManager.cpp
+        src/client/Network/Udp.cpp
 )
 ## Execs
 add_executable(${NAME_SERVER} ${SRCS_SERVER})
