@@ -23,7 +23,6 @@ LoginScreen::LoginScreen(QWidget *parent) : QWidget(parent),
     _usernameField->move(100, 200);
     _usernameField->setPlaceholderText("Username");
 
-    _loginButton->move(100, 300);
     _loginButton->setText("login");
 
     _layout->addWidget(_welcomeText.get(), Qt::AlignCenter);
