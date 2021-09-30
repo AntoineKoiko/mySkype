@@ -13,7 +13,8 @@
 MyWindow::MyWindow() : QMainWindow(),
                        _stack(std::make_unique<QStackedWidget>()),
                        _home(std::make_unique<HomeScreen>(_stack.get())),
-                       _login(std::make_unique<LoginScreen>((_stack.get())))
+                       _login(std::make_unique<LoginScreen>(_stack.get())),
+                       _callScreen(std::make_unique<CallScreen>(_stack.get()))
 
 {
     this->setUp_winodw();
@@ -28,7 +29,9 @@ void MyWindow::setUp_winodw()
 
     _stack->addWidget(_login.get());
     _stack->addWidget(_home.get());
+    _stack->addWidget(_callScreen.get());
     _stack->setCurrentWidget(_login.get());
+
     setCentralWidget(_stack.get());
 }
 
@@ -38,6 +41,8 @@ void MyWindow::connect_buttons() noexcept
             this, &MyWindow::on_login_button_clicked);
     connect(_home->get_call_button(), &QPushButton::released,
             this, &MyWindow::on_call_button_clicked);
+    connect(_callScreen->get_hangUp_button(), &QPushButton::released,
+            this, &MyWindow::on_hangUp_button_clicked);
 }
 
 MyWindow::~MyWindow()
@@ -60,20 +65,25 @@ void MyWindow::on_call_button_clicked()
     if (reply == QMessageBox::Yes)
     {
         qDebug() << "Say Yes";
+        std::vector<QString> contacts;
+        QListWidget *callList = _home->get_toCallList();
+        for (int i = 0; i < callList->count(); ++i)
+        {
+            QListWidgetItem *item = callList->item(i);
+            contacts.push_back(item->text());
+        }
+        _callScreen->start_call(contacts);
+        _callHandler.make_call("toto");
+        _stack->setCurrentWidget(_callScreen.get());
     }
     else
     {
         qDebug() << "Say no";
     }
+}
 
-    qDebug()
-        << "call";
-    QListWidget *callList = _home->get_toCallList();
-    for (int i = 0; i < callList->count(); ++i)
-    {
-        QListWidgetItem *item = callList->item(i);
-        qDebug() << item->text();
-    }
-
-    _callHandler.make_call("toto");
+void MyWindow::on_hangUp_button_clicked()
+{
+    _callScreen->stop_call();
+    _stack->setCurrentWidget(_home.get());
 }

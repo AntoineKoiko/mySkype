@@ -20,6 +20,7 @@
 
 #include "HomeScreen.hpp"
 #include "LoginScreen.hpp"
+#include "CallScreen.hpp"
 
 class MyWindow : public QMainWindow
 {
@@ -41,11 +42,13 @@ private:
     //callback functions
     void on_login_button_clicked();
     void on_call_button_clicked();
+    void on_hangUp_button_clicked();
 
 private:
     std::unique_ptr<QStackedWidget> _stack;
     std::unique_ptr<HomeScreen> _home;
     std::unique_ptr<LoginScreen> _login;
+    std::unique_ptr<CallScreen> _callScreen;
 
     CallHandler _callHandler;
     ContactHandler _contactHandler;

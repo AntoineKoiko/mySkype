@@ -59,6 +59,7 @@ set(SRCS_CLIENT
         src/client/Windows/ContactHandler.cpp
         src/client/Windows/ContactRequestWidget.cpp
         src/client/Windows/AddContactWidget.cpp
+        src/client/Windows/CallScreen.cpp
 )
 ## Execs
 add_executable(${NAME_SERVER} ${SRCS_SERVER})
