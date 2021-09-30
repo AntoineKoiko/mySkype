@@ -8,12 +8,12 @@
 #include "MyWindow.hpp"
 #include <iostream>
 #include <QDebug>
-#include <QtWidgets/QStackedWidget>
 #include <QListWidget>
 
 MyWindow::MyWindow() : QMainWindow(),
-                       _home(std::make_unique<HomeScreen>()),
-                       _login(std::make_unique<LoginScreen>())
+                       _stack(std::make_unique<QStackedWidget>()),
+                       _home(std::make_unique<HomeScreen>(_stack.get())),
+                       _login(std::make_unique<LoginScreen>((_stack.get())))
 
 {
     this->setUp_winodw();
@@ -25,7 +25,11 @@ void MyWindow::setUp_winodw()
 {
     resize(1200, 800);
     setWindowTitle("Babel");
-    setCentralWidget(_login.get());
+
+    _stack->addWidget(_login.get());
+    _stack->addWidget(_home.get());
+    _stack->setCurrentWidget(_login.get());
+    setCentralWidget(_stack.get());
 }
 
 void MyWindow::connect_buttons() noexcept
@@ -44,7 +48,7 @@ void MyWindow::on_login_button_clicked()
 {
     qDebug() << _login->get_username_field()->text();
     _login->get_username_field()->clear();
-    setCentralWidget(_home.get());
+    _stack->setCurrentWidget(_home.get());
 }
 
 void MyWindow::on_call_button_clicked()
@@ -52,6 +56,15 @@ void MyWindow::on_call_button_clicked()
     QMessageBox::StandardButton reply;
     reply = QMessageBox::question(this, "Call", "Are you sure to want to make a call?",
                                   QMessageBox::Yes | QMessageBox::No);
+
+    if (reply == QMessageBox::Yes)
+    {
+        qDebug() << "Say Yes";
+    }
+    else
+    {
+        qDebug() << "Say no";
+    }
 
     qDebug()
         << "call";

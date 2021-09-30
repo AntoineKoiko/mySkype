@@ -20,7 +20,7 @@
 class LoginScreen : public QWidget
 {
 public:
-    LoginScreen();
+    explicit LoginScreen(QWidget *parent);
     ~LoginScreen();
 
     QPushButton *get_login_button() const noexcept;

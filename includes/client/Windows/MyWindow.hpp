@@ -8,14 +8,10 @@
 #ifndef MYWINDOW_HPP_
 #define MYWINDOW_HPP_
 
-#include <memory>
-#include <QApplication>
-#include <QPushButton>
-#include <vector>
-#include <QWidget>
-#include <QLabel>
 #include <QMainWindow>
 #include <QMessageBox>
+
+#include <QtWidgets/QStackedWidget>
 
 #include <memory>
 
@@ -47,6 +43,7 @@ private:
     void on_call_button_clicked();
 
 private:
+    std::unique_ptr<QStackedWidget> _stack;
     std::unique_ptr<HomeScreen> _home;
     std::unique_ptr<LoginScreen> _login;
 
