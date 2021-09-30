@@ -28,7 +28,7 @@ void MyWindow::setUp_winodw()
 
     _stack->addWidget(_login.get());
     _stack->addWidget(_home.get());
-    _stack->setCurrentWidget(_home.get());
+    _stack->setCurrentWidget(_login.get());
     setCentralWidget(_stack.get());
 }
 
@@ -39,14 +39,9 @@ void MyWindow::connect_buttons() noexcept
     connect(_home->get_call_button(), &QPushButton::released,
             this, &MyWindow::on_call_button_clicked);
 }
-#include <iostream>
+
 MyWindow::~MyWindow()
 {
-    // disconnect(_login->get_login_button(), &QPushButton::released,
-    //            this, &MyWindow::on_login_button_clicked);
-    //     disconnect(_home->get_call_button(), &QPushButton::released,
-    //                this, &MyWindow::on_call_button_clicked);
-    std::cout << "window" << std::endl;
 }
 
 void MyWindow::on_login_button_clicked()
@@ -81,5 +76,4 @@ void MyWindow::on_call_button_clicked()
     }
 
     _callHandler.make_call("toto");
-    _stack->setCurrentWidget(_login.get());
 }

@@ -66,14 +66,9 @@ void HomeScreen::setup_layout() noexcept
     _mainLayout->addWidget(_toCallWidget->get_list(), 5, 3, 1, 1);
     _mainLayout->addWidget(_toCallWidget->get_button(), 6, 3, 1, 1);
 }
-#include <iostream>
+
 HomeScreen::~HomeScreen()
 {
-    disconnect(_contactWidget->get_button(), &QPushButton::clicked,
-               this, &HomeScreen::on_addToCallButton_clicked);
-    disconnect(_toCallWidget->get_button(), &QPushButton::clicked,
-               this, &HomeScreen::on_cancelToCallButton_clicked);
-    std::cout << "home" << std::endl;
 }
 
 void HomeScreen::on_addToCallButton_clicked()

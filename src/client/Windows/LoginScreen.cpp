@@ -9,8 +9,8 @@
 #include <QFont>
 
 LoginScreen::LoginScreen(QWidget *parent) : QWidget(parent),
-                                            _usernameField(std::make_unique<QLineEdit>(this)),
                                             _welcomeText(std::make_unique<QLabel>(this)),
+                                            _usernameField(std::make_unique<QLineEdit>(this)),
                                             _loginButton(std::make_unique<QPushButton>(this)),
                                             _layout(std::make_unique<QVBoxLayout>())
 {
@@ -34,10 +34,9 @@ LoginScreen::LoginScreen(QWidget *parent) : QWidget(parent),
 
     this->setStyleSheet("background-color:black;color:white");
 }
-#include <iostream>
+
 LoginScreen::~LoginScreen()
 {
-    std::cout << "login" << std::endl;
 }
 
 QPushButton *LoginScreen::get_login_button() const noexcept
