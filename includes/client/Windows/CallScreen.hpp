@@ -32,6 +32,8 @@ private:
     std::unique_ptr<QLabel> _inCallLabel;
     std::vector<std::unique_ptr<QLabel>> _inCallList;
     std::unique_ptr<QPushButton> _hangUpButton;
+    std::unique_ptr<QLabel> _padTop;
+    std::unique_ptr<QLabel> _padBot;
 
     std::unique_ptr<QVBoxLayout> _layout;
 };
