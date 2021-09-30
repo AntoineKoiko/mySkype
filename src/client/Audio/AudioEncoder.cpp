@@ -15,7 +15,7 @@ AudioEncoder::AudioEncoder() : _encoder(nullptr)
 
     this->_encoder = opus_encoder_create(Audio::SamplingRate, Audio::NumberOfChannels, OPUS_APPLICATION_VOIP, &err);
     if (err != OPUS_OK) {
-        //TODO THROW ERROR;
+        throw EncoderError("Creation of the encoder failed !");
     }
 }
 
@@ -33,7 +33,7 @@ SoundEncoded AudioEncoder::encodeAudio(const Audio::SoundFrameBuffer &buffer) co
 
     nbBytesEncoded = opus_encode_float(this->_encoder, buffer.frames.data(), Audio::FrameSize, encoded.encodedSound.data(), Audio::BufferSize);
     if (nbBytesEncoded < OPUS_OK) {
-        //TODO THROW ERROR
+        throw DecoderError("Encoding failed !");
     }
     encoded.size = nbBytesEncoded;
     encoded.encodedSound.resize(nbBytesEncoded);

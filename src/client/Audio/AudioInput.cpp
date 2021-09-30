@@ -14,16 +14,11 @@ AudioInput::AudioInput() : _isRecording(false)
     PaError err = Pa_Initialize();
 
     if (err != paNoError) {
-        std::cerr << "Audio error: " << Pa_GetErrorText(err) << std::endl;
-        //throw AudioException(Pa_GetErrorText(err));
-        return;
+        throw InputError(Pa_GetErrorText(err));
     }
     _params.device = Pa_GetDefaultInputDevice();
     if (_params.device == paNoDevice) {
-        std::cerr << "Error: No default input device." << std::endl;
-        return;
-        //IF NOT DESTRUCTED MISSING Pa_Terminate();
-        //throw AudioException("No default input device");
+        throw InputError("No default input device !");
     }
     _params.channelCount = Audio::NumberOfChannels;
     _params.sampleFormat = paFloat32;
@@ -37,7 +32,7 @@ AudioInput::~AudioInput()
 
     err = Pa_Terminate();
     if (err != paNoError) {
-        std::cerr << "PortAudio error: " << Pa_GetErrorText(err) << std::endl;
+        throw InputError(Pa_GetErrorText(err));
     } else {
         std::cout << "Successfuly destroy Audio" << std::endl;
     }
@@ -57,8 +52,7 @@ void AudioInput::openInputStream()
         this->callback,
         this);
     if (err != paNoError) {
-        //throw AudioException(Pa_GetErrorText(err));
-        return;
+        throw InputError(Pa_GetErrorText(err));
     }
 }
 
@@ -68,8 +62,7 @@ void AudioInput::startRecording()
         PaError err;
         err = Pa_StartStream(_stream);
         if (err != paNoError) {
-            //throw AudioException(Pa_GetErrorText(err));
-            return;
+            throw InputError(Pa_GetErrorText(err));
         }
         _isRecording = true;
     }
@@ -95,8 +88,7 @@ void AudioInput::stopRecording()
         PaError err;
         err = Pa_StopStream(_stream);
         if (err != paNoError) {
-            // throw AudioException(Pa_GetErrorText(err));
-            return;
+            throw InputError(Pa_GetErrorText(err));
         }
         _isRecording = false;
     }
@@ -124,6 +116,6 @@ void AudioInput::close()
     PaError err = Pa_CloseStream(_stream);
 
     if (err != paNoError) {
-        //throw AudioException(Pa_GetErrorText(err));
+        throw InputError(Pa_GetErrorText(err));
     }
 }

@@ -8,6 +8,8 @@
 #ifndef AUDIO_HPP_
 #define AUDIO_HPP_
 
+#include "AudioError.hpp"
+
 namespace Babel::Client::Audio {
     const int FrameSize = 480;
     const int NumberOfChannels = 2;

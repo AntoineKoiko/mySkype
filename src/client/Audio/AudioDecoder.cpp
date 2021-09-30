@@ -15,7 +15,7 @@ AudioDecoder::AudioDecoder()
     this->_decoder = opus_decoder_create(Audio::SamplingRate, Audio::NumberOfChannels, &err);
 
     if (err != OPUS_OK) {
-        //TODO THROW ERROR:
+        throw DecoderError("Creation of the decoder failed !");
     }
 }
 
@@ -34,7 +34,7 @@ SoundFrameBuffer AudioDecoder::decodeAudio(const SoundEncoded &encoded) const
     nbBytesDecoded = opus_decode_float(this->_decoder, encoded.encodedSound.data(), encoded.size,
         soundbuffer.frames.data(), Audio::FrameSize, 0);
     if (nbBytesDecoded < OPUS_OK) {
-        //THROW ERROR
+        throw DecoderError("Decoding failed !");
     }
     return soundbuffer;
 }

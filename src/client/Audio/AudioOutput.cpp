@@ -15,16 +15,11 @@ AudioOutput::AudioOutput() : _isPlaying(false)
 
     err = Pa_Initialize();
     if (err != paNoError) {
-        std::cerr << "Audio error: " << Pa_GetErrorText(err) << std::endl;
-        //IF NOT DESTRUCTED MISSING Pa_Terminate();
-        //throw AudioException(Pa_GetErrorText(err));
+        throw OutputError(Pa_GetErrorText(err));
     }
     _params.device = Pa_GetDefaultOutputDevice();
     if (_params.device == paNoDevice) {
-        std::cerr << "Error: No default output device." << std::endl;
-        //IF NOT DESTRUCTED MISSING Pa_Terminate();
-        //throw AudioException("No default output device");
-        return;
+        throw OutputError("No default output device !");
     }
     _params.channelCount = Audio::NumberOfChannels;
     _params.sampleFormat = paFloat32;
@@ -38,7 +33,7 @@ AudioOutput::~AudioOutput()
 
     err = Pa_Terminate();
     if (err != paNoError) {
-        std::cerr << "PortAudio error: " << Pa_GetErrorText(err) << std::endl;
+        throw OutputError(Pa_GetErrorText(err));
     } else {
         std::cout << "Successfuly destroy Audio" << std::endl;
     }
@@ -58,8 +53,7 @@ void AudioOutput::openOutputStream()
         this->callback,
         this);
     if (err != paNoError) {
-        //throw AudioException(Pa_GetErrorText(err));
-        return;
+        throw OutputError(Pa_GetErrorText(err));
     }
 }
 
@@ -69,8 +63,7 @@ void AudioOutput::startPlaying()
         PaError err;
         err = Pa_StartStream(_stream);
         if (err != paNoError) {
-            //throw AudioException(Pa_GetErrorText(err));
-            return;
+            throw OutputError(Pa_GetErrorText(err));
         }
         _isPlaying = true;
     }
@@ -93,8 +86,7 @@ void AudioOutput::stopPlaying()
         PaError err;
         err = Pa_StopStream(_stream);
         if (err != paNoError) {
-            // throw AudioException(Pa_GetErrorText(err));
-            return;
+            throw OutputError(Pa_GetErrorText(err));
         }
         _isPlaying = false;
     }
@@ -124,6 +116,6 @@ void AudioOutput::close()
     PaError err = Pa_CloseStream(_stream);
 
     if (err != paNoError) {
-        //throw AudioException(Pa_GetErrorText(err));
+        throw OutputError(Pa_GetErrorText(err));
     }
 }
