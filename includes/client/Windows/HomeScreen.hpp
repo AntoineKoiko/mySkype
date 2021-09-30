@@ -22,7 +22,7 @@
 class HomeScreen : public QWidget
 {
 public:
-    HomeScreen();
+    explicit HomeScreen(QWidget *parent);
     ~HomeScreen();
 
     QPushButton *get_call_button() const noexcept;

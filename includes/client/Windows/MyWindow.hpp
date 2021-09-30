@@ -17,6 +17,8 @@
 #include <QMainWindow>
 #include <QMessageBox>
 
+#include <QtWidgets/QStackedWidget>
+
 #include <memory>
 
 #include "CallHandler.hpp"
@@ -47,6 +49,7 @@ private:
     void on_call_button_clicked();
 
 private:
+    std::unique_ptr<QStackedWidget> _stack;
     std::unique_ptr<HomeScreen> _home;
     std::unique_ptr<LoginScreen> _login;
 

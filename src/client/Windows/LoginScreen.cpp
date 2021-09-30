@@ -8,11 +8,11 @@
 #include "LoginScreen.hpp"
 #include <QFont>
 
-LoginScreen::LoginScreen() : QWidget(),
-                             _usernameField(std::make_unique<QLineEdit>(this)),
-                             _welcomeText(std::make_unique<QLabel>(this)),
-                             _loginButton(std::make_unique<QPushButton>(this)),
-                             _layout(std::make_unique<QVBoxLayout>())
+LoginScreen::LoginScreen(QWidget *parent) : QWidget(parent),
+                                            _usernameField(std::make_unique<QLineEdit>(this)),
+                                            _welcomeText(std::make_unique<QLabel>(this)),
+                                            _loginButton(std::make_unique<QPushButton>(this)),
+                                            _layout(std::make_unique<QVBoxLayout>())
 {
     _welcomeText->setText("Welcome on Babel VOIP Application!");
     _welcomeText->move(100, 100);
@@ -31,15 +31,13 @@ LoginScreen::LoginScreen() : QWidget(),
     _layout->addWidget(_loginButton.get(), Qt::AlignCenter);
 
     setLayout(_layout.get());
-    // _loginButton->show();
-    // _welcomeText->show();
-    // _usernameField->show();
 
     this->setStyleSheet("background-color:black;color:white");
 }
-
+#include <iostream>
 LoginScreen::~LoginScreen()
 {
+    std::cout << "login" << std::endl;
 }
 
 QPushButton *LoginScreen::get_login_button() const noexcept

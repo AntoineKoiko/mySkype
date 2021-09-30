@@ -7,13 +7,13 @@
 
 #include "HomeScreen.hpp"
 
-HomeScreen::HomeScreen() : QWidget(),
-                           _contactWidget(std::make_unique<TitledListWithButton>()),
-                           _toCallWidget(std::make_unique<TitledListWithButton>()),
-                           _contactRequestWidget(std::make_unique<ContactRequestWidget>()),
-                           _addContactWidget(std::make_unique<AddContactWidget>()),
-                           _callButton(std::make_unique<QPushButton>(this)),
-                           _mainLayout(std::make_unique<QGridLayout>(this))
+HomeScreen::HomeScreen(QWidget *parent) : QWidget(parent),
+                                          _contactWidget(std::make_unique<TitledListWithButton>()),
+                                          _toCallWidget(std::make_unique<TitledListWithButton>()),
+                                          _contactRequestWidget(std::make_unique<ContactRequestWidget>()),
+                                          _addContactWidget(std::make_unique<AddContactWidget>()),
+                                          _callButton(std::make_unique<QPushButton>(this)),
+                                          _mainLayout(std::make_unique<QGridLayout>(this))
 {
     setUp_widget();
     setup_layout();
@@ -66,9 +66,14 @@ void HomeScreen::setup_layout() noexcept
     _mainLayout->addWidget(_toCallWidget->get_list(), 5, 3, 1, 1);
     _mainLayout->addWidget(_toCallWidget->get_button(), 6, 3, 1, 1);
 }
-
+#include <iostream>
 HomeScreen::~HomeScreen()
 {
+    disconnect(_contactWidget->get_button(), &QPushButton::clicked,
+               this, &HomeScreen::on_addToCallButton_clicked);
+    disconnect(_toCallWidget->get_button(), &QPushButton::clicked,
+               this, &HomeScreen::on_cancelToCallButton_clicked);
+    std::cout << "home" << std::endl;
 }
 
 void HomeScreen::on_addToCallButton_clicked()

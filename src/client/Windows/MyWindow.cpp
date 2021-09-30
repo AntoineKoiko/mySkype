@@ -8,12 +8,12 @@
 #include "MyWindow.hpp"
 #include <iostream>
 #include <QDebug>
-#include <QtWidgets/QStackedWidget>
 #include <QListWidget>
 
 MyWindow::MyWindow() : QMainWindow(),
-                       _home(std::make_unique<HomeScreen>()),
-                       _login(std::make_unique<LoginScreen>())
+                       _stack(std::make_unique<QStackedWidget>()),
+                       _home(std::make_unique<HomeScreen>(_stack.get())),
+                       _login(std::make_unique<LoginScreen>((_stack.get())))
 
 {
     this->setUp_winodw();
@@ -25,7 +25,11 @@ void MyWindow::setUp_winodw()
 {
     resize(1200, 800);
     setWindowTitle("Babel");
-    setCentralWidget(_login.get());
+
+    _stack->addWidget(_login.get());
+    _stack->addWidget(_home.get());
+    _stack->setCurrentWidget(_home.get());
+    setCentralWidget(_stack.get());
 }
 
 void MyWindow::connect_buttons() noexcept
@@ -35,16 +39,21 @@ void MyWindow::connect_buttons() noexcept
     connect(_home->get_call_button(), &QPushButton::released,
             this, &MyWindow::on_call_button_clicked);
 }
-
+#include <iostream>
 MyWindow::~MyWindow()
 {
+    // disconnect(_login->get_login_button(), &QPushButton::released,
+    //            this, &MyWindow::on_login_button_clicked);
+    //     disconnect(_home->get_call_button(), &QPushButton::released,
+    //                this, &MyWindow::on_call_button_clicked);
+    std::cout << "window" << std::endl;
 }
 
 void MyWindow::on_login_button_clicked()
 {
     qDebug() << _login->get_username_field()->text();
     _login->get_username_field()->clear();
-    setCentralWidget(_home.get());
+    _stack->setCurrentWidget(_home.get());
 }
 
 void MyWindow::on_call_button_clicked()
@@ -72,4 +81,5 @@ void MyWindow::on_call_button_clicked()
     }
 
     _callHandler.make_call("toto");
+    _stack->setCurrentWidget(_login.get());
 }
