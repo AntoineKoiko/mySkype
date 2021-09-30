@@ -9,7 +9,7 @@
 
 using namespace Babel::Client::Audio;
 
-AudioInput::AudioInput() : _isRecording(false)
+AudioInput::AudioInput(ICallHandler *callHandler) : _callHandler(callHandler), _isRecording(false)
 {
     PaError err = Pa_Initialize();
 
@@ -108,6 +108,7 @@ int AudioInput::callback(const void *inputBuffer, [[maybe_unused]] void *outputB
         std::copy(audioRecorded, audioRecorded+Audio::BufferSize, soundBuffer.frames.begin());
         _this->_sound.push(soundBuffer);
     }
+    _this->_callHandler->dataRecordedAvailable();
     return paContinue;
 }
 
