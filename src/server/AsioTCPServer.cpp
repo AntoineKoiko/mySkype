@@ -32,8 +32,8 @@ void AsioTCPServer::startAccept()
         if (!err) {
             std::cout << "New Client : " << _cli_list.back()->get_ip_string() << std::endl;
             _cli_list.back()->read();
-            _cli_list.back()->getSocket().async_write_some(asio::buffer("Hey !\n", 7), handle_write);
-            _cli_list.back()->write(0, "ptdr");
+            _cli_list.back()->write(200, _cli_list.back()->get_ip_string().c_str());
+//            _cli_list.back()->write(200, "127.0.0.1");
         } else {
             std::cerr << "Error : " << err.message() << std::endl;
         }

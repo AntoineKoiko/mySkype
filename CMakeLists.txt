@@ -29,6 +29,7 @@ set(SRCS_SERVER
 
 set(SRCS_CLIENT
         src/client/main.cpp
+        src/client/AsioTCPClient.cpp
 )
 
 ## Execs

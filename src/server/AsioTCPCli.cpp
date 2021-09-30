@@ -23,7 +23,7 @@ asio::ip::tcp::socket &AsioTCPCli::getSocket()
     return _socket;
 }
 
-std::string AsioTCPCli::get_ip_string() const
+const std::string AsioTCPCli::get_ip_string() const
 {
     try {
         return _socket.remote_endpoint().address().to_string();
@@ -33,35 +33,37 @@ std::string AsioTCPCli::get_ip_string() const
     }
 }
 
-static void handle_data_read(UN const data_t &data, UN const asio::error_code err, UN const std::size_t bytes)
+static void handle_data_read(const data_t &data, UN const asio::error_code err, UN const std::size_t bytes)
 {
-    std::cout << data.data << std::endl;
+    std::cout << "received: " << data.data << std::endl;
     // TODO: make the command handler
 }
 
-void AsioTCPCli::handle_read(UN const asio::error_code &err, UN const std::size_t bytes)
+void AsioTCPCli::handle_read(UN const asio::error_code &err, const std::size_t bytes)
 {
-    header_t *header = (header_t *)_buffer;
-    data_t data = {
-        MAGIC_NUMBER,
-        header->code,
-        header->size,
-        ""
-    };
-
-    std::cout << "triggered" << std::endl;
-    _buffer[0] = '\0';
-    if (data.size > 0 && data.size <= READ_SIZE) {
+    if (bytes <= 0)
+        return;
+    data_t *data = (data_t *)&_buffer[0];
+    if (data->magic != MAGIC_NUMBER) {
+        std::cerr << "GET OUT OF HERE YOU DEMON" << std::endl;
+        return;
+    }
+    std::cout << "----------------------------------------------" << std::endl;
+    std::cout << "buffer : " << _buffer << std::endl << std::endl;
+    std::cout << "buffer info :" << std::endl
+    << "code : " << data->code << " size : " << data->size << std::endl;
+    /*
+    if (data.size > 0) {
+        std::cout << "triggered2" << std::endl;
         auto handler = std::bind(&handle_data_read, data, std::placeholders::_1, std::placeholders::_2);
         _socket.async_read_some(asio::buffer(data.data, data.size), handler);
-    }
+    } */
 }
 
 void AsioTCPCli::read()
 {
-    auto handler = std::bind(&AsioTCPCli::handle_read, shared_from_this(), std::placeholders::_1, std::placeholders::_2);
-
-    _socket.async_read_some(asio::buffer(_buffer, sizeof(header_t)), handler);
+    auto handler = std::bind(&AsioTCPCli::handle_read, this, std::placeholders::_1, std::placeholders::_2);
+    _socket.async_read_some(asio::buffer(_buffer, sizeof(data_t)), handler);
 }
 
 void AsioTCPCli::handle_write(const asio::error_code &error, UN const std::size_t bytes)
@@ -71,7 +73,7 @@ void AsioTCPCli::handle_write(const asio::error_code &error, UN const std::size_
     }
 }
 
-void AsioTCPCli::write(int code, char data[READ_SIZE])
+void AsioTCPCli::write(int code, const char data[])
 {
     data_t data_struct = {
         MAGIC_NUMBER,
@@ -79,12 +81,9 @@ void AsioTCPCli::write(int code, char data[READ_SIZE])
         strlen(data),
         {0},
     };
-    unsigned char *to_send = nullptr;
     data_t *data_struct_ptr = &data_struct;
-    auto handler = std::bind(&AsioTCPCli::handle_write, shared_from_this(), std::placeholders::_1, std::placeholders::_2);
+    auto handler = std::bind(&AsioTCPCli::handle_write, this, std::placeholders::_1, std::placeholders::_2);
 
-    std::memcpy(data_struct.data, data, READ_SIZE);
-    std::cout << "sending data: " << data_struct.data << std::endl;
-    to_send = (unsigned char *)data_struct_ptr;
-    _socket.async_write_some(asio::buffer(to_send, sizeof(data_t)), handler);
+    std::memcpy(data_struct.data, data, data_struct.size);
+    _socket.async_write_some(asio::buffer(data_struct_ptr, sizeof(data_t)), handler);
 }

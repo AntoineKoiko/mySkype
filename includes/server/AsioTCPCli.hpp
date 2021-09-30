@@ -16,9 +16,9 @@ class AsioTCPCli : public std::enable_shared_from_this<AsioTCPCli> {
         ~AsioTCPCli();
 
         asio::ip::tcp::socket &getSocket();
-        std::string get_ip_string() const;
+        const std::string get_ip_string() const;
         void read();
-        void write(int code, char data[2048]);
+        void write(int code, const char data[2048]);
         void handle_read(const asio::error_code &, const std::size_t);
         void handle_write(const asio::error_code &, const std::size_t);
 
