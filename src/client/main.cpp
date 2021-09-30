@@ -5,10 +5,24 @@
 ** main
 */
 
-#include <iostream>
+#include "AudioDecoder.hpp"
+#include "AudioEncoder.hpp"
+#include "AudioInput.hpp"
+#include "AudioOutput.hpp"
+#include <QApplication>
+#include "MyWindow.hpp"
 
-int main(int ac, char *av[])
+using namespace Babel::Client::Audio;
+
+int main(int argc, char *argv[])
 {
-    std::cout << "Hello from client" << std::endl;
-    return 0;
+    QApplication app(argc, argv);
+    // LoginScreen log;
+    // log.show();
+    // HomeScreen home;
+    // home.show();
+    MyWindow window;
+
+    window.show();
+    return app.exec();
 }
