@@ -9,9 +9,9 @@
 #include "babel.hpp"
 #include <cstring>
 
-AsioTCPServer::AsioTCPServer()
+AsioTCPServer::AsioTCPServer(int port)
 :   _io_context(),
-    _acceptor(_io_context, asio::ip::tcp::endpoint(asio::ip::tcp::v4(), 9999))
+    _acceptor(_io_context, asio::ip::tcp::endpoint(asio::ip::tcp::v4(), port))
 {
     startAccept();
 }
