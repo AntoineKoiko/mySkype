@@ -45,7 +45,7 @@ void Udp::receiveDatagrams() const
 void Udp::send(const std::string &sender, int port, const std::vector<char> &packet) const
 {
     QHostAddress senderAddr(QString(sender.c_str()));
-    QByteArray data(packet.data());
+    QByteArray data(packet.data(), packet.size());
 
     _socket->writeDatagram(data, senderAddr, port);
 }
