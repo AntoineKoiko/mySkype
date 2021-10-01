@@ -53,7 +53,7 @@ void CallHandler::dataPacketAvailable(const std::vector<char> &packetSerialize)
     Babel::Client::Audio::SoundEncoded encodedSound;
 
     encodedSound.encodedSound = std::vector<unsigned char>(packet.soundPayload, packet.soundPayload + packet.payloadSize);
-    //packet.soundPayload;
+    encodedSound.size = packet.payloadSize;
     soundFrame = _audioDecoder.decodeAudio(encodedSound);
     _output.addSound(soundFrame);
     std::cout << "Receive Packet" << std::endl;
