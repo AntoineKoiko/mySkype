@@ -16,7 +16,7 @@ class SoundPacketManager {
     public:
         static Babel::Client::Network::SoundPacket createPacket(const Babel::Client::Audio::SoundEncoded &sound);
         static std::vector<char> serialize(const Babel::Client::Network::SoundPacket &soundPacket);
-        static Babel::Client::Network::SoundPacket deserialize(const std::vector<char> &packet);
+        static Babel::Client::Network::SoundPacket deserialize(const std::vector<char> packet);
 };
 
 #endif /* !SOUNDPACKETMANAGER_HPP_ */
