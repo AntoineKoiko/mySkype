@@ -63,6 +63,7 @@ set(SRCS_CLIENT
         src/client/Network/SoundPacketManager.cpp
         src/client/Network/Udp.cpp
         src/client/Windows/CallScreen.cpp
+        src/client/Windows/ContactHandler.cpp
 )
 ## Execs
 add_executable(${NAME_SERVER} ${SRCS_SERVER})

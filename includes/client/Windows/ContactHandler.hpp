@@ -11,23 +11,7 @@
 #include <vector>
 #include <string>
 
-class Contact
-{
-public:
-    Contact();
-    ~Contact();
-
-private:
-    std::string _username;
-};
-
-Contact::Contact(/* args */)
-{
-}
-
-Contact::~Contact()
-{
-}
+#include "Contact.hpp"
 
 class ContactHandler
 {
@@ -35,15 +19,16 @@ public:
     ContactHandler();
     ~ContactHandler();
 
-    // std::vector<Contact> getContactsList() const noexcept;
-    // std::vector<Contact> getContactRequests const noexcept:
-    // void acceptContactRequest(const std::string &username):
-    // void dismissContactRequest(const std::string &username):
+    std::vector<Contact> getContacts() const noexcept;
+    std::vector<Contact> getContactRequests() const noexcept;
+
+    void acceptContactRequest(const std::string &username);  //bool or exception if not find
+    void dismissContactRequest(const std::string &username); //bool or exception if not find
     // bool addContact(const std::string &username) const; //-> need to have NetworkAPI
 
 private:
-    // std::vector<Contact> _contacts;
-    // std::vector<Contact> _pendingContact;
+    std::vector<Contact> _contacts;
+    std::vector<Contact> _pendingContact;
 
     //NetWorkApi _netAPI;
 };
