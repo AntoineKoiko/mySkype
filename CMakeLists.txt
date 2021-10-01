@@ -35,7 +35,6 @@ conan_basic_setup(${NAME})
 
 find_package(Qt5 COMPONENTS Widgets Network REQUIRED)
 
-## SOURCES
 set(SRCS_SERVER
         # src/test_udp/main.cpp
         # src/test_udp/Udp.cpp
