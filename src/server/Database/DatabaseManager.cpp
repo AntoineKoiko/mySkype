@@ -12,12 +12,12 @@ using namespace Babel;
 DatabaseManager::DatabaseManager(const std::string &name) : _name(name)
 {
     int rc = 0;
-    char *errMsg = NULL;
+    std::string errMsg = "Can't open the database : ";
 
     rc = sqlite3_open(name.data(), &_db);
     if (rc) {
         sqlite3_close(_db);
-        sprintf(errMsg, "Can't open the database : %s\n", sqlite3_errmsg(_db));
+        errMsg += sqlite3_errmsg(_db);
         throw DatabaseManagerError(errMsg);
     }
 }
@@ -70,6 +70,28 @@ void DatabaseManager::deleteTable(const std::string &tableName) const
         throw DatabaseManagerError(sqlite3_errmsg(_db));
     }
     sqlite3_finalize(stmt);
+}
+
+bool DatabaseManager::checkIfTableExist(const std::string &tableName) const
+{
+    sqlite3_stmt *stmt;
+    std::string sql = "SELECT name FROM sqlite_master WHERE type='table' AND name='" + tableName + "'";
+    int rc = 0;
+
+    rc = sqlite3_prepare_v2(_db, sql.data(), -1, &stmt, NULL);
+    if (rc != SQLITE_OK)
+        throw DatabaseManagerError("Check if entry exist - Prepare fail !");
+    rc = sqlite3_step(stmt);
+    if (rc != SQLITE_ROW && rc != SQLITE_DONE) {
+        sqlite3_finalize(stmt);
+        throw DatabaseManagerError(sqlite3_errmsg(_db));
+    }
+    if (rc == SQLITE_DONE) {
+        sqlite3_finalize(stmt);
+        return false;
+    }
+    sqlite3_finalize(stmt);
+    return true;
 }
 
 size_t DatabaseManager::getTableSize(const std::string &tableName) const
@@ -173,7 +195,6 @@ std::vector<std::tuple<const std::string /*TYPE*/,
             sql += "\'" + std::get<1>(entryDescription[i]) + "\'";
     }
     sql += ")";
-    std::cerr << "ADD ENTRY SQL = " << sql << std::endl;
     rc = sqlite3_prepare_v2(_db, sql.data(), -1, &stmt, NULL);
     if (rc != SQLITE_OK)
         throw DatabaseManagerError("Add entry - Prepare fail !");
@@ -224,7 +245,7 @@ std::vector<std::tuple<const std::string /*NAME*/,
     sqlite3_stmt *stmt;
     std::string sql = "SELECT * FROM " + tableName;
     int rc = 0;
-    std::vector<std::vector<std::string>> returnEntries = {{}};
+    std::vector<std::vector<std::string>> returnEntries = {};
     std::vector<std::string> returnEntry = {};
     std::string element = "";
     size_t entrySize = 0;
@@ -260,4 +281,20 @@ std::vector<std::tuple<const std::string /*NAME*/,
     }
     sqlite3_finalize(stmt);
     return returnEntries;
+}
+
+size_t DatabaseManager::getNextFreePrimaryKey(const std::string &tableName, const std::string &tableKeyName) const
+{
+    size_t tableSize = getTableSize(tableName);
+    std::vector<std::tuple<const std::string, const std::string, const std::string>> entrySearched
+    = {{tableKeyName, "int", std::to_string(tableSize)}};
+
+    for (size_t i = tableSize; true; i++) {
+        if (checkIfEntryExist(tableName, entrySearched) == false)  {
+            return i;
+        }
+        entrySearched.clear();
+        entrySearched.push_back(std::make_tuple(tableKeyName, "int", std::to_string(i + 1)));
+    }
+    return 0;
 }
