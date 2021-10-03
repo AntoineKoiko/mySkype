@@ -28,6 +28,7 @@ include_directories(./includes)
 include_directories(./includes/client/Audio)
 include_directories(./includes/client/Windows)
 include_directories(./includes/client/Network)
+include_directories(./includes/client/Database)
 
 ## CONAN (le barbare)
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)

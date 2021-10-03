@@ -32,6 +32,8 @@ namespace Babel {
             std::vector<std::pair<const std::string /*NAME*/, const std::string /*TYPE*/>> &tableDescription) const;
             void deleteTable(const std::string &tableName) const;
 
+            bool checkIfTableExist(const std::string &table_name) const;
+
             size_t getTableSize(const std::string &tableName) const;
 
             void printTable(const std::string &tableName) const;
@@ -53,6 +55,8 @@ namespace Babel {
             std::vector<std::tuple<const std::string /*NAME*/,
                                 const std::string /*TYPE*/,
                                 const std::string /*VALUE*/>> &entryDescription) const;
+
+            size_t getNextFreePrimaryKey(const std::string &tableName, const std::string &tableKeyName) const;
 
         protected :
 
