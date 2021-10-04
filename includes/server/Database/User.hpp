@@ -2,11 +2,11 @@
 ** EPITECH PROJECT, 2021
 ** B-CPP-500-REN-5-1-babel-aurelien.joncour
 ** File description:
-** Contact
+** User
 */
 
-#ifndef CONTACT_HPP
-#define CONTACT_HPP
+#ifndef USER_HPP
+#define USER_HPP
 
 #include <iostream>
 #include <vector>
@@ -15,14 +15,13 @@
 #include <stdio.h>
 
 namespace Babel {
-    class Contact
+    class User
     {
         public :
-            Contact();
-            ~Contact();
+            User();
+            ~User();
 
             std::string _name;
-            std::string _owner;
 
         protected :
 
@@ -31,4 +30,4 @@ namespace Babel {
     };
 }
 
-#endif /* !CONTACT_HPP */
+#endif /* !USER_HPP */

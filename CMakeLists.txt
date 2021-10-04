@@ -28,7 +28,7 @@ include_directories(./includes)
 include_directories(./includes/client/Audio)
 include_directories(./includes/client/Windows)
 include_directories(./includes/client/Network)
-include_directories(./includes/client/Database)
+include_directories(./includes/server/Database)
 
 ## CONAN (le barbare)
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
@@ -37,10 +37,12 @@ conan_basic_setup(${NAME})
 find_package(Qt5 COMPONENTS Widgets Network REQUIRED)
 
 set(SRCS_SERVER
-        # src/test_udp/main.cpp
-        # src/test_udp/Udp.cpp
-        # src/test_udp/Console.cpp
-        # src/test_udp/App.cpp
+#        src/server/Database/Contact.cpp
+#        src/server/Database/ContactHandler.cpp
+#        src/server/Database/User.cpp
+#        src/server/Database/UserHandler.cpp
+#        src/server/Database/DatabaseManager.cpp
+#        src/server/Database/DatabaseManagerError.cpp
         src/server/main.cpp
 )
 

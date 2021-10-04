@@ -10,7 +10,7 @@
 
 #include <string>
 
-#include "../DatabaseManager/DatabaseManager.hpp"
+#include "DatabaseManager.hpp"
 #include "Contact.hpp"
 
 #define CONTACT_TABLE_NAME "contact"
@@ -30,7 +30,7 @@ namespace Babel {
 
             std::vector<Contact> getListOfContact(const std::string &owner) const;
 
-            void addContactRequest(const std::string &owner, const std::string &name, const std::string &adress) const;
+            void addContactRequest(const std::string &owner, const std::string &name) const;
 
             void acceptContactRequest(const std::string &owner, const std::string &name) const;
             void dismissContactRequest(const std::string &owner, const std::string &name) const;

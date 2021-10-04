@@ -2,17 +2,16 @@
 ** EPITECH PROJECT, 2021
 ** B-CPP-500-REN-5-1-babel-aurelien.joncour
 ** File description:
-** Contact
+** User
 */
 
-#include "Contact.hpp"
+#include "User.hpp"
 
 using namespace Babel;
 
-Contact::Contact()
+User::User()
 {
     _name = "";
-    _owner = "";
 }
 
-Contact::~Contact() {}
+User::~User() {}
