@@ -23,6 +23,7 @@ namespace Babel {
 
             std::string _name;
             bool _exists;
+            bool _isConnected;
 
         protected :
 
