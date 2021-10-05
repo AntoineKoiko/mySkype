@@ -15,7 +15,7 @@ Udp::Udp(Babel::Client::Audio::ICallHandler *callHandler, QObject *parent) : _so
 
 Udp::~Udp()
 {
-    if (_socket->isOpen()) {
+    if (_socket != nullptr && _socket->isOpen()) {
         _socket->close();
     }
 }
