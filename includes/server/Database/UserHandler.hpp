@@ -27,7 +27,7 @@ namespace Babel {
             void addUser(const std::string &name) const;
             void removeUser(const std::string &name) const;
 
-            std::vector<User> getListOfUser(const std::string &name) const;
+            User getUser(const std::string &name) const;
 
         protected :
 

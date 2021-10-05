@@ -38,18 +38,15 @@ void UserHandler::removeUser(const std::string &name) const
     _dbManager.deleteEntry(USER_TABLE_NAME, userSearched);
 }
 
-std::vector<User> UserHandler::getListOfUser(const std::string &name) const
+User UserHandler::getUser(const std::string &name) const
 {
     std::vector<std::tuple<const std::string, const std::string, const std::string>> userSearched
     = {{"pseudo", "text", name}};
     std::vector<std::vector<std::string>> userTable =
     _dbManager.getEntry(USER_TABLE_NAME, userSearched);
-    std::vector<User> listOfUser = {};
     User user;
 
-    for (auto &entry : userTable) {
-        user._name = entry[1];
-        listOfUser.push_back(user);
-    }
-    return listOfUser;
+    if (userTable.size() > 0)
+        user._name = userTable[0][1];
+    return user;
 }
