@@ -19,10 +19,14 @@ int AsioTCPCli::login(const std::string &username)
     User user = userHandler.getUser(username);
 
     if (user._exists) {
-        write(201, username.c_str());
         this->_connected_user = std::make_shared<User>(user);
+        write(201, username.c_str());
     } else {
-        write(404, username.c_str());
+        serv->getUserHandler().addUser(username);
+        user = userHandler.getUser(username);
+        // TODO: check if user is already logged
+        this->_connected_user = std::make_shared<User>(user);
+        write(201, username.c_str());
     }
     return 0;
 }
