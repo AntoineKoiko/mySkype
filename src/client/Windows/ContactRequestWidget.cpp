@@ -9,7 +9,7 @@
 
 ContactRequestWidget::ContactRequestWidget() : QWidget(),
                                                _title(std::make_unique<QLabel>(this)),
-                                               _requestsList(std::make_unique<QListWidget>(this)),
+                                               _requestsList(std::make_unique<ListStrWidget>(this)),
                                                _acceptButton(std::make_unique<QPushButton>(this)),
                                                _dismissButton(std::make_unique<QPushButton>(this))
 {
@@ -27,7 +27,7 @@ QLabel *ContactRequestWidget::get_title() const noexcept
     return _title.get();
 }
 
-QListWidget *ContactRequestWidget::get_requestsList() const noexcept
+ListStrWidget *ContactRequestWidget::get_requestsList() const noexcept
 {
     return _requestsList.get();
 }
