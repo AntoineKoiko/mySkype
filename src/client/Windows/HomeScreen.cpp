@@ -6,6 +6,7 @@
 */
 
 #include "HomeScreen.hpp"
+#include "ListStrWidget.hpp"
 
 HomeScreen::HomeScreen(QWidget *parent) : QWidget(parent),
                                           _contactWidget(std::make_unique<TitledListWithButton>()),
@@ -74,37 +75,21 @@ HomeScreen::~HomeScreen()
 void HomeScreen::on_addToCallButton_clicked()
 {
     QList<QListWidgetItem *> selected = _contactWidget->get_list()->selectedItems();
-    QListWidget *toCallList = _toCallWidget->get_list();
+    ListStrWidget *toCallList = _toCallWidget->get_list();
 
-    if (selected.size() != 0)
+    if (selected.size() == 0)
+        return;
+    for (const auto lt : selected)
     {
-        for (const auto lt : selected)
-        {
-            bool exist = false;
-
-            for (int i = 0; i < toCallList->count(); ++i)
-            {
-                QListWidgetItem *item = toCallList->item(i);
-                if (item->text() == lt->text())
-                {
-                    exist = true;
-                    break;
-                }
-            }
-            if (exist)
-                break;
-            _toCallWidget->get_list()->addItem(lt->text());
-        }
+        if (toCallList->isIn(lt->text()))
+            break;
+        _toCallWidget->get_list()->addItem(lt->text());
     }
 }
 
 void HomeScreen::on_cancelToCallButton_clicked()
 {
-    int row = _toCallWidget->get_list()->currentRow();
-    QListWidgetItem *selected = _toCallWidget->get_list()->takeItem(row);
-
-    if (selected)
-        delete selected;
+    _toCallWidget->get_list()->deleteSelectedRow();
 }
 
 QPushButton *HomeScreen::get_call_button() const noexcept

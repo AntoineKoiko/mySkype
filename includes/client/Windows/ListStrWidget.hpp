@@ -24,6 +24,8 @@ public:
 
     bool isIn(const std::string &str) const noexcept;
     bool isIn(const QString &str) const noexcept;
+
+    void deleteSelectedRow() noexcept;
 };
 
 #endif /* !LISTSTRWIDGET_HPP_ */

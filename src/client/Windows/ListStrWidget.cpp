@@ -52,3 +52,12 @@ bool ListStrWidget::isIn(const QString &str) const noexcept
     }
     return false;
 }
+
+void ListStrWidget::deleteSelectedRow() noexcept
+{
+    int row = this->currentRow();
+    QListWidgetItem *selected = this->takeItem(row);
+
+    if (selected)
+        delete selected;
+}
