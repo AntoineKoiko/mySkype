@@ -12,7 +12,7 @@
 AsioTCPCli::AsioTCPCli(asio::io_context &context)
 : _socket(context)
 {
-    _cmd_map[000] = &login;
+    _cmd_map[000] = &AsioTCPCli::login;
 }
 
 AsioTCPCli::~AsioTCPCli()
