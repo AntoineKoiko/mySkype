@@ -25,10 +25,6 @@ project(${NAME} VERSION 0.0.0 LANGUAGES CXX)
 
 ## INCLUDES
 include_directories(./includes)
-include_directories(./includes/client/Audio)
-include_directories(./includes/client/Windows)
-include_directories(./includes/client/Network)
-include_directories(./includes/server/Database)
 
 ## CONAN (le barbare)
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
@@ -79,7 +75,11 @@ add_executable(${NAME_CLIENT} ${SRCS_CLIENT})
 
 ## INCLUDES
 target_include_directories(${NAME_SERVER} BEFORE PUBLIC ./includes/server)
+target_include_directories(${NAME_SERVER} BEFORE PUBLIC ./includes/server/Database)
 target_include_directories(${NAME_CLIENT} BEFORE PUBLIC ./includes/client)
+target_include_directories(${NAME_CLIENT} BEFORE PUBLIC ./includes/client/Audio)
+target_include_directories(${NAME_CLIENT} BEFORE PUBLIC ./includes/client/Windows)
+target_include_directories(${NAME_CLIENT} BEFORE PUBLIC ./includes/client/Network)
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
     target_compile_options(${NAME_SERVER} PRIVATE -Wall -Wextra)
