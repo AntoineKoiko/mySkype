@@ -35,3 +35,13 @@ QLabel *AddContactWidget::get_label() const noexcept
 {
     return _confirmationLabel.get();
 }
+
+QString AddContactWidget::getFieldContent() const noexcept
+{
+    return _searchField->text();
+}
+
+void AddContactWidget::clearField() noexcept
+{
+    _searchField->clear();
+}

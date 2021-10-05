@@ -116,3 +116,8 @@ ListStrWidget *HomeScreen::get_toCallList() const noexcept
 {
     return _toCallWidget->get_list();
 }
+
+AddContactWidget *HomeScreen::getAddContactWidget() const noexcept
+{
+    return _addContactWidget.get();
+}

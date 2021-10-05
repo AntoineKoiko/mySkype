@@ -104,4 +104,6 @@ void MyWindow::on_dismissContactRequest_button_clicked()
 
 void MyWindow::on_addContactRequest_button_clicked()
 {
+    qDebug() << _home->getAddContactWidget()->getFieldContent();
+    _home->getAddContactWidget()->clearField();
 }

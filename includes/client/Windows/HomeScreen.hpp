@@ -30,6 +30,7 @@ public:
     QPushButton *getDismissContactButton() const noexcept;
     QPushButton *getAddContactButton() const noexcept;
     ListStrWidget *get_toCallList() const noexcept;
+    AddContactWidget *getAddContactWidget() const noexcept;
 
 private:
     //buttons callback
