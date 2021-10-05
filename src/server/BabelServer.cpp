@@ -7,9 +7,9 @@
 
 #include "BabelServer.hpp"
 
-using namespace babel;
+using namespace Babel;
 
-BabelServer::BabelServer() : _tcp_server()
+BabelServer::BabelServer() : _tcp_server(), _db("babel")
 {
 }
 

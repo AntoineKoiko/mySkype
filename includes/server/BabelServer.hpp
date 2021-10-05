@@ -11,8 +11,9 @@
 #include <iostream>
 #include <deque>
 #include "AsioTCPServer.hpp"
+#include "Database/DatabaseManager.hpp"
 
-namespace babel
+namespace Babel
 {
     class BabelServer {
         public:
@@ -24,6 +25,8 @@ namespace babel
         protected:
         private:
             AsioTCPServer _tcp_server;
+            Babel::DatabaseManager _db;
+
     };
 } // namespace babel
 

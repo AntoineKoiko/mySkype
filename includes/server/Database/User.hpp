@@ -22,6 +22,7 @@ namespace Babel {
             ~User();
 
             std::string _name;
+            bool _exists;
 
         protected :
 
