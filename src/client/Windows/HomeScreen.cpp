@@ -107,6 +107,11 @@ QPushButton *HomeScreen::getDismissContactButton() const noexcept
     return _contactRequestWidget->get_dismissButton();
 }
 
+QPushButton *HomeScreen::getAddContactButton() const noexcept
+{
+    return _addContactWidget->get_addButton();
+}
+
 ListStrWidget *HomeScreen::get_toCallList() const noexcept
 {
     return _toCallWidget->get_list();
