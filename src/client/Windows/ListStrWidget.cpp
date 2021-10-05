@@ -31,6 +31,16 @@ std::vector<QString> ListStrWidget::getQStrItems() const noexcept
     return strIt;
 }
 
+std::vector<QString> ListStrWidget::getSelectdQStrItems() const noexcept
+{
+    QList<QListWidgetItem *> selected = this->selectedItems();
+    std::vector<QString> strList;
+
+    for (const auto lt : selected)
+        strList.push_back(lt->text());
+    return strList;
+}
+
 bool ListStrWidget::isIn(const std::string &str) const noexcept
 {
     QString qstr = QString::fromStdString(str);

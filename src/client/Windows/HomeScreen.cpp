@@ -74,16 +74,16 @@ HomeScreen::~HomeScreen()
 
 void HomeScreen::on_addToCallButton_clicked()
 {
-    QList<QListWidgetItem *> selected = _contactWidget->get_list()->selectedItems();
+    std::vector<QString> selected = _contactWidget->get_list()->getSelectdQStrItems();
     ListStrWidget *toCallList = _toCallWidget->get_list();
 
     if (selected.size() == 0)
         return;
-    for (const auto lt : selected)
+    for (const QString lt : selected)
     {
-        if (toCallList->isIn(lt->text()))
+        if (toCallList->isIn(lt))
             break;
-        _toCallWidget->get_list()->addItem(lt->text());
+        _toCallWidget->get_list()->addItem(lt);
     }
 }
 
@@ -120,4 +120,14 @@ ListStrWidget *HomeScreen::get_toCallList() const noexcept
 AddContactWidget *HomeScreen::getAddContactWidget() const noexcept
 {
     return _addContactWidget.get();
+}
+
+ListStrWidget *HomeScreen::getContactList() const noexcept
+{
+    return _contactWidget->get_list();
+}
+
+ListStrWidget *HomeScreen::getContactRequestList() const noexcept
+{
+    return _contactRequestWidget->get_requestsList();
 }

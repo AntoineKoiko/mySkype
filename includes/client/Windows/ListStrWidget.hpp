@@ -21,6 +21,7 @@ public:
 
     QString itemQStr(const std::size_t i) const;
     std::vector<QString> getQStrItems() const noexcept;
+    std::vector<QString> getSelectdQStrItems() const noexcept;
 
     bool isIn(const std::string &str) const noexcept;
     bool isIn(const QString &str) const noexcept;

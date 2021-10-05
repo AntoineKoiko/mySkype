@@ -14,7 +14,8 @@ MyWindow::MyWindow() : QMainWindow(),
                        _stack(std::make_unique<QStackedWidget>()),
                        _home(std::make_unique<HomeScreen>(_stack.get())),
                        _login(std::make_unique<LoginScreen>(_stack.get())),
-                       _callScreen(std::make_unique<CallScreen>(_stack.get()))
+                       _callScreen(std::make_unique<CallScreen>(_stack.get())),
+                       _contactHandler(_home->getContactList(), _home->getContactRequestList())
 
 {
     this->setUp_winodw();
