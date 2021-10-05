@@ -15,7 +15,7 @@ const std::map<int, AsioTCPCli::cmd_func> AsioTCPCli::_cmd_map = {
 };
 
 AsioTCPCli::AsioTCPCli(asio::io_context &context)
-: _socket(context), _connected_user(nullptr)
+: _socket(context)
 {
 }
 
