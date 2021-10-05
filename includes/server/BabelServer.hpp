@@ -12,6 +12,8 @@
 #include <deque>
 #include "AsioTCPServer.hpp"
 #include "Database/DatabaseManager.hpp"
+#include "Database/UserHandler.hpp"
+#include "Database/ContactHandler.hpp"
 
 namespace Babel
 {
@@ -22,10 +24,18 @@ namespace Babel
 
             void start();
 
+            // Getters
+
+            const DatabaseManager &getDb() const;
+            const UserHandler &getUserHandler() const;
+            const ContactHandler &getContactHandler() const;
+
         protected:
         private:
             AsioTCPServer _tcp_server;
-            Babel::DatabaseManager _db;
+            DatabaseManager _db;
+            UserHandler _userHandler;
+            ContactHandler _contactHandler;
 
     };
 } // namespace babel

@@ -37,13 +37,15 @@ conan_basic_setup(${NAME})
 find_package(Qt5 COMPONENTS Widgets Network REQUIRED)
 
 set(SRCS_SERVER
-#        src/server/Database/Contact.cpp
-#        src/server/Database/ContactHandler.cpp
-#        src/server/Database/User.cpp
-#        src/server/Database/UserHandler.cpp
-#        src/server/Database/DatabaseManager.cpp
-#        src/server/Database/DatabaseManagerError.cpp
+       src/server/Database/Contact.cpp
+       src/server/Database/ContactHandler.cpp
+       src/server/Database/User.cpp
+       src/server/Database/UserHandler.cpp
+       src/server/Database/DatabaseManager.cpp
+       src/server/Database/DatabaseManagerError.cpp
         src/server/main.cpp
+        src/server/commands.cpp
+        src/server/utils.cpp
         src/server/AsioTCPServer.cpp
         src/server/AsioTCPCli.cpp
         src/server/BabelServer.cpp

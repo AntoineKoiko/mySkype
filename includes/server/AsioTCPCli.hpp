@@ -13,7 +13,7 @@
 
 class AsioTCPCli : public std::enable_shared_from_this<AsioTCPCli> {
 
-    typedef int (*cmd_func)(const std::string &);
+    typedef int (AsioTCPCli::*cmd_func)(const std::string &);
 
     public:
         AsioTCPCli(asio::io_context &);
@@ -27,15 +27,15 @@ class AsioTCPCli : public std::enable_shared_from_this<AsioTCPCli> {
         void handle_write(const asio::error_code &, const std::size_t);
 
         // cmds
-        static int login(const std::string &);
-        static int sign_up(const std::string &);
+        int login(const std::string &);
+        int sign_up(const std::string &);
 
     protected:
     private:
         asio::ip::tcp::socket _socket;
         unsigned char _buffer[2048];
         std::string _data_buffer;
-        static const std::map<int, cmd_func> _cmd_map;
+        std::map<int, cmd_func> _cmd_map;
 };
 
 #endif /* !ASIOTCPCLI_HPP_ */

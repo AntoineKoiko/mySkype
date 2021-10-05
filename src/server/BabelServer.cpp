@@ -9,7 +9,7 @@
 
 using namespace Babel;
 
-BabelServer::BabelServer() : _tcp_server(), _db("babel")
+BabelServer::BabelServer() : _tcp_server(), _db("babel"), _userHandler(_db), _contactHandler(_db)
 {
 }
 
@@ -20,4 +20,19 @@ BabelServer::~BabelServer()
 void BabelServer::start()
 {
     _tcp_server.run();
+}
+
+const DatabaseManager &BabelServer::getDb() const
+{
+    return _db;
+}
+
+const UserHandler &BabelServer::getUserHandler() const
+{
+    return _userHandler;
+}
+
+const ContactHandler &BabelServer::getContactHandler() const
+{
+    return _contactHandler;
 }

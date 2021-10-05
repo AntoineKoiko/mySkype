@@ -46,8 +46,9 @@ User UserHandler::getUser(const std::string &name) const
     _dbManager.getEntry(USER_TABLE_NAME, userSearched);
     User user;
 
-    if (userTable.size() > 0)
+    if (userTable.size() > 0) {
         user._name = userTable[0][1];
         user._exists = true;
+    }
     return user;
 }

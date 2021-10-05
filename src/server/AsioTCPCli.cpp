@@ -9,14 +9,10 @@
 #include "AsioTCPCli.hpp"
 #include <iostream>
 
-const std::map<int, AsioTCPCli::cmd_func> AsioTCPCli::_cmd_map = {
-    // {000, &AsioTCPCli::login},
-    // {004, &AsioTCPCli::sign_up},
-};
-
 AsioTCPCli::AsioTCPCli(asio::io_context &context)
 : _socket(context)
 {
+    _cmd_map[000] = &login;
 }
 
 AsioTCPCli::~AsioTCPCli()

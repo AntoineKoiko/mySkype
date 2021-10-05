@@ -9,6 +9,7 @@
 #define BABEL_HPP_
 
 #include <asio.hpp>
+#include "BabelServer.hpp"
 
 #define UN __attribute__((unused))
 #define READ_SIZE 2048
@@ -27,6 +28,6 @@ typedef struct header_s {
     std::size_t size;
 } header_t;
 
-std::shared_ptr<Babel::BabelServer> get_server(bool set = false, std::shared_ptr<Babel::BabelServer> serv_ptr = nullptr);
+std::shared_ptr<Babel::BabelServer> get_server(bool = false, std::shared_ptr<Babel::BabelServer> = nullptr);
 
 #endif /* !BABEL_HPP_ */
