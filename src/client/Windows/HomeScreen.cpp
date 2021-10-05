@@ -97,7 +97,17 @@ QPushButton *HomeScreen::get_call_button() const noexcept
     return _callButton.get();
 }
 
-QListWidget *HomeScreen::get_toCallList() const noexcept
+QPushButton *HomeScreen::getAcceptContactButton() const noexcept
+{
+    return _contactRequestWidget->get_acceptButton();
+}
+
+QPushButton *HomeScreen::getDismissContactButton() const noexcept
+{
+    return _contactRequestWidget->get_dismissButton();
+}
+
+ListStrWidget *HomeScreen::get_toCallList() const noexcept
 {
     return _toCallWidget->get_list();
 }

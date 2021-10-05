@@ -43,6 +43,8 @@ private:
     void on_login_button_clicked();
     void on_call_button_clicked();
     void on_hangUp_button_clicked();
+    void on_acceptContactRequest_button_clicked();
+    void on_dismissContactRequest_button_clicked();
 
 private:
     std::unique_ptr<QStackedWidget> _stack;

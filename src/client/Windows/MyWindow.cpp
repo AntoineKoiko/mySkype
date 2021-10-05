@@ -41,6 +41,10 @@ void MyWindow::connect_buttons() noexcept
             this, &MyWindow::on_login_button_clicked);
     connect(_home->get_call_button(), &QPushButton::released,
             this, &MyWindow::on_call_button_clicked);
+    connect(_home->getAcceptContactButton(), &QPushButton::released,
+            this, &MyWindow::on_acceptContactRequest_button_clicked);
+    connect(_home->getDismissContactButton(), &QPushButton::released,
+            this, &MyWindow::on_dismissContactRequest_button_clicked);
     connect(_callScreen->get_hangUp_button(), &QPushButton::released,
             this, &MyWindow::on_hangUp_button_clicked);
 }
@@ -86,4 +90,14 @@ void MyWindow::on_hangUp_button_clicked()
 {
     _callScreen->stop_call();
     _stack->setCurrentWidget(_home.get());
+}
+
+#include <iostream>
+
+void MyWindow::on_acceptContactRequest_button_clicked()
+{
+}
+
+void MyWindow::on_dismissContactRequest_button_clicked()
+{
 }
