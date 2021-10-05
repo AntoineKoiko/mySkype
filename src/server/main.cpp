@@ -8,7 +8,11 @@
 
 int main(UN int argc, UN char* argv[])
 {
-    AsioTCPServer serv;
+    try {
+        babel::BabelServer serv;
 
-    serv.run();
+        serv.start();
+    } catch(const std::exception& e) {
+        std::cerr << e.what() << '\n';
+    }
 }

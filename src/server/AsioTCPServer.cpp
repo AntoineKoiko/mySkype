@@ -33,7 +33,6 @@ void AsioTCPServer::startAccept()
             std::cout << "New Client : " << _cli_list.back()->get_ip_string() << std::endl;
             _cli_list.back()->read();
             _cli_list.back()->write(200, _cli_list.back()->get_ip_string().c_str());
-//            _cli_list.back()->write(200, "127.0.0.1");
         } else {
             std::cerr << "Error : " << err.message() << std::endl;
         }

@@ -9,8 +9,13 @@
 #include <iostream>
 #include "babel.hpp"
 
+const std::map<int, AsioTCPCli::cmd_func> AsioTCPCli::_cmd_map = {
+    {000, &AsioTCPCli::login},
+    {004, &AsioTCPCli::sign_up},
+};
+
 AsioTCPCli::AsioTCPCli(asio::io_context &context)
-: _socket(context)
+: _socket(context), _connected_user(nullptr)
 {
 }
 
@@ -33,31 +38,22 @@ const std::string AsioTCPCli::get_ip_string() const
     }
 }
 
-static void handle_data_read(const data_t &data, UN const asio::error_code err, UN const std::size_t bytes)
+void AsioTCPCli::handle_read(const asio::error_code &err, const std::size_t bytes)
 {
-    std::cout << "received: " << data.data << std::endl;
-    // TODO: make the command handler
-}
-
-void AsioTCPCli::handle_read(UN const asio::error_code &err, const std::size_t bytes)
-{
+    if (err) {
+        std::cerr << "Error : " << err.message() << std::endl;
+        return;
+    }
     if (bytes <= 0)
         return;
     data_t *data = (data_t *)&_buffer[0];
     if (data->magic != MAGIC_NUMBER) {
-        std::cerr << "GET OUT OF HERE YOU DEMON" << std::endl;
+        std::cerr << "Error : wrong magic number" << std::endl;
         return;
     }
-    std::cout << "----------------------------------------------" << std::endl;
-    std::cout << "buffer : " << _buffer << std::endl << std::endl;
-    std::cout << "buffer info :" << std::endl
-    << "code : " << data->code << " size : " << data->size << std::endl;
-    /*
-    if (data.size > 0) {
-        std::cout << "triggered2" << std::endl;
-        auto handler = std::bind(&handle_data_read, data, std::placeholders::_1, std::placeholders::_2);
-        _socket.async_read_some(asio::buffer(data.data, data.size), handler);
-    } */
+    if (bytes > 0 && data->size > 0) {
+        // TODO: command handler
+    }
 }
 
 void AsioTCPCli::read()
