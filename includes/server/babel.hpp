@@ -27,4 +27,6 @@ typedef struct header_s {
     std::size_t size;
 } header_t;
 
+std::shared_ptr<Babel::BabelServer> get_server(bool set = false, std::shared_ptr<Babel::BabelServer> serv_ptr = nullptr);
+
 #endif /* !BABEL_HPP_ */

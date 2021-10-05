@@ -48,5 +48,6 @@ User UserHandler::getUser(const std::string &name) const
 
     if (userTable.size() > 0)
         user._name = userTable[0][1];
+        user._exists = true;
     return user;
 }

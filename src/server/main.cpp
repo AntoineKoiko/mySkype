@@ -10,9 +10,10 @@
 int main(UN int argc, UN char* argv[])
 {
     try {
-        babel::BabelServer serv;
+        auto serv = std::make_shared<Babel::BabelServer>();
 
-        serv.start();
+        get_server(true, serv);
+        serv->start();
     } catch(const std::exception& e) {
         std::cerr << e.what() << '\n';
     }
