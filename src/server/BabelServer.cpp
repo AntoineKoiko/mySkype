@@ -9,7 +9,7 @@
 
 using namespace Babel;
 
-BabelServer::BabelServer() : _tcp_server(), _db("babel"), _userHandler(_db), _contactHandler(_db)
+BabelServer::BabelServer(int ac, char *av[]) : _tcp_server(), _db("babel"), _userHandler(_db), _contactHandler(_db)
 {
 }
 

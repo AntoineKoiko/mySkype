@@ -19,7 +19,7 @@ namespace Babel
 {
     class BabelServer {
         public:
-            BabelServer();
+            BabelServer(int ac, char *av[]);
             ~BabelServer();
 
             void start();

@@ -7,10 +7,10 @@
 #include <asio.hpp>
 #include "BabelServer.hpp"
 
-int main(UN int argc, UN char* argv[])
+int main(int argc, char* argv[])
 {
     try {
-        auto serv = std::make_shared<Babel::BabelServer>();
+        auto serv = std::make_shared<Babel::BabelServer>(argc, argv);
 
         get_server(true, serv);
         serv->start();

@@ -13,6 +13,7 @@ AsioTCPServer::AsioTCPServer(int port)
 :   _io_context(),
     _acceptor(_io_context, asio::ip::tcp::endpoint(asio::ip::tcp::v4(), port))
 {
+    std::cout << "Server running on port : " << port << std::endl;
     startAccept();
 }
 
