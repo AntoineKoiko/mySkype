@@ -26,6 +26,7 @@ class AsioTCPCli : public std::enable_shared_from_this<AsioTCPCli> {
         void write(int code, const char data[2048]);
         void handle_read(const asio::error_code &, const std::size_t);
         void handle_write(const asio::error_code &, const std::size_t);
+        const std::shared_ptr<Babel::User> getConnectedUser() const;
 
         // cmds
         int login(const std::string &);

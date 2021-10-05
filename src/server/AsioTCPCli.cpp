@@ -84,3 +84,8 @@ void AsioTCPCli::write(int code, const char data[])
     std::memcpy(data_struct.data, data, data_struct.size);
     _socket.async_write_some(asio::buffer(data_struct_ptr, sizeof(data_t)), handler);
 }
+
+const std::shared_ptr<Babel::User> AsioTCPCli::getConnectedUser() const
+{
+    return _connected_user;
+}
