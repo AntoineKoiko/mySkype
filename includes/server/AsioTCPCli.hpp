@@ -30,7 +30,6 @@ class AsioTCPCli : public std::enable_shared_from_this<AsioTCPCli> {
 
         // cmds
         int login(const std::string &);
-        int sign_up(const std::string &);
 
     protected:
     private:
