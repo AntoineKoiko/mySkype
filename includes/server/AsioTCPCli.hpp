@@ -8,7 +8,6 @@
 #ifndef ASIOTCPCLI_HPP_
 #define ASIOTCPCLI_HPP_
 
-#include "BabelServer.hpp"
 #include <asio.hpp>
 #include <map>
 

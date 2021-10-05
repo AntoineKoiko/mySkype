@@ -5,6 +5,7 @@
 #include <iostream>
 #include <algorithm>
 #include <asio.hpp>
+#include "BabelServer.hpp"
 
 int main(UN int argc, UN char* argv[])
 {

@@ -5,11 +5,11 @@
 ** AsioTCPServer
 */
 
-#include "AsioTCPServer.hpp"
 #include "babel.hpp"
+#include "AsioTCPServer.hpp"
 #include <cstring>
 
-AsioTCPServer::AsioTCPServer(int port = 9999)
+AsioTCPServer::AsioTCPServer(int port)
 :   _io_context(),
     _acceptor(_io_context, asio::ip::tcp::endpoint(asio::ip::tcp::v4(), port))
 {

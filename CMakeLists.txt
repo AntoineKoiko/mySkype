@@ -46,6 +46,7 @@ set(SRCS_SERVER
         src/server/main.cpp
         src/server/AsioTCPServer.cpp
         src/server/AsioTCPCli.cpp
+        src/server/BabelServer.cpp
 )
 
 set(SRCS_CLIENT
@@ -68,7 +69,6 @@ set(SRCS_CLIENT
         src/client/Network/SoundPacketManager.cpp
         src/client/Network/Udp.cpp
         src/client/Windows/CallScreen.cpp
-        src/client/AsioTCPClient.cpp
 )
 
 ## Execs
