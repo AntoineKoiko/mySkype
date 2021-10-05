@@ -24,7 +24,6 @@ int AsioTCPCli::login(const std::string &username)
     } else {
         serv->getUserHandler().addUser(username);
         user = userHandler.getUser(username);
-        // TODO: check if user is already logged
         if (serv->getServer().isUserLogged(username)) {
             write(401, username.c_str());
             return 1;
