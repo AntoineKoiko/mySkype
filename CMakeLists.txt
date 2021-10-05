@@ -61,12 +61,14 @@ set(SRCS_CLIENT
         src/client/Windows/TitledListWithButton.cpp
         src/client/Windows/CallHandler.cpp
         src/client/Windows/ContactHandler.cpp
+        src/client/Windows/Contact.cpp
         src/client/Windows/ContactRequestWidget.cpp
         src/client/Windows/AddContactWidget.cpp
         src/client/Network/SoundPacketManager.cpp
         src/client/Network/Udp.cpp
         src/client/Windows/CallScreen.cpp
         src/client/Windows/ContactHandler.cpp
+        src/client/Windows/ListStrWidget.cpp
 )
 ## Execs
 add_executable(${NAME_SERVER} ${SRCS_SERVER})

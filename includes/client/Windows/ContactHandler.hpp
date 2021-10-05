@@ -24,7 +24,7 @@ public:
 
     void acceptContactRequest(const std::string &username);  //bool or exception if not find
     void dismissContactRequest(const std::string &username); //bool or exception if not find
-    // bool addContact(const std::string &username) const; //-> need to have NetworkAPI
+    bool addContact(const std::string &username);            //-> need to have NetworkAPI
 
 private:
     std::vector<Contact> _contacts;

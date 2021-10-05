@@ -19,19 +19,19 @@ ContactHandler::~ContactHandler()
 
 std::vector<Contact> ContactHandler::getContacts() const noexcept
 {
-    return _contacts();
+    return _contacts;
 }
 
 std::vector<Contact> ContactHandler::getContactRequests() const noexcept
 {
-    return _pendingContact();
+    return _pendingContact;
 }
 
 void ContactHandler::acceptContactRequest(const std::string &username)
 {
     int idx = -1;
 
-    for (auto i = 0; i < _pendingContact.size(); i++)
+    for (std::size_t i = 0; i < _pendingContact.size(); i++)
     {
         if (_pendingContact.at(i).get_username() == username)
         {
@@ -51,7 +51,7 @@ void ContactHandler::dismissContactRequest(const std::string &username)
 {
     int idx = -1;
 
-    for (auto i = 0; i < _pendingContact.size(); i++)
+    for (std::size_t i = 0; i < _pendingContact.size(); i++)
     {
         if (_pendingContact.at(i).get_username() == username)
         {
@@ -62,4 +62,12 @@ void ContactHandler::dismissContactRequest(const std::string &username)
 
     if (idx != -1)
         _pendingContact.erase(_pendingContact.begin() + idx);
+}
+
+//add directcly contact after request was accepted from the other guy
+
+bool ContactHandler::addContact(const std::string &username)
+{
+    this->_contacts.push_back(Contact{username});
+    return true;
 }
