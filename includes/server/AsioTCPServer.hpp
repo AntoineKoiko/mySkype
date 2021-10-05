@@ -18,7 +18,7 @@
 
 class AsioTCPServer {
     public:
-        AsioTCPServer();
+        AsioTCPServer(int port);
         ~AsioTCPServer();
 
         asio::ip::tcp::socket &getSocket() const;
