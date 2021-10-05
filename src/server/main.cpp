@@ -1,14 +1,18 @@
-/*
-** EPITECH PROJECT, 2021
-** babel
-** File description:
-** main
-*/
+// Server-side Synchronous Chatting Application
+// using C++ asio
 
+#include "babel.hpp"
 #include <iostream>
+#include <algorithm>
+#include <asio.hpp>
 
-int main(int ac, char *av[])
+int main(UN int argc, UN char* argv[])
 {
-    std::cout << "Hello from server" << std::endl;
-    return 0;
+    try {
+        babel::BabelServer serv;
+
+        serv.start();
+    } catch(const std::exception& e) {
+        std::cerr << e.what() << '\n';
+    }
 }

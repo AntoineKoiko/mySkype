@@ -44,6 +44,8 @@ set(SRCS_SERVER
 #        src/server/Database/DatabaseManager.cpp
 #        src/server/Database/DatabaseManagerError.cpp
         src/server/main.cpp
+        src/server/AsioTCPServer.cpp
+        src/server/AsioTCPCli.cpp
 )
 
 set(SRCS_CLIENT
@@ -66,10 +68,16 @@ set(SRCS_CLIENT
         src/client/Network/SoundPacketManager.cpp
         src/client/Network/Udp.cpp
         src/client/Windows/CallScreen.cpp
+        src/client/AsioTCPClient.cpp
 )
+
 ## Execs
 add_executable(${NAME_SERVER} ${SRCS_SERVER})
 add_executable(${NAME_CLIENT} ${SRCS_CLIENT})
+
+## INCLUDES
+target_include_directories(${NAME_SERVER} BEFORE PUBLIC ./includes/server)
+target_include_directories(${NAME_CLIENT} BEFORE PUBLIC ./includes/client)
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
     target_compile_options(${NAME_SERVER} PRIVATE -Wall -Wextra)

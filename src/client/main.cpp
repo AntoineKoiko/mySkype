@@ -1,9 +1,5 @@
-/*
-** EPITECH PROJECT, 2021
-** babel
-** File description:
-** main
-*/
+// Client-side Synchronous Chatting Application
+// using C++ asio
 
 #include "AudioDecoder.hpp"
 #include "AudioEncoder.hpp"
