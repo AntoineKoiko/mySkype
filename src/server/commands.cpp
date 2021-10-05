@@ -22,4 +22,5 @@ int AsioTCPCli::login(const std::string &username)
     } else {
         write(404, username.c_str());
     }
+    return 0;
 }
