@@ -102,7 +102,7 @@ int AudioOutput::callback([[maybe_unused]] const void *inputBuffer, void *output
     SoundFrameBuffer frameBuffer;
     float *audio = (float *)outputBuffer;
 
-    std::memset(outputBuffer, 0, Audio::BufferSize);
+    std::memset(outputBuffer, 0, Audio::BufferSize * sizeof(float));
     if (!_this->_sound.empty()) {
         frameBuffer = _this->_sound.front();
         std::copy(frameBuffer.frames.begin(), frameBuffer.frames.end(), audio);

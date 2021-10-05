@@ -12,6 +12,7 @@
 #include <queue>
 #include <cstring>
 #include <algorithm>
+#include "ICallHandler.hpp"
 #include "Audio.hpp"
 #include "portaudio.h"
 #include "SoundFrameBuffer.hpp"
@@ -20,7 +21,7 @@ namespace Babel::Client::Audio
 {
     class AudioInput {
         public:
-            AudioInput();
+            AudioInput(ICallHandler *callHandler);
             ~AudioInput();
 
             void openInputStream();
@@ -35,6 +36,7 @@ namespace Babel::Client::Audio
             PaStreamParameters _params;
             PaStream *_stream;
             std::queue<SoundFrameBuffer> _sound;
+            ICallHandler *_callHandler;
             bool _isRecording;
 
             static int callback(const void *inputBuffer, void *outputBuffer,

@@ -11,6 +11,7 @@
 #include <memory>
 #include <queue>
 #include <QUdpSocket>
+#include "ICallHandler.hpp"
 
 namespace Babel::Client::Network
 {
@@ -18,13 +19,15 @@ namespace Babel::Client::Network
         Q_OBJECT
 
         public:
-            explicit Udp(const int port, const std::string &hostAddr, QObject *parent = nullptr);
+            explicit Udp(Babel::Client::Audio::ICallHandler *callHandler, QObject *parent = nullptr);
             ~Udp();
 
+            void connect(const int port, const std::string &hostAddr);
             void send(const std::string &sender, int port, const std::vector<char> &packet) const;
 
         private:
             std::unique_ptr<QUdpSocket> _socket;
+            Babel::Client::Audio::ICallHandler *_callHandler;
 
         signals:
 

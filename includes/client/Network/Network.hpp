@@ -14,12 +14,15 @@ namespace Babel::Client::Network
 {
     const int magicNumber = 4269;
 
+#pragma pack(push, 1)
     struct SoundPacket
     {
         int magicNumber;
-        std::vector<unsigned char> soundPayload;
+        unsigned char soundPayload[256];
+        int payloadSize;
         unsigned long int timestamp;
     };
+#pragma pack(pop)
 }
 
 #endif /* !NETWORK_HPP_ */
