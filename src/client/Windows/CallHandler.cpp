@@ -20,7 +20,7 @@ CallHandler::~CallHandler()
     _output.stopPlaying();
 }
 
-void CallHandler::make_call([[maybe_unused]]const std::string &contact_to_call)
+void CallHandler::call([[maybe_unused]]const std::string &contact_to_call)
 {
     _udpNetwork.connect(8082, std::string("127.0.0.1"));
     _input.startRecording();

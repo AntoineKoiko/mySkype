@@ -10,11 +10,12 @@
 #include <QDebug>
 #include <QListWidget>
 
-MyWindow::MyWindow() : QMainWindow(),
+MyWindow::MyWindow(const std::shared_ptr<UserHandler> userHandler) : QMainWindow(),
                        _stack(std::make_unique<QStackedWidget>()),
                        _home(std::make_unique<HomeScreen>(_stack.get())),
                        _login(std::make_unique<LoginScreen>(_stack.get())),
-                       _callScreen(std::make_unique<CallScreen>(_stack.get()))
+                       _callScreen(std::make_unique<CallScreen>(_stack.get())),
+                       _userHandler(userHandler)
 
 {
     this->setUp_winodw();
@@ -52,6 +53,7 @@ MyWindow::~MyWindow()
 void MyWindow::on_login_button_clicked()
 {
     qDebug() << _login->get_username_field()->text();
+    _userHandler->login(_login->get_username_field()->text().toStdString());
     _login->get_username_field()->clear();
     _stack->setCurrentWidget(_home.get());
 }
@@ -73,7 +75,7 @@ void MyWindow::on_call_button_clicked()
             contacts.push_back(item->text());
         }
         _callScreen->start_call(contacts);
-        _callHandler.make_call("toto");
+        _callHandler.call("toto");
         _stack->setCurrentWidget(_callScreen.get());
     }
     else

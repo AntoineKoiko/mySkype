@@ -42,7 +42,7 @@ void AsioTCPCli::handle_read(const asio::error_code &err, const std::size_t byte
     }
     if (bytes <= 0)
         return;
-    data_t *data = (data_t *)&_buffer[0];
+    DataPacket *data = (DataPacket *)&_buffer[0];
     if (data->magic != MAGIC_NUMBER) {
         std::cerr << "Error : wrong magic number" << std::endl;
         return;
@@ -60,7 +60,7 @@ void AsioTCPCli::handle_read(const asio::error_code &err, const std::size_t byte
 void AsioTCPCli::read()
 {
     auto handler = std::bind(&AsioTCPCli::handle_read, this, std::placeholders::_1, std::placeholders::_2);
-    _socket.async_read_some(asio::buffer(_buffer, sizeof(data_t)), handler);
+    _socket.async_read_some(asio::buffer(_buffer, sizeof(DataPacket)), handler);
 }
 
 void AsioTCPCli::handle_write(const asio::error_code &error, UN const std::size_t bytes)
@@ -72,17 +72,15 @@ void AsioTCPCli::handle_write(const asio::error_code &error, UN const std::size_
 
 void AsioTCPCli::write(int code, const char data[])
 {
-    data_t data_struct = {
-        MAGIC_NUMBER,
-        code,
-        strlen(data),
-        {0},
-    };
-    data_t *data_struct_ptr = &data_struct;
+    DataPacket data_struct;
+
+    data_struct.code = code;
+    data_struct.size = strlen(data);
+    DataPacket *data_struct_ptr = &data_struct;
     auto handler = std::bind(&AsioTCPCli::handle_write, this, std::placeholders::_1, std::placeholders::_2);
 
     std::memcpy(data_struct.data, data, data_struct.size);
-    _socket.async_write_some(asio::buffer(data_struct_ptr, sizeof(data_t)), handler);
+    _socket.async_write_some(asio::buffer(data_struct_ptr, sizeof(DataPacket)), handler);
 }
 
 const std::shared_ptr<Babel::User> AsioTCPCli::getConnectedUser() const

@@ -8,7 +8,7 @@
 cmake_minimum_required(VERSION 3.17)
 add_definitions("-fPIC")
 
-set(CMAKE_BUILD_TYPE Release)
+set(CMAKE_BUILD_TYPE Debug)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 set(NAME babel)
@@ -67,6 +67,9 @@ set(SRCS_CLIENT
         src/client/Network/SoundPacketManager.cpp
         src/client/Network/Udp.cpp
         src/client/Windows/CallScreen.cpp
+        src/client/Network/DataPacketManager.cpp
+        src/client/Network/TcpClient.cpp
+        src/client/UserHandler.cpp
 )
 
 ## Execs
