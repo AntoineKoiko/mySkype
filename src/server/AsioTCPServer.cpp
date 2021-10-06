@@ -50,11 +50,11 @@ void AsioTCPServer::run()
     _io_context.run();
 }
 
-bool AsioTCPServer::isUserLogged(const std::string &username) const
+AsioTCPCli *AsioTCPServer::isUserLogged(const std::string &username) const
 {
     for (auto it = _cli_list.cbegin(); it != _cli_list.cend(); ++it) {
         if (it->get()->getConnectedUser() && it->get()->getConnectedUser()->_name == username)
-            return true;
+            return it->get();
     }
-    return false;
+    return nullptr;
 }
