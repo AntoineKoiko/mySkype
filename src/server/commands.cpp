@@ -132,7 +132,7 @@ int AsioTCPCli::denyContact(const std::string &username)
             write(500, "Request not found"); // TODO: send real code
             return 1;
         }
-        contactHandler.denyContactRequest(this->_connected_user->_name, username);
+        contactHandler.dismissContactRequest(this->_connected_user->_name, username);
     }
     return 0;
 }
