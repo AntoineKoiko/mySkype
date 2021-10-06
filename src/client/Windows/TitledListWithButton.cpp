@@ -27,22 +27,22 @@ TitledListWithButton::~TitledListWithButton()
 {
 }
 
-QLabel *TitledListWithButton::get_title() const noexcept
+QLabel *TitledListWithButton::getTitle() const noexcept
 {
     return _title.get();
 }
 
-ListStrWidget *TitledListWithButton::get_list() const noexcept
+ListStrWidget *TitledListWithButton::getList() const noexcept
 {
     return _list.get();
 }
 
-QPushButton *TitledListWithButton::get_button() const noexcept
+QPushButton *TitledListWithButton::getButton() const noexcept
 {
     return _button.get();
 }
 
-QVBoxLayout *TitledListWithButton::get_vLayout() const noexcept
+QVBoxLayout *TitledListWithButton::getVLayout() const noexcept
 {
     return _vLayout.get();
 }

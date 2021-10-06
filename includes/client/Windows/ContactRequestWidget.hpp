@@ -23,10 +23,10 @@ public:
     ContactRequestWidget();
     ~ContactRequestWidget();
 
-    QLabel *get_title() const noexcept;
-    ListStrWidget *get_requestsList() const noexcept;
-    QPushButton *get_acceptButton() const noexcept;
-    QPushButton *get_dismissButton() const noexcept;
+    QLabel *getTitle() const noexcept;
+    ListStrWidget *getRequestsList() const noexcept;
+    QPushButton *getAcceptButton() const noexcept;
+    QPushButton *getDismissButton() const noexcept;
 
 private:
     std::unique_ptr<QLabel> _title;

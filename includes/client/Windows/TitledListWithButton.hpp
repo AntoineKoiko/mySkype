@@ -24,10 +24,10 @@ public:
     TitledListWithButton();
     ~TitledListWithButton();
 
-    QLabel *get_title() const noexcept;
-    ListStrWidget *get_list() const noexcept;
-    QPushButton *get_button() const noexcept;
-    QVBoxLayout *get_vLayout() const noexcept;
+    QLabel *getTitle() const noexcept;
+    ListStrWidget *getList() const noexcept;
+    QPushButton *getButton() const noexcept;
+    QVBoxLayout *getVLayout() const noexcept;
 
 private:
     std::unique_ptr<QLabel> _title;

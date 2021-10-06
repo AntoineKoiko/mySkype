@@ -25,7 +25,7 @@ CallScreen::~CallScreen()
 {
 }
 
-void CallScreen::start_call(const std::vector<QString> &contacts)
+void CallScreen::startCall(const std::vector<QString> &contacts)
 {
     _layout->addWidget(_inCallLabel.get());
     _layout->addWidget(_padTop.get(), 1);
@@ -42,12 +42,12 @@ void CallScreen::start_call(const std::vector<QString> &contacts)
     _layout->addWidget(_hangUpButton.get());
 }
 
-void CallScreen::stop_call()
+void CallScreen::stopCall()
 {
     _inCallList.clear();
 }
 
-QPushButton *CallScreen::get_hangUp_button() const noexcept
+QPushButton *CallScreen::getHangUpButton() const noexcept
 {
     return _hangUpButton.get();
 }
