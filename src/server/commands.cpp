@@ -56,7 +56,7 @@ int AsioTCPCli::addContactRequest(const std::string &username)
     const User user = userHandler.getUser(username);
     AsioTCPCli *user_client = serv->getServer().isUserLogged(user._name);
 
-    if (!this->getConnectedUser()) {
+    if (!this->_connected_user) {
         write(500, "Not Connected"); // TODO: change for real code
         return 1;
     }
@@ -70,7 +70,36 @@ int AsioTCPCli::addContactRequest(const std::string &username)
     return 0;
 }
 
+static bool checkContactRequest(const ContactHandler *handler, const std::string &username, const std::string &owner)
+{
+    auto ownerRequests = handler->getListOfContactRequest(owner);
+
+    for (auto it = ownerRequests.cbegin(); it != ownerRequests.cend(); ++it) {
+        if (it->_name == username) {
+            return true;
+        }
+    }
+    return false;
+}
+
 int AsioTCPCli::addContact(const std::string &username)
 {
     // TODO: accept contact request
+    if (!this->_connected_user) {
+        write(500, "You must be logged in");
+        return 1;
+    }
+    auto serv = get_server();
+    auto contactHandler = serv->getContactHandler();
+    auto userHandler = serv->getUserHandler();
+    User user = userHandler.getUser(username);
+
+    if (user._exists) {
+        if (!checkContactRequest(contactHandler, username, this->_connected_user->_name)) {
+            write(500, "Request not found");
+            return 1;
+        }
+        contactHandler.acceptContactRequest(this->_connected_user->_name, username);
+    }
+    return 0;
 }
