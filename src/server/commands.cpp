@@ -62,7 +62,7 @@ int AsioTCPCli::addContactRequest(const std::string &username)
         return 1;
     }
     if (!user._exists) {
-        write(500, "Not Connected"); // TODO: change for real code
+        write(500, "Doesn't exists"); // TODO: change for real code
         return 1;
     }
     contactHandler.addContactRequest(owner, username);
