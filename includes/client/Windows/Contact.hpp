@@ -16,7 +16,7 @@ public:
     Contact(const std::string &username);
     ~Contact();
 
-    std::string get_username() const noexcept;
+    std::string getUsername() const noexcept;
 
 private:
     std::string _username;
