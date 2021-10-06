@@ -1,14 +1,29 @@
 /*
 ** EPITECH PROJECT, 2021
-** babel
+** B-CPP-500-REN-5-1-babel-aurelien.joncour
 ** File description:
 ** main
 */
 
+#include "utils.hpp"
 #include <iostream>
+#include <algorithm>
+#include <asio.hpp>
+#include <cstdlib>
+#include "BabelServer.hpp"
 
-int main(int ac, char *av[])
+int main(int argc, char* argv[])
 {
-    std::cout << "Hello from server" << std::endl;
-    return 0;
+    int port = 9999;
+
+    if (argc > 1)
+        port = std::atoi(argv[1]);
+    try {
+        auto serv = std::make_shared<Babel::BabelServer>(port);
+
+        get_server(true, serv);
+        serv->start();
+    } catch(const std::exception& e) {
+        std::cerr << e.what() << '\n';
+    }
 }

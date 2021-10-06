@@ -13,7 +13,8 @@
 #include "DatabaseManager.hpp"
 #include "User.hpp"
 
-#define USER_TABLE_NAME "contact"
+#define USER_TABLE_NAME "user"
+#define USER_CONNECTED_TABLE_NAME "userConnected"
 
 #define USER_PRIMARY_KEY_NAME "id"
 
@@ -27,7 +28,10 @@ namespace Babel {
             void addUser(const std::string &name) const;
             void removeUser(const std::string &name) const;
 
-            std::vector<User> getListOfUser(const std::string &name) const;
+            User getUser(const std::string &name) const;
+
+            void connectUser(const std::string &name) const;
+            void disconnectUser(const std::string &name) const;
 
         protected :
 

@@ -32,7 +32,7 @@ AudioInput::~AudioInput()
 
     err = Pa_Terminate();
     if (err != paNoError) {
-        throw InputError(Pa_GetErrorText(err));
+        std::cerr << "Error: Pa_Terminate(): " << Pa_GetErrorText(err) << std::endl;
     } else {
         std::cout << "Successfuly destroy Audio" << std::endl;
     }

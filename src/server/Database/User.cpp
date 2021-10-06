@@ -9,9 +9,8 @@
 
 using namespace Babel;
 
-User::User()
+User::User() : _name(""), _exists(false), _isConnected(false)
 {
-    _name = "";
 }
 
 User::~User() {}

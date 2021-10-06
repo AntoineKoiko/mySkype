@@ -34,7 +34,7 @@ namespace Babel {
 
             bool checkIfTableExist(const std::string &table_name) const;
 
-            size_t getTableSize(const std::string &tableName) const;
+            std::size_t getTableSize(const std::string &tableName) const;
 
             void printTable(const std::string &tableName) const;
 
@@ -56,7 +56,7 @@ namespace Babel {
                                 const std::string /*TYPE*/,
                                 const std::string /*VALUE*/>> &entryDescription) const;
 
-            size_t getNextFreePrimaryKey(const std::string &tableName, const std::string &tableKeyName) const;
+            std::size_t getNextFreePrimaryKey(const std::string &tableName, const std::string &tableKeyName) const;
 
         protected :
 

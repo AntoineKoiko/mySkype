@@ -17,7 +17,7 @@ namespace Babel::Client::Audio
         public:
             virtual ~ICallHandler() = default;
 
-            virtual void make_call(const std::string &contact_to_call) = 0;
+            virtual void call(const std::string &contact_to_call) = 0;
             virtual void dataRecordedAvailable() = 0;
             virtual void dataPacketAvailable(const std::vector<char> &packetSerialize) = 0;
 

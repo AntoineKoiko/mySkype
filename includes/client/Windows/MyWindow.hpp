@@ -21,11 +21,12 @@
 #include "HomeScreen.hpp"
 #include "LoginScreen.hpp"
 #include "CallScreen.hpp"
+#include "UserHandler.hpp"
 
 class MyWindow : public QMainWindow
 {
 public:
-    MyWindow();
+    MyWindow(const std::shared_ptr<UserHandler> userHandler);
     ~MyWindow();
 
 private slots:
@@ -52,6 +53,7 @@ private:
     std::unique_ptr<HomeScreen> _home;
     std::unique_ptr<LoginScreen> _login;
     std::unique_ptr<CallScreen> _callScreen;
+    std::shared_ptr<UserHandler> _userHandler;
 
     CallHandler _callHandler;
     ContactHandler _contactHandler;
