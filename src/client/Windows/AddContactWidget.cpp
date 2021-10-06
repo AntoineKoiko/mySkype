@@ -21,17 +21,17 @@ AddContactWidget::~AddContactWidget()
 {
 }
 
-QLineEdit *AddContactWidget::get_searchField() const noexcept
+QLineEdit *AddContactWidget::getSearchField() const noexcept
 {
     return _searchField.get();
 }
 
-QPushButton *AddContactWidget::get_addButton() const noexcept
+QPushButton *AddContactWidget::getAddButton() const noexcept
 {
     return _addButton.get();
 }
 
-QLabel *AddContactWidget::get_label() const noexcept
+QLabel *AddContactWidget::getLabel() const noexcept
 {
     return _confirmationLabel.get();
 }

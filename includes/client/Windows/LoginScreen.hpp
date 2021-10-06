@@ -23,8 +23,8 @@ public:
     explicit LoginScreen(QWidget *parent);
     ~LoginScreen();
 
-    QPushButton *get_login_button() const noexcept;
-    QLineEdit *get_username_field() const noexcept;
+    QPushButton *getLoginButton() const noexcept;
+    QLineEdit *getUsernameField() const noexcept;
 
 private:
     std::unique_ptr<QLabel> _welcomeText;

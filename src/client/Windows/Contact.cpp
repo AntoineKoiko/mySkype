@@ -16,7 +16,7 @@ Contact::~Contact()
 {
 }
 
-std::string Contact::get_username() const noexcept
+std::string Contact::getUsername() const noexcept
 {
     return _username;
 }

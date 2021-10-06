@@ -26,46 +26,46 @@ void HomeScreen::setUp_widget() noexcept
 {
     for (int i = 0; i < 200; i++)
     {
-        _contactWidget->get_list()->addItem(QString::number(i));
+        _contactWidget->getList()->addItem(QString::number(i));
     }
 
     _callButton->setText("Call");
 
-    _contactWidget->get_title()->setText("Contact List");
-    _contactWidget->get_button()->setText("Add to Call");
+    _contactWidget->getTitle()->setText("Contact List");
+    _contactWidget->getButton()->setText("Add to Call");
 
-    _toCallWidget->get_title()->setText("People to Call");
-    _toCallWidget->get_button()->setText("Cancel to Call");
+    _toCallWidget->getTitle()->setText("People to Call");
+    _toCallWidget->getButton()->setText("Cancel to Call");
 }
 
 void HomeScreen::connect_buttons() noexcept
 {
-    connect(_contactWidget->get_button(), &QPushButton::clicked,
+    connect(_contactWidget->getButton(), &QPushButton::clicked,
             this, &HomeScreen::on_addToCallButton_clicked);
-    connect(_toCallWidget->get_button(), &QPushButton::clicked,
+    connect(_toCallWidget->getButton(), &QPushButton::clicked,
             this, &HomeScreen::on_cancelToCallButton_clicked);
 }
 
 void HomeScreen::setup_layout() noexcept
 {
-    _mainLayout->addWidget(_addContactWidget->get_searchField(), 0, 0, 1, 1);
-    _mainLayout->addWidget(_addContactWidget->get_addButton(), 0, 1, 1, 1);
-    _mainLayout->addWidget(_addContactWidget->get_label(), 1, 0, 1, 1);
+    _mainLayout->addWidget(_addContactWidget->getSearchField(), 0, 0, 1, 1);
+    _mainLayout->addWidget(_addContactWidget->getAddButton(), 0, 1, 1, 1);
+    _mainLayout->addWidget(_addContactWidget->getLabel(), 1, 0, 1, 1);
 
-    _mainLayout->addWidget(_contactRequestWidget->get_title(), 1, 3, 1, 1);
-    _mainLayout->addWidget(_contactRequestWidget->get_requestsList(), 2, 3, 2, 1);
-    _mainLayout->addWidget(_contactRequestWidget->get_acceptButton(), 2, 4, 1, 1);
-    _mainLayout->addWidget(_contactRequestWidget->get_dismissButton(), 3, 4, 1, 1);
+    _mainLayout->addWidget(_contactRequestWidget->getTitle(), 1, 3, 1, 1);
+    _mainLayout->addWidget(_contactRequestWidget->getRequestsList(), 2, 3, 2, 1);
+    _mainLayout->addWidget(_contactRequestWidget->getAcceptButton(), 2, 4, 1, 1);
+    _mainLayout->addWidget(_contactRequestWidget->getDismissButton(), 3, 4, 1, 1);
 
     _mainLayout->addWidget(_callButton.get(), 5, 4, 1, 1);
 
-    _mainLayout->addWidget(_contactWidget->get_title(), 4, 0, 1, 1);
-    _mainLayout->addWidget(_contactWidget->get_list(), 5, 0, 1, 2);
-    _mainLayout->addWidget(_contactWidget->get_button(), 6, 0, 1, 2);
+    _mainLayout->addWidget(_contactWidget->getTitle(), 4, 0, 1, 1);
+    _mainLayout->addWidget(_contactWidget->getList(), 5, 0, 1, 2);
+    _mainLayout->addWidget(_contactWidget->getButton(), 6, 0, 1, 2);
 
-    _mainLayout->addWidget(_toCallWidget->get_title(), 4, 3, 1, 1);
-    _mainLayout->addWidget(_toCallWidget->get_list(), 5, 3, 1, 1);
-    _mainLayout->addWidget(_toCallWidget->get_button(), 6, 3, 1, 1);
+    _mainLayout->addWidget(_toCallWidget->getTitle(), 4, 3, 1, 1);
+    _mainLayout->addWidget(_toCallWidget->getList(), 5, 3, 1, 1);
+    _mainLayout->addWidget(_toCallWidget->getButton(), 6, 3, 1, 1);
 }
 
 HomeScreen::~HomeScreen()
@@ -74,8 +74,8 @@ HomeScreen::~HomeScreen()
 
 void HomeScreen::on_addToCallButton_clicked()
 {
-    std::vector<QString> selected = _contactWidget->get_list()->getSelectdQStrItems();
-    ListStrWidget *toCallList = _toCallWidget->get_list();
+    std::vector<QString> selected = _contactWidget->getList()->getSelectdQStrItems();
+    ListStrWidget *toCallList = _toCallWidget->getList();
 
     if (selected.size() == 0)
         return;
@@ -83,13 +83,13 @@ void HomeScreen::on_addToCallButton_clicked()
     {
         if (toCallList->isIn(lt))
             break;
-        _toCallWidget->get_list()->addItem(lt);
+        _toCallWidget->getList()->addItem(lt);
     }
 }
 
 void HomeScreen::on_cancelToCallButton_clicked()
 {
-    _toCallWidget->get_list()->deleteSelectedRow();
+    _toCallWidget->getList()->deleteSelectedRow();
 }
 
 QPushButton *HomeScreen::get_call_button() const noexcept
@@ -99,22 +99,22 @@ QPushButton *HomeScreen::get_call_button() const noexcept
 
 QPushButton *HomeScreen::getAcceptContactButton() const noexcept
 {
-    return _contactRequestWidget->get_acceptButton();
+    return _contactRequestWidget->getAcceptButton();
 }
 
 QPushButton *HomeScreen::getDismissContactButton() const noexcept
 {
-    return _contactRequestWidget->get_dismissButton();
+    return _contactRequestWidget->getDismissButton();
 }
 
 QPushButton *HomeScreen::getAddContactButton() const noexcept
 {
-    return _addContactWidget->get_addButton();
+    return _addContactWidget->getAddButton();
 }
 
 ListStrWidget *HomeScreen::get_toCallList() const noexcept
 {
-    return _toCallWidget->get_list();
+    return _toCallWidget->getList();
 }
 
 AddContactWidget *HomeScreen::getAddContactWidget() const noexcept
@@ -124,10 +124,10 @@ AddContactWidget *HomeScreen::getAddContactWidget() const noexcept
 
 ListStrWidget *HomeScreen::getContactList() const noexcept
 {
-    return _contactWidget->get_list();
+    return _contactWidget->getList();
 }
 
 ListStrWidget *HomeScreen::getContactRequestList() const noexcept
 {
-    return _contactRequestWidget->get_requestsList();
+    return _contactRequestWidget->getRequestsList();
 }

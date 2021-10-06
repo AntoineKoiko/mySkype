@@ -22,22 +22,22 @@ ContactRequestWidget::~ContactRequestWidget()
 {
 }
 
-QLabel *ContactRequestWidget::get_title() const noexcept
+QLabel *ContactRequestWidget::getTitle() const noexcept
 {
     return _title.get();
 }
 
-ListStrWidget *ContactRequestWidget::get_requestsList() const noexcept
+ListStrWidget *ContactRequestWidget::getRequestsList() const noexcept
 {
     return _requestsList.get();
 }
 
-QPushButton *ContactRequestWidget::get_acceptButton() const noexcept
+QPushButton *ContactRequestWidget::getAcceptButton() const noexcept
 {
     return _acceptButton.get();
 }
 
-QPushButton *ContactRequestWidget::get_dismissButton() const noexcept
+QPushButton *ContactRequestWidget::getDismissButton() const noexcept
 {
     return _dismissButton.get();
 }

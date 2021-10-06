@@ -38,12 +38,12 @@ LoginScreen::~LoginScreen()
 {
 }
 
-QPushButton *LoginScreen::get_login_button() const noexcept
+QPushButton *LoginScreen::getLoginButton() const noexcept
 {
     return _loginButton.get();
 }
 
-QLineEdit *LoginScreen::get_username_field() const noexcept
+QLineEdit *LoginScreen::getUsernameField() const noexcept
 {
     return _usernameField.get();
 }

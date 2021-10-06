@@ -21,9 +21,9 @@ public:
     AddContactWidget();
     ~AddContactWidget();
 
-    QLineEdit *get_searchField() const noexcept;
-    QPushButton *get_addButton() const noexcept;
-    QLabel *get_label() const noexcept;
+    QLineEdit *getSearchField() const noexcept;
+    QPushButton *getAddButton() const noexcept;
+    QLabel *getLabel() const noexcept;
 
     //field = LineEdit
     QString getFieldContent() const noexcept;

@@ -23,10 +23,10 @@ public:
     explicit CallScreen(QWidget *parent);
     ~CallScreen();
 
-    void start_call(const std::vector<QString> &contacts);
-    void stop_call();
+    void startCall(const std::vector<QString> &contacts);
+    void stopCall();
 
-    QPushButton *get_hangUp_button() const noexcept;
+    QPushButton *getHangUpButton() const noexcept;
 
 private:
     std::unique_ptr<QLabel> _inCallLabel;

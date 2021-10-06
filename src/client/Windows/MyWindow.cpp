@@ -39,7 +39,7 @@ void MyWindow::setUp_winodw()
 
 void MyWindow::connect_buttons() noexcept
 {
-    connect(_login->get_login_button(), &QPushButton::released,
+    connect(_login->getLoginButton(), &QPushButton::released,
             this, &MyWindow::on_login_button_clicked);
     connect(_home->get_call_button(), &QPushButton::released,
             this, &MyWindow::on_call_button_clicked);
@@ -49,7 +49,7 @@ void MyWindow::connect_buttons() noexcept
             this, &MyWindow::on_dismissContactRequest_button_clicked);
     connect(_home->getAddContactButton(), &QPushButton::released,
             this, &MyWindow::on_addContactRequest_button_clicked);
-    connect(_callScreen->get_hangUp_button(), &QPushButton::released,
+    connect(_callScreen->getHangUpButton(), &QPushButton::released,
             this, &MyWindow::on_hangUp_button_clicked);
 }
 
@@ -59,9 +59,9 @@ MyWindow::~MyWindow()
 
 void MyWindow::on_login_button_clicked()
 {
-    qDebug() << _login->get_username_field()->text();
-    _userHandler->login(_login->get_username_field()->text().toStdString());
-    _login->get_username_field()->clear();
+    qDebug() << _login->getUsernameField()->text();
+    _userHandler->login(_login->getUsernameField()->text().toStdString());
+    _login->getUsernameField()->clear();
     _stack->setCurrentWidget(_home.get());
 }
 
@@ -81,7 +81,7 @@ void MyWindow::on_call_button_clicked()
             QListWidgetItem *item = callList->item(i);
             contacts.push_back(item->text());
         }
-        _callScreen->start_call(contacts);
+        _callScreen->startCall(contacts);
         _callHandler.call("toto");
         _stack->setCurrentWidget(_callScreen.get());
     }
@@ -93,7 +93,7 @@ void MyWindow::on_call_button_clicked()
 
 void MyWindow::on_hangUp_button_clicked()
 {
-    _callScreen->stop_call();
+    _callScreen->stopCall();
     _stack->setCurrentWidget(_home.get());
 }
 
