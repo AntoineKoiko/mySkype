@@ -15,6 +15,8 @@
 
 #include <memory>
 
+#include "ListStrWidget.hpp"
+
 class ContactRequestWidget : public QWidget
 {
 public:
@@ -22,13 +24,13 @@ public:
     ~ContactRequestWidget();
 
     QLabel *get_title() const noexcept;
-    QListWidget *get_requestsList() const noexcept;
+    ListStrWidget *get_requestsList() const noexcept;
     QPushButton *get_acceptButton() const noexcept;
     QPushButton *get_dismissButton() const noexcept;
 
 private:
     std::unique_ptr<QLabel> _title;
-    std::unique_ptr<QListWidget> _requestsList;
+    std::unique_ptr<ListStrWidget> _requestsList;
     std::unique_ptr<QPushButton> _acceptButton;
     std::unique_ptr<QPushButton> _dismissButton;
 };

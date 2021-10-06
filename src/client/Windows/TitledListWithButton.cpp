@@ -9,7 +9,7 @@
 
 TitledListWithButton::TitledListWithButton() : QWidget(),
                                                _title(std::make_unique<QLabel>(this)),
-                                               _list(std::make_unique<QListWidget>(this)),
+                                               _list(std::make_unique<ListStrWidget>(this)),
                                                _button(std::make_unique<QPushButton>(this)),
                                                _vLayout(std::make_unique<QVBoxLayout>())
 {
@@ -32,7 +32,7 @@ QLabel *TitledListWithButton::get_title() const noexcept
     return _title.get();
 }
 
-QListWidget *TitledListWithButton::get_list() const noexcept
+ListStrWidget *TitledListWithButton::get_list() const noexcept
 {
     return _list.get();
 }

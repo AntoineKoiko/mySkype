@@ -16,6 +16,8 @@
 
 #include <memory>
 
+#include "ListStrWidget.hpp"
+
 class TitledListWithButton : public QWidget
 {
 public:
@@ -23,13 +25,13 @@ public:
     ~TitledListWithButton();
 
     QLabel *get_title() const noexcept;
-    QListWidget *get_list() const noexcept;
+    ListStrWidget *get_list() const noexcept;
     QPushButton *get_button() const noexcept;
     QVBoxLayout *get_vLayout() const noexcept;
 
 private:
     std::unique_ptr<QLabel> _title;
-    std::unique_ptr<QListWidget> _list;
+    std::unique_ptr<ListStrWidget> _list;
     std::unique_ptr<QPushButton> _button;
     std::unique_ptr<QVBoxLayout> _vLayout;
 };

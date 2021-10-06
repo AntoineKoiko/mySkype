@@ -26,7 +26,13 @@ public:
     ~HomeScreen();
 
     QPushButton *get_call_button() const noexcept;
-    QListWidget *get_toCallList() const noexcept;
+    QPushButton *getAcceptContactButton() const noexcept;
+    QPushButton *getDismissContactButton() const noexcept;
+    QPushButton *getAddContactButton() const noexcept;
+    ListStrWidget *get_toCallList() const noexcept;
+    AddContactWidget *getAddContactWidget() const noexcept;
+    ListStrWidget *getContactList() const noexcept;
+    ListStrWidget *getContactRequestList() const noexcept;
 
 private:
     //buttons callback

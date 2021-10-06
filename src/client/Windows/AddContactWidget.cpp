@@ -8,9 +8,9 @@
 #include "AddContactWidget.hpp"
 
 AddContactWidget::AddContactWidget() : QWidget(),
-                                       _confirmationLabel(std::make_unique<QLabel>(this)),
                                        _searchField(std::make_unique<QLineEdit>(this)),
-                                       _addButton(std::make_unique<QPushButton>(this))
+                                       _addButton(std::make_unique<QPushButton>(this)),
+                                       _confirmationLabel(std::make_unique<QLabel>(this))
 {
     _addButton->setText("Add");
     _searchField->setPlaceholderText("Contact name");
@@ -34,4 +34,14 @@ QPushButton *AddContactWidget::get_addButton() const noexcept
 QLabel *AddContactWidget::get_label() const noexcept
 {
     return _confirmationLabel.get();
+}
+
+QString AddContactWidget::getFieldContent() const noexcept
+{
+    return _searchField->text();
+}
+
+void AddContactWidget::clearField() noexcept
+{
+    _searchField->clear();
 }

@@ -6,6 +6,7 @@
 */
 
 #include "HomeScreen.hpp"
+#include "ListStrWidget.hpp"
 
 HomeScreen::HomeScreen(QWidget *parent) : QWidget(parent),
                                           _contactWidget(std::make_unique<TitledListWithButton>()),
@@ -73,38 +74,22 @@ HomeScreen::~HomeScreen()
 
 void HomeScreen::on_addToCallButton_clicked()
 {
-    QList<QListWidgetItem *> selected = _contactWidget->get_list()->selectedItems();
-    QListWidget *toCallList = _toCallWidget->get_list();
+    std::vector<QString> selected = _contactWidget->get_list()->getSelectdQStrItems();
+    ListStrWidget *toCallList = _toCallWidget->get_list();
 
-    if (selected.size() != 0)
+    if (selected.size() == 0)
+        return;
+    for (const QString lt : selected)
     {
-        for (const auto lt : selected)
-        {
-            bool exist = false;
-
-            for (int i = 0; i < toCallList->count(); ++i)
-            {
-                QListWidgetItem *item = toCallList->item(i);
-                if (item->text() == lt->text())
-                {
-                    exist = true;
-                    break;
-                }
-            }
-            if (exist)
-                break;
-            _toCallWidget->get_list()->addItem(lt->text());
-        }
+        if (toCallList->isIn(lt))
+            break;
+        _toCallWidget->get_list()->addItem(lt);
     }
 }
 
 void HomeScreen::on_cancelToCallButton_clicked()
 {
-    int row = _toCallWidget->get_list()->currentRow();
-    QListWidgetItem *selected = _toCallWidget->get_list()->takeItem(row);
-
-    if (selected)
-        delete selected;
+    _toCallWidget->get_list()->deleteSelectedRow();
 }
 
 QPushButton *HomeScreen::get_call_button() const noexcept
@@ -112,7 +97,37 @@ QPushButton *HomeScreen::get_call_button() const noexcept
     return _callButton.get();
 }
 
-QListWidget *HomeScreen::get_toCallList() const noexcept
+QPushButton *HomeScreen::getAcceptContactButton() const noexcept
+{
+    return _contactRequestWidget->get_acceptButton();
+}
+
+QPushButton *HomeScreen::getDismissContactButton() const noexcept
+{
+    return _contactRequestWidget->get_dismissButton();
+}
+
+QPushButton *HomeScreen::getAddContactButton() const noexcept
+{
+    return _addContactWidget->get_addButton();
+}
+
+ListStrWidget *HomeScreen::get_toCallList() const noexcept
 {
     return _toCallWidget->get_list();
+}
+
+AddContactWidget *HomeScreen::getAddContactWidget() const noexcept
+{
+    return _addContactWidget.get();
+}
+
+ListStrWidget *HomeScreen::getContactList() const noexcept
+{
+    return _contactWidget->get_list();
+}
+
+ListStrWidget *HomeScreen::getContactRequestList() const noexcept
+{
+    return _contactRequestWidget->get_requestsList();
 }

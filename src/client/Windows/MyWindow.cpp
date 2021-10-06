@@ -11,11 +11,12 @@
 #include <QListWidget>
 
 MyWindow::MyWindow(const std::shared_ptr<UserHandler> userHandler) : QMainWindow(),
-                       _stack(std::make_unique<QStackedWidget>()),
-                       _home(std::make_unique<HomeScreen>(_stack.get())),
-                       _login(std::make_unique<LoginScreen>(_stack.get())),
-                       _callScreen(std::make_unique<CallScreen>(_stack.get())),
-                       _userHandler(userHandler)
+                                                                     _stack(std::make_unique<QStackedWidget>()),
+                                                                     _home(std::make_unique<HomeScreen>(_stack.get())),
+                                                                     _login(std::make_unique<LoginScreen>(_stack.get())),
+                                                                     _callScreen(std::make_unique<CallScreen>(_stack.get())),
+                                                                     _userHandler(userHandler),
+                                                                     _contactHandler(_home->getContactList(), _home->getContactRequestList())
 
 {
     this->setUp_winodw();
@@ -42,6 +43,12 @@ void MyWindow::connect_buttons() noexcept
             this, &MyWindow::on_login_button_clicked);
     connect(_home->get_call_button(), &QPushButton::released,
             this, &MyWindow::on_call_button_clicked);
+    connect(_home->getAcceptContactButton(), &QPushButton::released,
+            this, &MyWindow::on_acceptContactRequest_button_clicked);
+    connect(_home->getDismissContactButton(), &QPushButton::released,
+            this, &MyWindow::on_dismissContactRequest_button_clicked);
+    connect(_home->getAddContactButton(), &QPushButton::released,
+            this, &MyWindow::on_addContactRequest_button_clicked);
     connect(_callScreen->get_hangUp_button(), &QPushButton::released,
             this, &MyWindow::on_hangUp_button_clicked);
 }
@@ -88,4 +95,22 @@ void MyWindow::on_hangUp_button_clicked()
 {
     _callScreen->stop_call();
     _stack->setCurrentWidget(_home.get());
+}
+
+void MyWindow::on_acceptContactRequest_button_clicked()
+{
+    _contactHandler.acceptContactRequest();
+}
+
+void MyWindow::on_dismissContactRequest_button_clicked()
+{
+    _contactHandler.dismissContactRequest();
+}
+
+void MyWindow::on_addContactRequest_button_clicked()
+{
+    std::string contactUsername = _home->getAddContactWidget()->getFieldContent().toStdString();
+    _home->getAddContactWidget()->clearField();
+
+    _contactHandler.makeContactRequest(contactUsername);
 }

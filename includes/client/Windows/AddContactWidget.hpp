@@ -25,6 +25,10 @@ public:
     QPushButton *get_addButton() const noexcept;
     QLabel *get_label() const noexcept;
 
+    //field = LineEdit
+    QString getFieldContent() const noexcept;
+    void clearField() noexcept;
+
 private:
     std::unique_ptr<QLineEdit> _searchField;
     std::unique_ptr<QPushButton> _addButton;

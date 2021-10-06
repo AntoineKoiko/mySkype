@@ -62,11 +62,14 @@ set(SRCS_CLIENT
         src/client/Windows/TitledListWithButton.cpp
         src/client/Windows/CallHandler.cpp
         src/client/Windows/ContactHandler.cpp
+        src/client/Windows/Contact.cpp
         src/client/Windows/ContactRequestWidget.cpp
         src/client/Windows/AddContactWidget.cpp
         src/client/Network/SoundPacketManager.cpp
         src/client/Network/Udp.cpp
         src/client/Windows/CallScreen.cpp
+        src/client/Windows/ContactHandler.cpp
+        src/client/Windows/ListStrWidget.cpp
         src/client/Network/DataPacketManager.cpp
         src/client/Network/TcpClient.cpp
         src/client/UserHandler.cpp
