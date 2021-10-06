@@ -83,7 +83,19 @@ static bool checkContactRequest(const ContactHandler &handler, const std::string
     return false;
 }
 
-int AsioTCPCli::addContact(const std::string &username)
+static bool checkContact(const ContactHandler &handler, const std::string &username, const std::string &owner)
+{
+    auto contacts = handler.getListOfContact(owner);
+
+    for (auto it = contacts.cbegin(); it != contacts.cend(); ++it) {
+        if (it->_name == username) {
+            return true;
+        }
+    }
+    return false;
+}
+
+int AsioTCPCli::acceptContact(const std::string &username)
 {
     if (!this->_connected_user) {
         write(500, "You must be logged in"); // TODO: send real code
@@ -100,6 +112,48 @@ int AsioTCPCli::addContact(const std::string &username)
             return 1;
         }
         contactHandler.acceptContactRequest(this->_connected_user->_name, username);
+    }
+    return 0;
+}
+
+int AsioTCPCli::denyContact(const std::string &username)
+{
+    if (!this->_connected_user) {
+        write(500, "You must be logged in"); // TODO: send real code
+        return 1;
+    }
+    auto serv = get_server();
+    auto contactHandler = serv->getContactHandler();
+    auto userHandler = serv->getUserHandler();
+    User user = userHandler.getUser(username);
+
+    if (user._exists) {
+        if (!checkContactRequest(contactHandler, username, this->_connected_user->_name)) {
+            write(500, "Request not found"); // TODO: send real code
+            return 1;
+        }
+        contactHandler.denyContactRequest(this->_connected_user->_name, username);
+    }
+    return 0;
+}
+
+int AsioTCPCli::delContact(const std::string &username)
+{
+    if (!this->_connected_user) {
+        write(500, "You must be logged in"); // TODO: send real code
+        return 1;
+    }
+    auto serv = get_server();
+    auto contactHandler = serv->getContactHandler();
+    auto userHandler = serv->getUserHandler();
+    User user = userHandler.getUser(username);
+
+    if (user._exists) {
+        if (!checkContact(contactHandler, username, this->_connected_user->_name)) {
+            write(500, "Contact not found"); // TODO: send real code
+            return 1;
+        }
+        contactHandler.removeContact(this->_connected_user->_name, username);
     }
     return 0;
 }
