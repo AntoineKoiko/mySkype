@@ -31,48 +31,20 @@ std::vector<Contact> ContactHandler::getContactRequests() const noexcept
 
 void ContactHandler::acceptContactRequest(const std::string &username)
 {
-    std::vector<QString> selected = _pendingContacList->getSelectdQStrItems();
+    std::vector<std::string> selected = _pendingContacList->getSelectdStrItems();
 
-    for (const auto lt : selected)
+    for (const std::stringlt : selected)
     {
         _contacList->addItem(lt);
     }
     _pendingContacList->deleteSelectedRow();
-
-    // int idx = -1;
-
-    // for (std::size_t i = 0; i < _pendingContact.size(); i++)
-    // {
-    //     if (_pendingContact.at(i).get_username() == username)
-    //     {
-    //         idx = i;
-    //         break;
-    //     }
-    // }
-    // if (idx != -1)
-    // {
-    //     Contact buf{_pendingContact[idx].get_username()};
-    //     _pendingContact.erase(_pendingContact.begin() + idx);
-    //     _contacts.push_back(username);
-    // }
+    this->updateData();
 }
 
 void ContactHandler::dismissContactRequest(const std::string &username)
 {
     _pendingContacList->deleteSelectedRow();
-    // int idx = -1;
-
-    // for (std::size_t i = 0; i < _pendingContact.size(); i++)
-    // {
-    //     if (_pendingContact.at(i).get_username() == username)
-    //     {
-    //         idx = i;
-    //         break;
-    //     }
-    // }
-
-    // if (idx != -1)
-    //     _pendingContact.erase(_pendingContact.begin() + idx);
+    this->updateData();
 }
 
 //add directcly contact after request was accepted from the other guy
@@ -95,4 +67,19 @@ bool ContactHandler::makeContactRequest(const std::string &username)
 {
     //need to have NetworkAPI
     // if we decide to send packet from here
+}
+
+void ContactHandler::updateData() noexcept
+{
+    std::vector<std::string> contactUsername = _contacList->getStrItems();
+    std::vector<Contact> contactBuf;
+    std::vector<std::string> pendingUsername = _pendingContacList->getStrItems();
+    std::vector<Contact> pendingBuf;
+
+    for (const std::string lt : contactUsername)
+        contactBuf.push_back(Contact{lt});
+    for (const std::string lt : pendingUsername)
+        pendingBuf.push_back(Contact{lt});
+    _contacts = contactBuf;
+    _pendingContacts = pendingBuf;
 }

@@ -41,6 +41,31 @@ std::vector<QString> ListStrWidget::getSelectdQStrItems() const noexcept
     return strList;
 }
 
+std::string ListStrWidget::itemStr(const std::size_t i) const
+{
+    return this->itemQStr(i).toStdString();
+}
+
+std::vector<std::string> ListStrWidget::getStrItems() const noexcept
+{
+    std::vector<QString> qstr = this->getQStrItems();
+    std::vector<std::string> strs;
+
+    for (const QString lt : qstr)
+        strs.push_back(lt.toStdString());
+    return strs;
+}
+
+std::vector<std::string> ListStrWidget::getSelectdStrItems() const noexcept
+{
+    std::vector<QString> qstr = this->getSelectdQStrItems();
+    std::vector<std::string> strs;
+
+    for (const QString lt : qstr)
+        strs.push_back(lt.toStdString());
+    return strs;
+}
+
 bool ListStrWidget::isIn(const std::string &str) const noexcept
 {
     QString qstr = QString::fromStdString(str);

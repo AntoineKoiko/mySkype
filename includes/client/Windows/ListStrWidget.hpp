@@ -23,6 +23,10 @@ public:
     std::vector<QString> getQStrItems() const noexcept;
     std::vector<QString> getSelectdQStrItems() const noexcept;
 
+    std::string itemStr(const std::size_t i) const;
+    std::vector<std::string> getStrItems() const noexcept;
+    std::vector<std::string> getSelectdStrItems() const noexcept;
+
     bool isIn(const std::string &str) const noexcept;
     bool isIn(const QString &str) const noexcept;
 

@@ -31,9 +31,12 @@ public:
 
 private:
     std::vector<Contact> _contacts;
-    std::vector<Contact> _pendingContact;
+    std::vector<Contact> _pendingContacts;
     ListStrWidget *_contacList;
     ListStrWidget *_pendingContacList;
+
+    //update std::vector with content of ListStrWidget
+    void updateData() noexcept;
 
     //NetWorkApi _netAPI;
 };
