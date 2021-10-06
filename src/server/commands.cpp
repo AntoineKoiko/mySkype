@@ -19,6 +19,7 @@ static int sendAllRequests(const std::string &owner, ContactHandler &handler, As
     for (auto it = contacts.cbegin(); it != contacts.cend(); ++it) {
         client.write(207, it->_name.c_str());
     }
+    return 0;
 }
 
 int AsioTCPCli::login(const std::string &username)
@@ -70,9 +71,9 @@ int AsioTCPCli::addContactRequest(const std::string &username)
     return 0;
 }
 
-static bool checkContactRequest(const ContactHandler *handler, const std::string &username, const std::string &owner)
+static bool checkContactRequest(const ContactHandler &handler, const std::string &username, const std::string &owner)
 {
-    auto ownerRequests = handler->getListOfContactRequest(owner);
+    auto ownerRequests = handler.getListOfContactRequest(owner);
 
     for (auto it = ownerRequests.cbegin(); it != ownerRequests.cend(); ++it) {
         if (it->_name == username) {
