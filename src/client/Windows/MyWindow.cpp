@@ -97,10 +97,12 @@ void MyWindow::on_hangUp_button_clicked()
 
 void MyWindow::on_acceptContactRequest_button_clicked()
 {
+    _contactHandler.acceptContactRequest();
 }
 
 void MyWindow::on_dismissContactRequest_button_clicked()
 {
+    _contactHandler.dismissContactRequest();
 }
 
 void MyWindow::on_addContactRequest_button_clicked()

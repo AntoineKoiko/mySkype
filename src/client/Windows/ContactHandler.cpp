@@ -29,7 +29,7 @@ std::vector<Contact> ContactHandler::getContactRequests() const noexcept
     return _pendingContacts;
 }
 
-void ContactHandler::acceptContactRequest(const std::string &username)
+void ContactHandler::acceptContactRequest()
 {
     std::vector<std::string> selected = _pendingContacList->getSelectdStrItems();
 
@@ -41,7 +41,7 @@ void ContactHandler::acceptContactRequest(const std::string &username)
     this->updateData();
 }
 
-void ContactHandler::dismissContactRequest(const std::string &username)
+void ContactHandler::dismissContactRequest()
 {
     _pendingContacList->deleteSelectedRow();
     this->updateData();
@@ -70,6 +70,7 @@ bool ContactHandler::makeContactRequest(const std::string &username)
     std::cout << "Add " << username << "from handler" << std::endl;
     //need to have NetworkAPI
     // if we decide to send packet from here
+    return true;
 }
 
 void ContactHandler::updateData() noexcept

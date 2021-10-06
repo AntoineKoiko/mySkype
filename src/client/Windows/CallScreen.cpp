@@ -10,9 +10,9 @@
 CallScreen::CallScreen(QWidget *parent) : QWidget(parent),
                                           _inCallLabel(std::make_unique<QLabel>()),
                                           _hangUpButton(std::make_unique<QPushButton>()),
-                                          _layout(std::make_unique<QVBoxLayout>()),
                                           _padTop(std::make_unique<QLabel>()),
-                                          _padBot(std::make_unique<QLabel>())
+                                          _padBot(std::make_unique<QLabel>()),
+                                          _layout(std::make_unique<QVBoxLayout>())
 
 {
     _inCallLabel->setText("In Call With:");
