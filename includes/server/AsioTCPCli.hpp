@@ -31,7 +31,8 @@ class AsioTCPCli : public std::enable_shared_from_this<AsioTCPCli> {
         // cmds
         int login(const std::string &);
         int addContactRequest(const std::string &);
-        int addContact(const std::string &);
+        int acceptContact(const std::string &);
+        int denyContact(const std::string &);
         int delContact(const std::string &);
 
     protected:

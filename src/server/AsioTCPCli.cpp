@@ -14,8 +14,9 @@ AsioTCPCli::AsioTCPCli(asio::io_context &context)
 {
     _cmd_map[000] = &AsioTCPCli::login;
     _cmd_map[001] = &AsioTCPCli::addContactRequest;
-    _cmd_map[002] = &AsioTCPCli::addContact;
-    // _cmd_map[003] = &AsioTCPCli::delContact;
+    _cmd_map[002] = &AsioTCPCli::acceptContact;
+    _cmd_map[003] = &AsioTCPCli::denyContact;
+    _cmd_map[004] = &AsioTCPCli::delContact;
 }
 
 AsioTCPCli::~AsioTCPCli()
