@@ -84,9 +84,8 @@ static bool checkContactRequest(const ContactHandler *handler, const std::string
 
 int AsioTCPCli::addContact(const std::string &username)
 {
-    // TODO: accept contact request
     if (!this->_connected_user) {
-        write(500, "You must be logged in");
+        write(500, "You must be logged in"); // TODO: send real code
         return 1;
     }
     auto serv = get_server();
@@ -96,7 +95,7 @@ int AsioTCPCli::addContact(const std::string &username)
 
     if (user._exists) {
         if (!checkContactRequest(contactHandler, username, this->_connected_user->_name)) {
-            write(500, "Request not found");
+            write(500, "Request not found"); // TODO: send real code
             return 1;
         }
         contactHandler.acceptContactRequest(this->_connected_user->_name, username);
