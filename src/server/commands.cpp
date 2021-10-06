@@ -18,6 +18,7 @@ static int sendAllRequests(const std::string &owner, ContactHandler &handler, As
 
     for (auto it = contacts.cbegin(); it != contacts.cend(); ++it) {
         client.write(207, it->_name.c_str());
+        std::cout << it->_name << " request to " << owner << " has been send" << std::endl;
     }
     return 0;
 }
@@ -31,18 +32,20 @@ int AsioTCPCli::login(const std::string &username)
     User user = userHandler.getUser(username);
 
     if (user._exists) {
-        this->_connected_user = std::make_shared<User>(user);
-        write(201, username.c_str());
-        sendAllRequests(this->_connected_user->_name, contactHandler, *this);
-    } else {
-        serv->getUserHandler().addUser(username);
-        user = userHandler.getUser(username);
         if (serv->getServer().isUserLogged(username)) {
             write(401, username.c_str());
             return 1;
         }
         this->_connected_user = std::make_shared<User>(user);
         write(201, username.c_str());
+        std::cout << this->_connected_user << " has logged in" << std::endl;
+        sendAllRequests(this->_connected_user->_name, contactHandler, *this);
+    } else {
+        serv->getUserHandler().addUser(username);
+        user = userHandler.getUser(username);
+        this->_connected_user = std::make_shared<User>(user);
+        write(201, username.c_str());
+        std::cout << this->_connected_user << " has been created and logged in" << std::endl;
         sendAllRequests(this->_connected_user->_name, contactHandler, *this);
     }
     return 0;
