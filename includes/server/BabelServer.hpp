@@ -26,6 +26,7 @@ namespace Babel
 
             // Getters
 
+            const AsioTCPServer &getServer() const;
             const DatabaseManager &getDb() const;
             const UserHandler &getUserHandler() const;
             const ContactHandler &getContactHandler() const;

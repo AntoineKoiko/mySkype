@@ -10,7 +10,7 @@
 #include <iostream>
 
 AsioTCPCli::AsioTCPCli(asio::io_context &context)
-: _socket(context)
+: _socket(context), _connected_user(nullptr)
 {
     _cmd_map[000] = &AsioTCPCli::login;
 }
@@ -48,7 +48,12 @@ void AsioTCPCli::handle_read(const asio::error_code &err, const std::size_t byte
         return;
     }
     if (bytes > 0 && data->size > 0) {
-        // TODO: command handler
+        auto it = _cmd_map.find(data->code);
+
+        if (it != _cmd_map.end())
+            (this->*(it->second))(data->data);
+        else
+            write(500, "Error");
     }
 }
 
@@ -78,4 +83,9 @@ void AsioTCPCli::write(int code, const char data[])
 
     std::memcpy(data_struct.data, data, data_struct.size);
     _socket.async_write_some(asio::buffer(data_struct_ptr, sizeof(data_t)), handler);
+}
+
+const std::shared_ptr<Babel::User> AsioTCPCli::getConnectedUser() const
+{
+    return _connected_user;
 }

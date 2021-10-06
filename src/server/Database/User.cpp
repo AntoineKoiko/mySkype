@@ -9,7 +9,7 @@
 
 using namespace Babel;
 
-User::User() : _name(""), _exists(false)
+User::User() : _name(""), _exists(false), _isConnected(false)
 {
 }
 

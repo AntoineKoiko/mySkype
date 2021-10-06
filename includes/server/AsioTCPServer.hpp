@@ -22,6 +22,7 @@ class AsioTCPServer {
 
         asio::ip::tcp::socket &getSocket() const;
         void startAccept();
+        bool isUserLogged(const std::string &) const;
         void run();
 
     protected:
