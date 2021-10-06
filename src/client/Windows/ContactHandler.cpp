@@ -9,8 +9,12 @@
 
 ContactHandler::ContactHandler(ListStrWidget *contact, ListStrWidget *pendingContact)
 {
-    _contacList = contact;
-    _pendingContacList = pendingContact;
+    _contactList = contact;
+    _pendingContactList = pendingContact;
+    _pendingContactList->addItem("test");
+    _pendingContactList->addItem("test1");
+    _pendingContactList->addItem("test2");
+    this->updateData();
 }
 
 ContactHandler::~ContactHandler()
@@ -31,19 +35,19 @@ std::vector<Contact> ContactHandler::getContactRequests() const noexcept
 
 void ContactHandler::acceptContactRequest()
 {
-    std::vector<std::string> selected = _pendingContacList->getSelectdStrItems();
+    std::vector<std::string> selected = _pendingContactList->getSelectdStrItems();
 
     for (const std::string lt : selected)
     {
-        _contacList->addItem(QString::fromStdString(lt));
+        _contactList->addItem(QString::fromStdString(lt));
     }
-    _pendingContacList->deleteSelectedRow();
+    _pendingContactList->deleteSelectedRow();
     this->updateData();
 }
 
 void ContactHandler::dismissContactRequest()
 {
-    _pendingContacList->deleteSelectedRow();
+    _pendingContactList->deleteSelectedRow();
     this->updateData();
 }
 
@@ -52,14 +56,14 @@ void ContactHandler::dismissContactRequest()
 bool ContactHandler::addContact(const std::string &username)
 {
     this->_contacts.push_back(Contact{username});
-    _contacList->addItem(QString::fromStdString(username));
+    _contactList->addItem(QString::fromStdString(username));
     return true;
 }
 
 bool ContactHandler::addContactRequest(const std::string &username)
 {
     this->_pendingContacts.push_back(Contact{username});
-    _pendingContacList->addItem(QString::fromStdString(username));
+    _pendingContactList->addItem(QString::fromStdString(username));
     return true;
 }
 
@@ -75,9 +79,9 @@ bool ContactHandler::makeContactRequest(const std::string &username)
 
 void ContactHandler::updateData() noexcept
 {
-    std::vector<std::string> contactUsername = _contacList->getStrItems();
+    std::vector<std::string> contactUsername = _contactList->getStrItems();
     std::vector<Contact> contactBuf;
-    std::vector<std::string> pendingUsername = _pendingContacList->getStrItems();
+    std::vector<std::string> pendingUsername = _pendingContactList->getStrItems();
     std::vector<Contact> pendingBuf;
 
     for (const std::string lt : contactUsername)
