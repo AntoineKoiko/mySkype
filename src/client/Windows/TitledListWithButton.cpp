@@ -10,17 +10,10 @@
 TitledListWithButton::TitledListWithButton() : QWidget(),
                                                _title(std::make_unique<QLabel>(this)),
                                                _list(std::make_unique<ListStrWidget>(this)),
-                                               _button(std::make_unique<QPushButton>(this)),
-                                               _vLayout(std::make_unique<QVBoxLayout>())
+                                               _button(std::make_unique<QPushButton>(this))
 {
     _title->setText("unknown");
     _button->setText("unknown");
-
-    _vLayout->addWidget(_title.get());
-    _vLayout->addWidget(_list.get(), Qt::AbsoluteSize);
-    _vLayout->addWidget(_button.get());
-
-    setLayout(_vLayout.get());
 }
 
 TitledListWithButton::~TitledListWithButton()
@@ -40,9 +33,4 @@ ListStrWidget *TitledListWithButton::getList() const noexcept
 QPushButton *TitledListWithButton::getButton() const noexcept
 {
     return _button.get();
-}
-
-QVBoxLayout *TitledListWithButton::getVLayout() const noexcept
-{
-    return _vLayout.get();
 }

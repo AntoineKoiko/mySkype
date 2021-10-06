@@ -27,13 +27,11 @@ public:
     QLabel *getTitle() const noexcept;
     ListStrWidget *getList() const noexcept;
     QPushButton *getButton() const noexcept;
-    QVBoxLayout *getVLayout() const noexcept;
 
 private:
     std::unique_ptr<QLabel> _title;
     std::unique_ptr<ListStrWidget> _list;
     std::unique_ptr<QPushButton> _button;
-    std::unique_ptr<QVBoxLayout> _vLayout;
 };
 
 #endif /* !TITLEDLISTWITHBUTTON_HPP_ */
