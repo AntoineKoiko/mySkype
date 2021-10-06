@@ -9,7 +9,7 @@
 
 using namespace Babel;
 
-BabelServer::BabelServer(int port) : _tcp_server(port), _db("babel"), _userHandler(_db), _contactHandler(_db)
+BabelServer::BabelServer(int port) : _tcp_server(port), _db(std::make_shared<DatabaseManager>("babel.db")), _userHandler(_db), _contactHandler(_db)
 {
 }
 
@@ -22,7 +22,7 @@ void BabelServer::start()
     _tcp_server.run();
 }
 
-const DatabaseManager &BabelServer::getDb() const
+const std::shared_ptr<DatabaseManager> BabelServer::getDb() const
 {
     return _db;
 }

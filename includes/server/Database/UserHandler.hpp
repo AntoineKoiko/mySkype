@@ -9,6 +9,7 @@
 #define USER_HANDLER_HPP
 
 #include <string>
+#include <memory>
 
 #include "DatabaseManager.hpp"
 #include "User.hpp"
@@ -22,7 +23,7 @@ namespace Babel {
     class UserHandler
     {
         public :
-            UserHandler(DatabaseManager &dbManager);
+            UserHandler(const std::shared_ptr<DatabaseManager> dbManager);
             ~UserHandler();
 
             void addUser(const std::string &name) const;
@@ -36,7 +37,7 @@ namespace Babel {
         protected :
 
         private :
-            DatabaseManager _dbManager;
+            std::shared_ptr<DatabaseManager> _dbManager;
     };
 }
 

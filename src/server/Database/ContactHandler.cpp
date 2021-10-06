@@ -9,18 +9,18 @@
 
 using namespace Babel;
 
-ContactHandler::ContactHandler(DatabaseManager &dbManager) : _dbManager(dbManager)
+ContactHandler::ContactHandler(const std::shared_ptr<DatabaseManager> dbManager) : _dbManager(dbManager)
 {
     std::vector<std::pair<const std::string, const std::string>> contactDescription =
     {{"pseudo", "text"}, {"owner", "text"}};
     std::vector<std::pair<const std::string, const std::string>> contactRequestDescription =
     {{"pseudo", "text"}, {"owner", "text"}};
 
-    if (!(_dbManager.checkIfTableExist(CONTACT_TABLE_NAME))) {
-        _dbManager.createTable(CONTACT_TABLE_NAME, CONTACT_PRIMARY_KEY_NAME, contactDescription);
+    if (!(_dbManager->checkIfTableExist(CONTACT_TABLE_NAME))) {
+        _dbManager->createTable(CONTACT_TABLE_NAME, CONTACT_PRIMARY_KEY_NAME, contactDescription);
     }
-    if (!(_dbManager.checkIfTableExist(CONTACT_REQUEST_TABLE_NAME))) {
-        _dbManager.createTable(CONTACT_REQUEST_TABLE_NAME, CONTACT_PRIMARY_KEY_NAME, contactRequestDescription);
+    if (!(_dbManager->checkIfTableExist(CONTACT_REQUEST_TABLE_NAME))) {
+        _dbManager->createTable(CONTACT_REQUEST_TABLE_NAME, CONTACT_PRIMARY_KEY_NAME, contactRequestDescription);
     }
 }
 
@@ -31,10 +31,10 @@ void ContactHandler::addContact(const std::string &owner, const std::string &nam
     std::vector<std::tuple<const std::string, const std::string, const std::string>> contactRequestSearched
     = {{"owner", "text", owner}, {"pseudo", "text", name}};
     std::vector<std::tuple<const std::string, const std::string>> newContact
-    = {{"int", std::to_string(_dbManager.getNextFreePrimaryKey(CONTACT_TABLE_NAME, CONTACT_PRIMARY_KEY_NAME))},
+    = {{"int", std::to_string(_dbManager->getNextFreePrimaryKey(CONTACT_TABLE_NAME, CONTACT_PRIMARY_KEY_NAME))},
     {"text", name}, {"text", owner}};
 
-    _dbManager.addEntry(CONTACT_TABLE_NAME, newContact);
+    _dbManager->addEntry(CONTACT_TABLE_NAME, newContact);
 }
 
 void ContactHandler::removeContact(const std::string &owner, const std::string &name) const
@@ -42,7 +42,7 @@ void ContactHandler::removeContact(const std::string &owner, const std::string &
     std::vector<std::tuple<const std::string, const std::string, const std::string>> contactSearched
     = {{"owner", "text", owner}, {"pseudo", "text", name}};
 
-    _dbManager.deleteEntry(CONTACT_TABLE_NAME, contactSearched);
+    _dbManager->deleteEntry(CONTACT_TABLE_NAME, contactSearched);
 }
 
 std::vector<Contact> ContactHandler::getListOfContact(const std::string &owner) const
@@ -50,7 +50,7 @@ std::vector<Contact> ContactHandler::getListOfContact(const std::string &owner) 
     std::vector<std::tuple<const std::string, const std::string, const std::string>> contactSearched
     = {{"owner", "text", owner}};
     std::vector<std::vector<std::string>> contactTable =
-    _dbManager.getEntry(CONTACT_TABLE_NAME, contactSearched);
+    _dbManager->getEntry(CONTACT_TABLE_NAME, contactSearched);
     std::vector<Contact> listOfContact = {};
     Contact contact;
 
@@ -66,32 +66,32 @@ void ContactHandler::addContactRequest(const std::string &owner, const std::stri
 {
     std::vector<std::tuple<const std::string, const std::string, const std::string>> contactRequestSearched
     = {{"owner", "text", owner}, {"pseudo", "text", name}};
-    
-    if (_dbManager.getEntry(CONTACT_REQUEST_TABLE_NAME, contactRequestSearched).size() != 0)
+
+    if (_dbManager->getEntry(CONTACT_REQUEST_TABLE_NAME, contactRequestSearched).size() != 0)
         return;
 
     std::vector<std::tuple<const std::string, const std::string>> newContactRequest
-    = {{"int", std::to_string(_dbManager.getNextFreePrimaryKey(CONTACT_REQUEST_TABLE_NAME, CONTACT_PRIMARY_KEY_NAME))},
+    = {{"int", std::to_string(_dbManager->getNextFreePrimaryKey(CONTACT_REQUEST_TABLE_NAME, CONTACT_PRIMARY_KEY_NAME))},
     {"text", name}, {"text", owner}};
 
-    _dbManager.addEntry(CONTACT_REQUEST_TABLE_NAME, newContactRequest);
+    _dbManager->addEntry(CONTACT_REQUEST_TABLE_NAME, newContactRequest);
 }
 
 void ContactHandler::acceptContactRequest(const std::string &owner, const std::string &name) const
 {
     std::vector<std::tuple<const std::string, const std::string, const std::string>> contactRequestSearched
     = {{"owner", "text", owner}, {"pseudo", "text", name}};
-    std::vector<std::vector<std::string>> contactRequest = _dbManager.getEntry(CONTACT_REQUEST_TABLE_NAME, contactRequestSearched);
+    std::vector<std::vector<std::string>> contactRequest = _dbManager->getEntry(CONTACT_REQUEST_TABLE_NAME, contactRequestSearched);
 
     if (contactRequest.size() == 0)
         return;
 
     std::vector<std::tuple<const std::string, const std::string>> newContact
-    = {{"int", std::to_string(_dbManager.getNextFreePrimaryKey(CONTACT_TABLE_NAME, CONTACT_PRIMARY_KEY_NAME))},
+    = {{"int", std::to_string(_dbManager->getNextFreePrimaryKey(CONTACT_TABLE_NAME, CONTACT_PRIMARY_KEY_NAME))},
     {"text", name}, {"text", owner}};
 
-    _dbManager.addEntry(CONTACT_TABLE_NAME, newContact);
-    _dbManager.deleteEntry(CONTACT_REQUEST_TABLE_NAME, contactRequestSearched);
+    _dbManager->addEntry(CONTACT_TABLE_NAME, newContact);
+    _dbManager->deleteEntry(CONTACT_REQUEST_TABLE_NAME, contactRequestSearched);
 }
 
 void ContactHandler::dismissContactRequest(const std::string &owner, const std::string &name) const
@@ -99,7 +99,7 @@ void ContactHandler::dismissContactRequest(const std::string &owner, const std::
     std::vector<std::tuple<const std::string, const std::string, const std::string>> contactRequestSearched
     = {{"owner", "text", owner}, {"pseudo", "text", name}};
 
-    _dbManager.deleteEntry(CONTACT_REQUEST_TABLE_NAME, contactRequestSearched);
+    _dbManager->deleteEntry(CONTACT_REQUEST_TABLE_NAME, contactRequestSearched);
 }
 
 std::vector<Contact> ContactHandler::getListOfContactRequest(const std::string &owner) const
@@ -107,7 +107,7 @@ std::vector<Contact> ContactHandler::getListOfContactRequest(const std::string &
     std::vector<std::tuple<const std::string, const std::string, const std::string>> contactRequestSearched
     = {{"owner", "text", owner}};
     std::vector<std::vector<std::string>> contactRequestTable =
-    _dbManager.getEntry(CONTACT_REQUEST_TABLE_NAME, contactRequestSearched);
+    _dbManager->getEntry(CONTACT_REQUEST_TABLE_NAME, contactRequestSearched);
     std::vector<Contact> listOfContactRequest = {};
     Contact contactRequest;
 

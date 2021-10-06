@@ -10,6 +10,7 @@
 
 #include <iostream>
 #include <deque>
+#include <memory>
 #include "AsioTCPServer.hpp"
 #include "Database/DatabaseManager.hpp"
 #include "Database/UserHandler.hpp"
@@ -27,14 +28,14 @@ namespace Babel
             // Getters
 
             const AsioTCPServer &getServer() const;
-            const DatabaseManager &getDb() const;
+            const std::shared_ptr<DatabaseManager> getDb() const;
             const UserHandler &getUserHandler() const;
             const ContactHandler &getContactHandler() const;
 
         protected:
         private:
             AsioTCPServer _tcp_server;
-            DatabaseManager _db;
+            std::shared_ptr<DatabaseManager> _db;
             UserHandler _userHandler;
             ContactHandler _contactHandler;
 

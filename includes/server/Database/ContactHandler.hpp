@@ -9,6 +9,7 @@
 #define CONTACT_HANDLER_HPP
 
 #include <string>
+#include <memory>
 
 #include "DatabaseManager.hpp"
 #include "Contact.hpp"
@@ -22,7 +23,7 @@ namespace Babel {
     class ContactHandler
     {
         public :
-            ContactHandler(DatabaseManager &dbManager);
+            ContactHandler(const std::shared_ptr<DatabaseManager> dbManager);
             ~ContactHandler();
 
             void addContact(const std::string &owner, const std::string &name) const;
@@ -40,7 +41,7 @@ namespace Babel {
         protected :
 
         private :
-            DatabaseManager _dbManager;
+            std::shared_ptr<DatabaseManager> _dbManager;
     };
 }
 

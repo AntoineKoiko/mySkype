@@ -262,8 +262,10 @@ std::vector<std::tuple<const std::string /*NAME*/,
             sql += "\'" + std::get<2>(entryDescription[i]) + "\'";
     }
     rc = sqlite3_prepare_v2(_db, sql.data(), -1, &stmt, NULL);
-    if (rc != SQLITE_OK)
+    if (rc != SQLITE_OK) {
+        std::cout << "SQL_ERROR: " << rc << std::endl;
         throw DatabaseManagerError("Get entry - Prepare fail !");
+    }
     rc = sqlite3_step(stmt);
     if (rc != SQLITE_ROW && rc != SQLITE_DONE) {
         sqlite3_finalize(stmt);
