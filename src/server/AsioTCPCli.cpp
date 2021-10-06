@@ -13,6 +13,9 @@ AsioTCPCli::AsioTCPCli(asio::io_context &context)
 : _socket(context), _connected_user(nullptr)
 {
     _cmd_map[000] = &AsioTCPCli::login;
+    _cmd_map[001] = &AsioTCPCli::addContactRequest;
+    _cmd_map[002] = &AsioTCPCli::addContact;
+    // _cmd_map[003] = &AsioTCPCli::delContact;
 }
 
 AsioTCPCli::~AsioTCPCli()
