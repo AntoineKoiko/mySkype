@@ -39,12 +39,12 @@ set(SRCS_SERVER
        src/server/Database/UserHandler.cpp
        src/server/Database/DatabaseManager.cpp
        src/server/Database/DatabaseManagerError.cpp
-        src/server/main.cpp
-        src/server/commands.cpp
-        src/server/utils.cpp
-        src/server/AsioTCPServer.cpp
-        src/server/AsioTCPCli.cpp
-        src/server/BabelServer.cpp
+       src/server/main.cpp
+       src/server/commands.cpp
+       src/server/utils.cpp
+       src/server/AsioTCPServer.cpp
+       src/server/AsioTCPCli.cpp
+       src/server/BabelServer.cpp
 )
 
 set(SRCS_CLIENT

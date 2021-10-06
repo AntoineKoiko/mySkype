@@ -1,5 +1,9 @@
-// Server-side Synchronous Chatting Application
-// using C++ asio
+/*
+** EPITECH PROJECT, 2021
+** B-CPP-500-REN-5-1-babel-aurelien.joncour
+** File description:
+** main
+*/
 
 #include "utils.hpp"
 #include <iostream>
