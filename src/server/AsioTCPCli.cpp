@@ -59,6 +59,7 @@ void AsioTCPCli::handle_read(const asio::error_code &err, const std::size_t byte
         else
             write(500, "Error");
     }
+    this->read();
 }
 
 void AsioTCPCli::read()
