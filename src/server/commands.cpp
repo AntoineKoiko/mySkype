@@ -160,3 +160,27 @@ int AsioTCPCli::delContact(const std::string &username)
     }
     return 0;
 }
+
+int AsioTCPCli::getContacts(const std::string &username)
+{
+    if (!this->_connected_user) {
+        write(500, "You must be looged in");
+        return 1;
+    }
+    auto serv = get_server();
+    auto contactHandler = serv->getContactHandler();
+    auto userHandler = serv->getUserHandler();
+    User user = userHandler.getUser(username);
+    std::vector<Contact> contactsList;
+    std::string data;
+
+    if (user._exists) {
+        contactsList = contactHandler.getListOfContact(user._name);
+        for (auto &contact : contactsList) {
+            data.append(contact._name);
+            data.append(";");
+        }
+        write(206, data.c_str());
+    }
+    return 0;
+}

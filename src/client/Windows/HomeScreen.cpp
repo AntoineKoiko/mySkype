@@ -24,10 +24,6 @@ HomeScreen::HomeScreen(QWidget *parent) : QWidget(parent),
 
 void HomeScreen::setUp_widget() noexcept
 {
-    for (int i = 0; i < 200; i++)
-    {
-        _contactWidget->getList()->addItem(QString::number(i));
-    }
 
     _callButton->setText("Call");
 

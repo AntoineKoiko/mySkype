@@ -50,6 +50,20 @@ void RequestHandler::onNewPacketReceive()
     {
         this->_contactHandler->addContactRequest(dataPacket.data);
     }
+    if (dataPacket.code == 206) {
+        std::vector<std::string> contactList = this->split_string(dataPacket.data);
+        for (auto &contact : contactList) {
+            this->_contactHandler->addContact(contact);
+        }
+    }
+    if (dataPacket.code == 201) {
+        DataPacket packetSend;
+
+        packetSend.code = 005;
+        std::memcpy(packetSend.data, dataPacket.data, dataPacket.size);
+        packetSend.size = dataPacket.size;
+        this->_client->send(DataPacketManager::serialize(packetSend));
+    }
     //this->_contactHandler->dism
     std::cout << "code:" << dataPacket.code << std::endl;
     std::cout << "content: " << dataPacket.data << std::endl;

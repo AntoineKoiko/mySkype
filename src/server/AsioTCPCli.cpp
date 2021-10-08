@@ -17,6 +17,7 @@ AsioTCPCli::AsioTCPCli(asio::io_context &context)
     _cmd_map[002] = &AsioTCPCli::acceptContact;
     _cmd_map[003] = &AsioTCPCli::denyContact;
     _cmd_map[004] = &AsioTCPCli::delContact;
+    _cmd_map[005] = &AsioTCPCli::getContacts;
 }
 
 AsioTCPCli::~AsioTCPCli()

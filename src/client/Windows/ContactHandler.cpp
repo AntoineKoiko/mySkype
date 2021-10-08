@@ -11,9 +11,6 @@ ContactHandler::ContactHandler(ListStrWidget *contact, ListStrWidget *pendingCon
 {
     _contactList = contact;
     _pendingContactList = pendingContact;
-    _pendingContactList->addItem("test");
-    _pendingContactList->addItem("test1");
-    _pendingContactList->addItem("test2");
     _network = network;
     this->updateData();
 }
