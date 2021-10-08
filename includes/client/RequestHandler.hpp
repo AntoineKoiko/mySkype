@@ -12,22 +12,27 @@
 #include "TcpClient.hpp"
 #include "ContactHandler.hpp"
 #include "UserHandler.hpp"
+#include <vector>
+#include <string>
 
-class RequestHandler : public QObject {
+class RequestHandler : public QObject
+{
     Q_OBJECT
-    public:
-        RequestHandler(const std::shared_ptr<Babel::Client::Network::TcpClient> client,
-            std::shared_ptr<UserHandler> userHandler, std::shared_ptr<ContactHandler> contactHandler);
-        ~RequestHandler();
+public:
+    RequestHandler(const std::shared_ptr<Babel::Client::Network::TcpClient> client,
+                   std::shared_ptr<UserHandler> userHandler, std::shared_ptr<ContactHandler> contactHandler);
+    ~RequestHandler();
 
-    private slots:
-        void onNewPacketReceive();
+    std::vector<std::string> split_string(const std::string &str, char separator) const;
 
-    protected:
-    private:
-        std::shared_ptr<Babel::Client::Network::TcpClient> _client;
-        std::shared_ptr<UserHandler> _userHandler;
-        std::shared_ptr<ContactHandler> _contactHandler;
+private slots:
+    void onNewPacketReceive();
+
+protected:
+private:
+    std::shared_ptr<Babel::Client::Network::TcpClient> _client;
+    std::shared_ptr<UserHandler> _userHandler;
+    std::shared_ptr<ContactHandler> _contactHandler;
 };
 
 #endif /* !REQUESTHANDLER_HPP_ */
