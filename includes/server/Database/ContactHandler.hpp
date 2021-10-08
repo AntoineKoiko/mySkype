@@ -36,7 +36,7 @@ namespace Babel {
             void acceptContactRequest(const std::string &owner, const std::string &name) const;
             void dismissContactRequest(const std::string &owner, const std::string &name) const;
 
-            std::vector<Contact> getListOfContactRequest(const std::string &owner) const;
+            std::vector<Contact> getListOfContactRequest(const std::string &pseudo) const;
 
         protected :
 

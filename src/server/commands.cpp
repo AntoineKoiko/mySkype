@@ -38,7 +38,7 @@ int AsioTCPCli::login(const std::string &username)
         // }
         this->_connected_user = std::make_shared<User>(user);
         write(201, username.c_str());
-        std::cout << this->_connected_user << " has logged in" << std::endl;
+        std::cout << this->_connected_user->_name << " has logged in" << std::endl;
         sendAllRequests(this->_connected_user->_name, contactHandler, *this);
     } else {
         serv->getUserHandler().addUser(username);
@@ -76,10 +76,10 @@ int AsioTCPCli::addContactRequest(const std::string &username)
 
 static bool checkContactRequest(const ContactHandler &handler, const std::string &username, const std::string &owner)
 {
-    auto ownerRequests = handler.getListOfContactRequest(owner);
+    auto ownerRequests = handler.getListOfContactRequest(username);
 
     for (auto it = ownerRequests.cbegin(); it != ownerRequests.cend(); ++it) {
-        if (it->_name == username) {
+        if (it->_owner == owner) {
             return true;
         }
     }
@@ -110,11 +110,11 @@ int AsioTCPCli::acceptContact(const std::string &username)
     User user = userHandler.getUser(username);
 
     if (user._exists) {
-        if (!checkContactRequest(contactHandler, username, this->_connected_user->_name)) {
+        if (!checkContactRequest(contactHandler, this->_connected_user->_name, username)) {
             write(500, "Request not found"); // TODO: send real code
             return 1;
         }
-        contactHandler.acceptContactRequest(this->_connected_user->_name, username);
+        contactHandler.acceptContactRequest(username, this->_connected_user->_name);
     }
     return 0;
 }

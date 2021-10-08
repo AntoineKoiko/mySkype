@@ -28,13 +28,15 @@ ContactHandler::~ContactHandler() {}
 
 void ContactHandler::addContact(const std::string &owner, const std::string &name) const
 {
-    std::vector<std::tuple<const std::string, const std::string, const std::string>> contactRequestSearched
-    = {{"owner", "text", owner}, {"pseudo", "text", name}};
     std::vector<std::tuple<const std::string, const std::string>> newContact
     = {{"int", std::to_string(_dbManager->getNextFreePrimaryKey(CONTACT_TABLE_NAME, CONTACT_PRIMARY_KEY_NAME))},
     {"text", name}, {"text", owner}};
-
     _dbManager->addEntry(CONTACT_TABLE_NAME, newContact);
+
+    std::vector<std::tuple<const std::string, const std::string>> newContact2
+    = {{"int", std::to_string(_dbManager->getNextFreePrimaryKey(CONTACT_TABLE_NAME, CONTACT_PRIMARY_KEY_NAME))},
+    {"text", owner}, {"text", name}};
+    _dbManager->addEntry(CONTACT_TABLE_NAME, newContact2);
 }
 
 void ContactHandler::removeContact(const std::string &owner, const std::string &name) const
@@ -85,12 +87,7 @@ void ContactHandler::acceptContactRequest(const std::string &owner, const std::s
 
     if (contactRequest.size() == 0)
         return;
-
-    std::vector<std::tuple<const std::string, const std::string>> newContact
-    = {{"int", std::to_string(_dbManager->getNextFreePrimaryKey(CONTACT_TABLE_NAME, CONTACT_PRIMARY_KEY_NAME))},
-    {"text", name}, {"text", owner}};
-
-    _dbManager->addEntry(CONTACT_TABLE_NAME, newContact);
+    this->addContact(owner, name);
     _dbManager->deleteEntry(CONTACT_REQUEST_TABLE_NAME, contactRequestSearched);
 }
 
@@ -102,11 +99,10 @@ void ContactHandler::dismissContactRequest(const std::string &owner, const std::
     _dbManager->deleteEntry(CONTACT_REQUEST_TABLE_NAME, contactRequestSearched);
 }
 
-//On recherche toute les contacts ou le owner(user connected) est dans la table pseudo
-std::vector<Contact> ContactHandler::getListOfContactRequest(const std::string &owner) const
+std::vector<Contact> ContactHandler::getListOfContactRequest(const std::string &pseudo) const
 {
     std::vector<std::tuple<const std::string, const std::string, const std::string>> contactRequestSearched
-    = {{"pseudo", "text", owner}};
+    = {{"pseudo", "text", pseudo}};
     std::vector<std::vector<std::string>> contactRequestTable =
     _dbManager->getEntry(CONTACT_REQUEST_TABLE_NAME, contactRequestSearched);
     std::vector<Contact> listOfContactRequest = {};
