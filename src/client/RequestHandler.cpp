@@ -51,7 +51,7 @@ void RequestHandler::onNewPacketReceive()
         this->_contactHandler->addContactRequest(dataPacket.data);
     }
     if (dataPacket.code == 206) {
-        std::vector<std::string> contactList = this->split_string(dataPacket.data);
+        std::vector<std::string> contactList = this->split_string(std::string(dataPacket.data), ';');
         for (auto &contact : contactList) {
             this->_contactHandler->addContact(contact);
         }
