@@ -10,14 +10,17 @@
 
 #include <vector>
 #include <string>
+#include <memory>
 
 #include "Contact.hpp"
 #include "ListStrWidget.hpp"
+#include "TcpClient.hpp"
+#include "DataPacketManager.hpp"
 
 class ContactHandler
 {
 public:
-    ContactHandler(ListStrWidget *contact, ListStrWidget *pendingContact);
+    ContactHandler(ListStrWidget *contact, ListStrWidget *pendingContact, const std::shared_ptr<Babel::Client::Network::TcpClient> network);
     ~ContactHandler();
 
     std::vector<Contact> getContacts() const noexcept;
@@ -34,6 +37,7 @@ private:
     std::vector<Contact> _pendingContacts;
     ListStrWidget *_contactList;
     ListStrWidget *_pendingContactList;
+    std::shared_ptr<Babel::Client::Network::TcpClient> _network;
 
     //update std::vector with content of ListStrWidget
     void updateData() noexcept;

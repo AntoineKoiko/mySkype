@@ -22,7 +22,7 @@ int main(int argc, char *argv[])
     QApplication app(argc, argv);
     auto client = std::make_shared<Network::TcpClient>();
     auto userHandler = std::make_shared<UserHandler>(client);
-    MyWindow window(userHandler);
+    MyWindow window(userHandler, client);
     int port = 0;
 
     if (argc != 3) {

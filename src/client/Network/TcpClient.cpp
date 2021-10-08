@@ -46,17 +46,31 @@ void TcpClient::socketConnectionClosed()
     std::cout << "Connection Closed" << std::endl;
 }
 
+std::vector<char> TcpClient::getData()
+{
+    std::vector<char> data;
+
+    data.resize(0);
+    if (_dataPacket.empty()) {
+        return data;
+    }
+    data = this->_dataPacket.front();
+    this->_dataPacket.pop();
+    return data;
+}
+
 void TcpClient::socketReadyRead()
 {
     std::vector<char> container;
     container.resize(sizeof(DataPacket));
 
     this->_socket->read(container.data(), sizeof(DataPacket));
-    DataPacket dataPacket = DataPacketManager::deserialize(container);
-    std::cout << dataPacket.code << std::endl;
-    std::cout << dataPacket.magic << std::endl;
-    std::cout << dataPacket.size << std::endl;
-    std::cout << dataPacket.data << std::endl;
+    _dataPacket.push(container);
+    emit this->newPacketReceive();
+    // std::cout << dataPacket.code << std::endl;
+    // std::cout << dataPacket.magic << std::endl;
+    // std::cout << dataPacket.size << std::endl;
+    // std::cout << dataPacket.data << std::endl;
 }
 
 void TcpClient::socketError(int err)

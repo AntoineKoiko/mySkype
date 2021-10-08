@@ -20,10 +20,8 @@ void UserHandler::login(const std::string &loginName) noexcept
     DataPacket loginPacket;
 
     _loginName = loginName;
-    loginPacket.magic = MAGIC_NUMBER;
     loginPacket.code = 000;
     loginPacket.size = loginName.size();
-    std::memset(loginPacket.data, 0, READ_SIZE * sizeof(char));
     std::memcpy(loginPacket.data, loginName.c_str(), loginName.size());
     _network->send(DataPacketManager::serialize(loginPacket));
 }

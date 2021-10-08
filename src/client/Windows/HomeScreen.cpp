@@ -79,7 +79,7 @@ void HomeScreen::on_addToCallButton_clicked()
 
     if (selected.size() == 0)
         return;
-    for (const QString lt : selected)
+    for (const QString &lt : selected)
     {
         if (toCallList->isIn(lt))
             break;

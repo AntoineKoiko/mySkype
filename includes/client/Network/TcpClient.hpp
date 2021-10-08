@@ -13,12 +13,13 @@
 #include <QUdpSocket>
 #include <memory>
 #include <iostream>
+#include <queue>
 #include "babel.hpp"
 #include "DataPacketManager.hpp"
 
 namespace Babel::Client::Network
 {
-    class TcpClient : QObject {
+    class TcpClient : public QObject {
         Q_OBJECT
 
         public:
@@ -27,10 +28,15 @@ namespace Babel::Client::Network
 
             void connect(const std::string &hostAddr, int port);
             void send(const std::vector<char> &packet);
+            std::vector<char> getData(void);
 
         protected:
         private:
             std::unique_ptr<QTcpSocket> _socket;
+            std::queue<std::vector<char>> _dataPacket;
+
+        signals:
+            void newPacketReceive();
 
         private slots:
             void socketConnected();

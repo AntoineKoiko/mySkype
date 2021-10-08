@@ -36,7 +36,7 @@ std::vector<QString> ListStrWidget::getSelectdQStrItems() const noexcept
     QList<QListWidgetItem *> selected = this->selectedItems();
     std::vector<QString> strList;
 
-    for (const auto lt : selected)
+    for (const auto &lt : selected)
         strList.push_back(lt->text());
     return strList;
 }

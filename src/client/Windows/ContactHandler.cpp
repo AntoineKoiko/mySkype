@@ -7,13 +7,14 @@
 
 #include "ContactHandler.hpp"
 
-ContactHandler::ContactHandler(ListStrWidget *contact, ListStrWidget *pendingContact)
+ContactHandler::ContactHandler(ListStrWidget *contact, ListStrWidget *pendingContact, const std::shared_ptr<Babel::Client::Network::TcpClient> network)
 {
     _contactList = contact;
     _pendingContactList = pendingContact;
     _pendingContactList->addItem("test");
     _pendingContactList->addItem("test1");
     _pendingContactList->addItem("test2");
+    _network = network;
     this->updateData();
 }
 
@@ -36,13 +37,19 @@ std::vector<Contact> ContactHandler::getContactRequests() const noexcept
 void ContactHandler::acceptContactRequest()
 {
     std::vector<std::string> selected = _pendingContactList->getSelectdStrItems();
+    std::string selectedContact;
+    DataPacket contactPacket;
 
-    for (const std::string lt : selected)
-    {
+    for (const std::string &lt : selected) {
         _contactList->addItem(QString::fromStdString(lt));
+        selectedContact = lt;
     }
     _pendingContactList->deleteSelectedRow();
     this->updateData();
+    contactPacket.code = 002;
+    contactPacket.size = selectedContact.size();
+    std::memcpy(contactPacket.data, selectedContact.c_str(), selectedContact.size());
+    this->_network->send(DataPacketManager::serialize(contactPacket));
 }
 
 void ContactHandler::dismissContactRequest()
@@ -71,9 +78,16 @@ bool ContactHandler::addContactRequest(const std::string &username)
 
 bool ContactHandler::makeContactRequest(const std::string &username)
 {
-    std::cout << "Add " << username << "from handler" << std::endl;
+    DataPacket contactPacket;
+
+    contactPacket.code = 001;
+    contactPacket.size = username.size();
+    std::memcpy(contactPacket.data, username.c_str(), username.size());
+    std::cout << "Make contact request to: " << username << std::endl;
     //need to have NetworkAPI
     // if we decide to send packet from here
+    std::cout << contactPacket.code << ":" << contactPacket.data << std::endl;
+    this->_network->send(DataPacketManager::serialize(contactPacket));
     return true;
 }
 
@@ -84,9 +98,9 @@ void ContactHandler::updateData() noexcept
     std::vector<std::string> pendingUsername = _pendingContactList->getStrItems();
     std::vector<Contact> pendingBuf;
 
-    for (const std::string lt : contactUsername)
+    for (const std::string &lt : contactUsername)
         contactBuf.push_back(Contact{lt});
-    for (const std::string lt : pendingUsername)
+    for (const std::string &lt : pendingUsername)
         pendingBuf.push_back(Contact{lt});
     _contacts = contactBuf;
     _pendingContacts = pendingBuf;
