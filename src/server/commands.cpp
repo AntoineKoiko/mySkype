@@ -17,8 +17,8 @@ static int sendAllRequests(const std::string &owner, ContactHandler &handler, As
     auto contacts = handler.getListOfContactRequest(owner);
 
     for (auto it = contacts.cbegin(); it != contacts.cend(); ++it) {
-        client.write(207, it->_name.c_str());
-        std::cout << it->_name << " request to " << owner << " has been send" << std::endl;
+        client.write(207, it->_owner.c_str());
+        std::cout << it->_owner << " request to " << it->_name << " has been send" << std::endl;
     }
     return 0;
 }

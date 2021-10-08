@@ -102,10 +102,11 @@ void ContactHandler::dismissContactRequest(const std::string &owner, const std::
     _dbManager->deleteEntry(CONTACT_REQUEST_TABLE_NAME, contactRequestSearched);
 }
 
+//On recherche toute les contacts ou le owner(user connected) est dans la table pseudo
 std::vector<Contact> ContactHandler::getListOfContactRequest(const std::string &owner) const
 {
     std::vector<std::tuple<const std::string, const std::string, const std::string>> contactRequestSearched
-    = {{"owner", "text", owner}};
+    = {{"pseudo", "text", owner}};
     std::vector<std::vector<std::string>> contactRequestTable =
     _dbManager->getEntry(CONTACT_REQUEST_TABLE_NAME, contactRequestSearched);
     std::vector<Contact> listOfContactRequest = {};
