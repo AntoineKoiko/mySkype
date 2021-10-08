@@ -73,6 +73,7 @@ set(SRCS_CLIENT
         src/client/Network/DataPacketManager.cpp
         src/client/Network/TcpClient.cpp
         src/client/UserHandler.cpp
+        src/client/RequestHandler.cpp
 )
 
 ## Execs
