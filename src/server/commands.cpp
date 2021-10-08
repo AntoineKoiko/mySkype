@@ -100,6 +100,8 @@ static bool checkContact(const ContactHandler &handler, const std::string &usern
 
 int AsioTCPCli::acceptContact(const std::string &username)
 {
+    AsioTCPCli *requestOwner;
+
     if (!this->_connected_user) {
         write(500, "You must be logged in"); // TODO: send real code
         return 1;
@@ -115,6 +117,8 @@ int AsioTCPCli::acceptContact(const std::string &username)
             return 1;
         }
         contactHandler.acceptContactRequest(username, this->_connected_user->_name);
+        requestOwner = serv->getServer().isUserLogged(username);
+        requestOwner->write(203, this->_connected_user->_name.c_str());
     }
     return 0;
 }

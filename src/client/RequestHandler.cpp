@@ -64,6 +64,9 @@ void RequestHandler::onNewPacketReceive()
         packetSend.size = dataPacket.size;
         this->_client->send(DataPacketManager::serialize(packetSend));
     }
+    if (dataPacket.code == 203) {//Contact Request Accept
+        this->_contactHandler->addContact(std::string(dataPacket.data));
+    }
     //this->_contactHandler->dism
     std::cout << "code:" << dataPacket.code << std::endl;
     std::cout << "content: " << dataPacket.data << std::endl;

@@ -1,6 +1,7 @@
 # Created by https://www.gitignore.io/api/c,emacs
 # Edit at https://www.gitignore.io/?templates=c,emacs
 
+babel.db
 bootstrap
 tests
 build
