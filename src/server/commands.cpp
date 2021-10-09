@@ -32,10 +32,10 @@ int AsioTCPCli::login(const std::string &username)
     User user = userHandler.getUser(username);
 
     if (user._exists) {
-        // if (serv->getServer().isUserLogged(username)) {
-        //     write(401, username.c_str());
-        //     return 1;
-        // }
+        if (serv->getServer().isUserLogged(username)) {
+            write(401, username.c_str());
+            return 1;
+        }
         this->_connected_user = std::make_shared<User>(user);
         write(201, username.c_str());
         std::cout << this->_connected_user->_name << " has logged in" << std::endl;
