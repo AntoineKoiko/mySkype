@@ -7,7 +7,7 @@
 
 #include "DatabaseManager.hpp"
 
-using namespace Babel::Server;
+using namespace Babel::Server::Db;
 
 DatabaseManager::DatabaseManager(const std::string &name) : _name(name)
 {
@@ -94,12 +94,12 @@ bool DatabaseManager::checkIfTableExist(const std::string &tableName) const
     return true;
 }
 
-size_t DatabaseManager::getTableSize(const std::string &tableName) const
+std::size_t DatabaseManager::getTableSize(const std::string &tableName) const
 {
     sqlite3_stmt *stmt;
     std::string sql = "SELECT * FROM " + tableName;
     int rc = 0;
-    size_t tableSize = 0;
+    std::size_t tableSize = 0;
 
     rc = sqlite3_prepare_v2(_db, sql.data(), -1, &stmt, NULL);
     if (rc != SQLITE_OK)

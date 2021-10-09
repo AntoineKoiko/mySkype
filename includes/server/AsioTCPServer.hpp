@@ -23,16 +23,17 @@ namespace Babel::Server
             ~AsioTCPServer();
 
             asio::ip::tcp::socket &getSocket() const;
-            void startAccept();
             AsioTCPCli *isUserLogged(const std::string &) const;
             void run();
             void disconnectClient(void);
 
         protected:
         private:
-            asio::io_context _io_context;
+            void startAccept();
+
+            asio::io_context _ioContext;
             asio::ip::tcp::acceptor _acceptor;
-            std::deque<std::shared_ptr<AsioTCPCli>> _cli_list;
+            std::deque<std::shared_ptr<AsioTCPCli>> _clientsList;
     };
 }
 

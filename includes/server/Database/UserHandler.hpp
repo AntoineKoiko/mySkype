@@ -19,7 +19,7 @@
 
 #define USER_PRIMARY_KEY_NAME "id"
 
-namespace Babel::Server {
+namespace Babel::Server::Db {
     class UserHandler
     {
         public :
@@ -31,12 +31,12 @@ namespace Babel::Server {
 
             User getUser(const std::string &name) const;
 
+            //TODO: CHECK IF ALWAYS UTILS
             void connectUser(const std::string &name) const;
             void disconnectUser(const std::string &name) const;
 
-        protected :
-
-        private :
+        protected:
+        private:
             std::shared_ptr<DatabaseManager> _dbManager;
     };
 }

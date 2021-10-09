@@ -12,7 +12,7 @@
 
 using namespace Babel::Server;
 
-static int sendAllRequests(const std::string &owner, ContactHandler &handler, AsioTCPCli &client)
+static int sendAllRequests(const std::string &owner, Db::ContactHandler &handler, AsioTCPCli &client)
 {
     auto contacts = handler.getListOfContactRequest(owner);
 
@@ -29,21 +29,21 @@ int AsioTCPCli::login(const std::string &username)
     auto serv = get_server();
     auto userHandler = serv->getUserHandler();
     auto contactHandler = serv->getContactHandler();
-    User user = userHandler.getUser(username);
+    Db::User user = userHandler.getUser(username);
 
     if (user._exists) {
         if (serv->getServer().isUserLogged(username)) {
             write(401, username.c_str());
             return 1;
         }
-        this->_connected_user = std::make_shared<User>(user);
+        this->_connected_user = std::make_shared<Db::User>(user);
         write(201, username.c_str());
         std::cout << this->_connected_user->_name << " has logged in" << std::endl;
         sendAllRequests(this->_connected_user->_name, contactHandler, *this);
     } else {
         serv->getUserHandler().addUser(username);
         user = userHandler.getUser(username);
-        this->_connected_user = std::make_shared<User>(user);
+        this->_connected_user = std::make_shared<Db::User>(user);
         write(201, username.c_str());
         std::cout << this->_connected_user << " has been created and logged in" << std::endl;
         sendAllRequests(this->_connected_user->_name, contactHandler, *this);
@@ -57,7 +57,7 @@ int AsioTCPCli::addContactRequest(const std::string &username)
     auto contactHandler = serv->getContactHandler();
     auto userHandler = serv->getUserHandler();
     const std::string owner = this->getConnectedUser()->_name;
-    const User user = userHandler.getUser(username);
+    const Db::User user = userHandler.getUser(username);
     AsioTCPCli *user_client = serv->getServer().isUserLogged(user._name);
 
     if (!this->_connected_user) {
@@ -74,7 +74,7 @@ int AsioTCPCli::addContactRequest(const std::string &username)
     return 0;
 }
 
-static bool checkContactRequest(const ContactHandler &handler, const std::string &username, const std::string &owner)
+static bool checkContactRequest(const Db::ContactHandler &handler, const std::string &username, const std::string &owner)
 {
     auto ownerRequests = handler.getListOfContactRequest(username);
 
@@ -86,7 +86,7 @@ static bool checkContactRequest(const ContactHandler &handler, const std::string
     return false;
 }
 
-static bool checkContact(const ContactHandler &handler, const std::string &username, const std::string &owner)
+static bool checkContact(const Db::ContactHandler &handler, const std::string &username, const std::string &owner)
 {
     auto contacts = handler.getListOfContact(owner);
 
@@ -109,7 +109,7 @@ int AsioTCPCli::acceptContact(const std::string &username)
     auto serv = get_server();
     auto contactHandler = serv->getContactHandler();
     auto userHandler = serv->getUserHandler();
-    User user = userHandler.getUser(username);
+    Db::User user = userHandler.getUser(username);
 
     if (user._exists) {
         if (!checkContactRequest(contactHandler, this->_connected_user->_name, username)) {
@@ -132,7 +132,7 @@ int AsioTCPCli::denyContact(const std::string &username)
     auto serv = get_server();
     auto contactHandler = serv->getContactHandler();
     auto userHandler = serv->getUserHandler();
-    User user = userHandler.getUser(username);
+    Db::User user = userHandler.getUser(username);
 
     if (user._exists) {
         if (!checkContactRequest(contactHandler, username, this->_connected_user->_name)) {
@@ -153,7 +153,7 @@ int AsioTCPCli::delContact(const std::string &username)
     auto serv = get_server();
     auto contactHandler = serv->getContactHandler();
     auto userHandler = serv->getUserHandler();
-    User user = userHandler.getUser(username);
+    Db::User user = userHandler.getUser(username);
 
     if (user._exists) {
         if (!checkContact(contactHandler, username, this->_connected_user->_name)) {
@@ -174,8 +174,8 @@ int AsioTCPCli::getContacts(const std::string &username)
     auto serv = get_server();
     auto contactHandler = serv->getContactHandler();
     auto userHandler = serv->getUserHandler();
-    User user = userHandler.getUser(username);
-    std::vector<Contact> contactsList;
+    Db::User user = userHandler.getUser(username);
+    std::vector<Db::Contact> contactsList;
     std::string data;
 
     if (user._exists) {

@@ -19,7 +19,7 @@
 
 #define CONTACT_PRIMARY_KEY_NAME "id"
 
-namespace Babel::Server {
+namespace Babel::Server::Db {
     class ContactHandler
     {
         public :

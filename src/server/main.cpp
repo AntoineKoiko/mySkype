@@ -16,7 +16,7 @@ using namespace Babel::Server;
 
 int main(int argc, char* argv[])
 {
-    int port = 9999;
+    int port = Babel::Server::defaultPort;
 
     if (argc > 1)
         port = std::atoi(argv[1]);
@@ -27,7 +27,7 @@ int main(int argc, char* argv[])
         serv->start();
     } catch(const std::exception& e) {
         std::cerr << e.what() << '\n';
-        return 84;
+        return Babel::Server::errorCode;
     }
-    return 0;
+    return Babel::Server::successCode;
 }

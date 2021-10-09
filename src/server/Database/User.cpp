@@ -7,7 +7,7 @@
 
 #include "User.hpp"
 
-using namespace Babel::Server;
+using namespace Babel::Server::Db;
 
 User::User() : _name(""), _exists(false), _isConnected(false)
 {

@@ -20,7 +20,7 @@
 #define INTEGER_IN_TABLE "int"
 #define TEXT_IN_TABLE "text"
 
-namespace Babel::Server {
+namespace Babel::Server::Db {
 
     class DatabaseManager
     {
@@ -60,7 +60,6 @@ namespace Babel::Server {
             std::size_t getNextFreePrimaryKey(const std::string &tableName, const std::string &tableKeyName) const;
 
         protected :
-
         private :
             sqlite3 *_db;
             const std::string _name;

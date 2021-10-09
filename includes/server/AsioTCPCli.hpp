@@ -29,7 +29,7 @@ namespace Babel::Server
             void write(int code, const char data[2048]);
             void handle_read(const asio::error_code &, const std::size_t);
             void handle_write(const asio::error_code &, const std::size_t);
-            const std::shared_ptr<User> getConnectedUser() const;
+            const std::shared_ptr<Db::User> getConnectedUser() const;
 
             // cmds
             int login(const std::string &);
@@ -42,7 +42,7 @@ namespace Babel::Server
         protected:
         private:
             asio::ip::tcp::socket _socket;
-            std::shared_ptr<User> _connected_user;
+            std::shared_ptr<Db::User> _connected_user;
             unsigned char _buffer[2064];
             std::string _data_buffer;
             std::map<int, cmd_func> _cmd_map;

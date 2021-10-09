@@ -7,7 +7,7 @@
 
 #include "Contact.hpp"
 
-using namespace Babel::Server;
+using namespace Babel::Server::Db;
 
 Contact::Contact()
 {

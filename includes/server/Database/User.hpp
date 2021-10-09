@@ -14,7 +14,7 @@
 
 #include <stdio.h>
 
-namespace Babel::Server {
+namespace Babel::Server::Db {
     class User
     {
         public :

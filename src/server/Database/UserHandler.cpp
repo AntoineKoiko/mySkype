@@ -5,9 +5,9 @@
 ** User Handler
 */
 
-#include "../../../includes/server/Database/UserHandler.hpp"
+#include "UserHandler.hpp"
 
-using namespace Babel::Server;
+using namespace Babel::Server::Db;
 
 UserHandler::UserHandler(const std::shared_ptr<DatabaseManager> dbManager) : _dbManager(dbManager)
 {

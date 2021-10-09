@@ -7,7 +7,7 @@
 
 #include "../../../includes/server/Database/ContactHandler.hpp"
 
-using namespace Babel::Server;
+using namespace Babel::Server::Db;
 
 ContactHandler::ContactHandler(const std::shared_ptr<DatabaseManager> dbManager) : _dbManager(dbManager)
 {
@@ -43,8 +43,11 @@ void ContactHandler::removeContact(const std::string &owner, const std::string &
 {
     std::vector<std::tuple<const std::string, const std::string, const std::string>> contactSearched
     = {{"owner", "text", owner}, {"pseudo", "text", name}};
+    std::vector<std::tuple<const std::string, const std::string, const std::string>> contactSearched2
+    = {{"owner", "text", name}, {"pseudo", "text", owner}};
 
     _dbManager->deleteEntry(CONTACT_TABLE_NAME, contactSearched);
+    _dbManager->deleteEntry(CONTACT_TABLE_NAME, contactSearched2);
 }
 
 std::vector<Contact> ContactHandler::getListOfContact(const std::string &owner) const

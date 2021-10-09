@@ -99,7 +99,7 @@ void AsioTCPCli::write(int code, const char data[])
     _socket.async_write_some(asio::buffer(data_struct_ptr, sizeof(DataPacket)), handler);
 }
 
-const std::shared_ptr<User> AsioTCPCli::getConnectedUser() const
+const std::shared_ptr<Db::User> AsioTCPCli::getConnectedUser() const
 {
     return _connected_user;
 }
