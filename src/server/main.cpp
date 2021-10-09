@@ -25,5 +25,7 @@ int main(int argc, char* argv[])
         serv->start();
     } catch(const std::exception& e) {
         std::cerr << e.what() << '\n';
+        return 84;
     }
+    return 0;
 }
