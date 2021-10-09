@@ -10,6 +10,10 @@
 RequestHandler::RequestHandler(const std::shared_ptr<Babel::Client::Network::TcpClient> client,
                                std::shared_ptr<UserHandler> userHandler, std::shared_ptr<ContactHandler> contactHandler) : _client(client), _userHandler(userHandler), _contactHandler(contactHandler)
 {
+    _requestMap[201] = &RequestHandler::onLoggedIn;
+    _requestMap[203] = &RequestHandler::onContactRequestAccepted;
+    _requestMap[206] = &RequestHandler::onGetContacts;
+    _requestMap[207] = &RequestHandler::onContactRequest;
     QObject::connect(dynamic_cast<QObject *>(_client.get()), SIGNAL(newPacketReceive()), this, SLOT(onNewPacketReceive()));
 }
 
@@ -46,30 +50,49 @@ void RequestHandler::onNewPacketReceive()
     DataPacket dataPacket = DataPacketManager::deserialize(data);
 
     std::cout << "On receive un nouveau packet via RequestHandler" << std::endl;
-    if (dataPacket.code == 207)
-    {
-        this->_contactHandler->addContactRequest(dataPacket.data);
+    if (dataPacket.magic != MAGIC_NUMBER) {
+        std::cout << "Wrong magic number" << std::endl;
+        return;
     }
-    if (dataPacket.code == 206) {
-        std::vector<std::string> contactList = this->split_string(std::string(dataPacket.data), ';');
-        for (auto &contact : contactList) {
-            this->_contactHandler->addContact(contact);
-        }
-    }
-    if (dataPacket.code == 201) {
-        DataPacket packetSend;
-
-        packetSend.code = 005;
-        std::memcpy(packetSend.data, dataPacket.data, dataPacket.size);
-        packetSend.size = dataPacket.size;
-        this->_client->send(DataPacketManager::serialize(packetSend));
-    }
-    if (dataPacket.code == 203) {//Contact Request Accept
-        this->_contactHandler->addContact(std::string(dataPacket.data));
-    }
-    //this->_contactHandler->dism
     std::cout << "code:" << dataPacket.code << std::endl;
     std::cout << "content: " << dataPacket.data << std::endl;
+    auto it = _requestMap.find(dataPacket.code);
+
+    if (it != _requestMap.end()) {
+        (this->*(it->second))(dataPacket);
+    } else {
+        std::cout << "Impossible to find the command code: " << dataPacket.code << std::endl;
+    }
+
+}
+
+void RequestHandler::onLoggedIn(const DataPacket &packetReceive)
+{
+    DataPacket packetSend;
+
+    packetSend.code = 005;
+    std::memcpy(packetSend.data, packetReceive.data, packetReceive.size);
+    packetSend.size = packetReceive.size;
+    this->_client->send(DataPacketManager::serialize(packetSend));
+}
+
+void RequestHandler::onContactRequestAccepted(const DataPacket &packetReceive)
+{
+    this->_contactHandler->addContact(std::string(packetReceive.data));
+}
+
+void RequestHandler::onGetContacts(const DataPacket &packetReceive)
+{
+    std::vector<std::string> contactList = this->split_string(std::string(packetReceive.data), ';');
+
+    for (auto &contact : contactList) {
+        this->_contactHandler->addContact(contact);
+    }
+}
+
+void RequestHandler::onContactRequest(const DataPacket &packetReceive)
+{
+    this->_contactHandler->addContactRequest(packetReceive.data);
 }
 
 #include "moc_RequestHandler.cpp"

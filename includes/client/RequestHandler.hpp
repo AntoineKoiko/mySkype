@@ -18,6 +18,9 @@
 class RequestHandler : public QObject
 {
     Q_OBJECT
+
+    typedef void (RequestHandler::*req)(const DataPacket &);
+
 public:
     RequestHandler(const std::shared_ptr<Babel::Client::Network::TcpClient> client,
                    std::shared_ptr<UserHandler> userHandler, std::shared_ptr<ContactHandler> contactHandler);
@@ -30,9 +33,15 @@ private slots:
 
 protected:
 private:
+    void onLoggedIn(const DataPacket &); //201
+    void onContactRequestAccepted(const DataPacket &); //203
+    void onGetContacts(const DataPacket &); //206
+    void onContactRequest(const DataPacket &); //207
+
     std::shared_ptr<Babel::Client::Network::TcpClient> _client;
     std::shared_ptr<UserHandler> _userHandler;
     std::shared_ptr<ContactHandler> _contactHandler;
+    std::map<int, req> _requestMap;
 };
 
 #endif /* !REQUESTHANDLER_HPP_ */
