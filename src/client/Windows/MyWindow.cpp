@@ -65,10 +65,11 @@ MyWindow::~MyWindow()
 void MyWindow::on_login_button_clicked()
 {
     qDebug() << _login->getUsernameField()->text();
-    _userHandler->login(_login->getUsernameField()->text().toStdString());
-    _login->getUsernameField()->clear();
-    _stack->setCurrentWidget(_home.get());
-}
+    if (_login->getUsernameField()->text().toStdString().size()) {
+        _userHandler->login(_login->getUsernameField()->text().toStdString());
+        _login->getUsernameField()->clear();
+        _stack->setCurrentWidget(_home.get());
+    }
 
 void MyWindow::on_call_button_clicked()
 {
