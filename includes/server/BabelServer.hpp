@@ -27,7 +27,7 @@ namespace Babel
 
             // Getters
 
-            const AsioTCPServer &getServer() const;
+            AsioTCPServer &getServer();
             const std::shared_ptr<DatabaseManager> getDb() const;
             const UserHandler &getUserHandler() const;
             const ContactHandler &getContactHandler() const;

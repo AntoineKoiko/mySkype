@@ -24,6 +24,7 @@ class AsioTCPServer {
         void startAccept();
         AsioTCPCli *isUserLogged(const std::string &) const;
         void run();
+        void disconnectClient(void);
 
     protected:
     private:

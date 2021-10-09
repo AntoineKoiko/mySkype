@@ -58,3 +58,13 @@ AsioTCPCli *AsioTCPServer::isUserLogged(const std::string &username) const
     }
     return nullptr;
 }
+
+void AsioTCPServer::disconnectClient(void)
+{
+    for (auto it = _cli_list.cbegin(); it != _cli_list.cend(); ++it) {
+        if (!it->get()->getSocket().is_open()) {
+            _cli_list.erase(it);
+            return;
+        }
+    }
+}

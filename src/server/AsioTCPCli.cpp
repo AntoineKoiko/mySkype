@@ -7,6 +7,7 @@
 
 #include "babel.hpp"
 #include "AsioTCPCli.hpp"
+#include "utils.hpp"
 #include <iostream>
 
 AsioTCPCli::AsioTCPCli(asio::io_context &context)
@@ -41,7 +42,14 @@ const std::string AsioTCPCli::get_ip_string() const
 
 void AsioTCPCli::handle_read(const asio::error_code &err, const std::size_t bytes)
 {
-    if (err) {
+    auto serv = get_server();
+
+    if (err == asio::error::eof || err == asio::error::connection_reset ) {
+        std::cout << this->_connected_user->_name << " disconnected" << std::endl;
+        this->_socket.close();
+        serv->getServer().disconnectClient();
+        return;
+    } else if (err) {
         std::cerr << "Error : " << err.message() << std::endl;
         return;
     }

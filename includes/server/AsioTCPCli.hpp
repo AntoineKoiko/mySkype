@@ -11,6 +11,7 @@
 #include <asio.hpp>
 #include <map>
 #include "Database/User.hpp"
+#include "babel.hpp"
 
 class AsioTCPCli : public std::enable_shared_from_this<AsioTCPCli> {
 
