@@ -10,10 +10,10 @@
 #include "utils.hpp"
 #include <iostream>
 
-using namespace Babel::Server;
+using namespace Babel::Server::Network;
 
 AsioTCPCli::AsioTCPCli(asio::io_context &context)
-: _socket(context), _connected_user(nullptr)
+: _socket(context), _connectedUser(nullptr)
 {
     _cmd_map[000] = &AsioTCPCli::login;
     _cmd_map[001] = &AsioTCPCli::addContactRequest;
@@ -47,7 +47,7 @@ void AsioTCPCli::handle_read(const asio::error_code &err, const std::size_t byte
     auto serv = get_server();
 
     if (err == asio::error::eof || err == asio::error::connection_reset ) {
-        std::cout << (this->_connected_user ? this->_connected_user->_name : "unknow") << " disconnected" << std::endl;
+        std::cout << (this->_connectedUser ? this->_connectedUser->_name : "unknow") << " disconnected" << std::endl;
         this->_socket.close();
         serv->getServer().disconnectClient();
         return;
@@ -99,7 +99,7 @@ void AsioTCPCli::write(int code, const char data[])
     _socket.async_write_some(asio::buffer(data_struct_ptr, sizeof(DataPacket)), handler);
 }
 
-const std::shared_ptr<Db::User> AsioTCPCli::getConnectedUser() const
+const std::shared_ptr<Babel::Server::Db::User> AsioTCPCli::getConnectedUser() const
 {
-    return _connected_user;
+    return _connectedUser;
 }

@@ -15,7 +15,7 @@
 #include <deque>
 #include "AsioTCPCli.hpp"
 
-namespace Babel::Server
+namespace Babel::Server::Network
 {
     class AsioTCPServer {
         public:

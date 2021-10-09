@@ -42,8 +42,8 @@ set(SRCS_SERVER
        src/server/main.cpp
        src/server/commands.cpp
        src/server/utils.cpp
-       src/server/AsioTCPServer.cpp
-       src/server/AsioTCPCli.cpp
+       src/server/Network/AsioTCPServer.cpp
+       src/server/Network/AsioTCPCli.cpp
        src/server/BabelServer.cpp
 )
 
@@ -83,6 +83,7 @@ add_executable(${NAME_CLIENT} ${SRCS_CLIENT})
 ## INCLUDES
 target_include_directories(${NAME_SERVER} BEFORE PUBLIC ./includes/server)
 target_include_directories(${NAME_SERVER} BEFORE PUBLIC ./includes/server/Database)
+target_include_directories(${NAME_SERVER} BEFORE PUBLIC ./includes/server/Network)
 target_include_directories(${NAME_CLIENT} BEFORE PUBLIC ./includes/client)
 target_include_directories(${NAME_CLIENT} BEFORE PUBLIC ./includes/client/Audio)
 target_include_directories(${NAME_CLIENT} BEFORE PUBLIC ./includes/client/Windows)

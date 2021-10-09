@@ -9,7 +9,7 @@
 #include "AsioTCPServer.hpp"
 #include <cstring>
 
-using namespace Babel::Server;
+using namespace Babel::Server::Network;
 
 AsioTCPServer::AsioTCPServer(int port)
 :   _ioContext(),

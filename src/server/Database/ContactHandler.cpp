@@ -5,7 +5,7 @@
 ** Contact Handler
 */
 
-#include "../../../includes/server/Database/ContactHandler.hpp"
+#include "ContactHandler.hpp"
 
 using namespace Babel::Server::Db;
 

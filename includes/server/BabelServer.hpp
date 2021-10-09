@@ -31,14 +31,14 @@ namespace Babel::Server
 
             // Getters
 
-            AsioTCPServer &getServer();
+            Network::AsioTCPServer &getServer();
             const std::shared_ptr<Db::DatabaseManager> getDb() const;
             const Db::UserHandler &getUserHandler() const;
             const Db::ContactHandler &getContactHandler() const;
 
         protected:
         private:
-            AsioTCPServer _tcpServer;
+            Network::AsioTCPServer _tcpServer;
             std::shared_ptr<Db::DatabaseManager> _db;
             Db::UserHandler _userHandler;
             Db::ContactHandler _contactHandler;

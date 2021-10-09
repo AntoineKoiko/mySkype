@@ -10,10 +10,10 @@
 
 #include <asio.hpp>
 #include <map>
-#include "Database/User.hpp"
+#include "User.hpp"
 #include "babel.hpp"
 
-namespace Babel::Server
+namespace Babel::Server::Network
 {
     class AsioTCPCli : public std::enable_shared_from_this<AsioTCPCli> {
 
@@ -42,9 +42,8 @@ namespace Babel::Server
         protected:
         private:
             asio::ip::tcp::socket _socket;
-            std::shared_ptr<Db::User> _connected_user;
+            std::shared_ptr<Db::User> _connectedUser;
             unsigned char _buffer[2064];
-            std::string _data_buffer;
             std::map<int, cmd_func> _cmd_map;
     };
 }

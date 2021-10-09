@@ -37,7 +37,7 @@ const Db::ContactHandler &BabelServer::getContactHandler() const
     return _contactHandler;
 }
 
-AsioTCPServer &BabelServer::getServer()
+Network::AsioTCPServer &BabelServer::getServer()
 {
     return _tcpServer;
 }

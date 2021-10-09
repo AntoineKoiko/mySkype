@@ -6,13 +6,13 @@
 */
 
 #include "AsioTCPCli.hpp"
-#include "Database/UserHandler.hpp"
-#include "Database/ContactHandler.hpp"
+#include "UserHandler.hpp"
+#include "ContactHandler.hpp"
 #include "utils.hpp"
 
 using namespace Babel::Server;
 
-static int sendAllRequests(const std::string &owner, Db::ContactHandler &handler, AsioTCPCli &client)
+static int sendAllRequests(const std::string &owner, Db::ContactHandler &handler, Network::AsioTCPCli &client)
 {
     auto contacts = handler.getListOfContactRequest(owner);
 
@@ -23,7 +23,7 @@ static int sendAllRequests(const std::string &owner, Db::ContactHandler &handler
     return 0;
 }
 
-int AsioTCPCli::login(const std::string &username)
+int Network::AsioTCPCli::login(const std::string &username)
 {
     std::cout << "Client : " << this->get_ip_string() << " trying to log in as " << username << std::endl;
     auto serv = get_server();
@@ -36,31 +36,31 @@ int AsioTCPCli::login(const std::string &username)
             write(401, username.c_str());
             return 1;
         }
-        this->_connected_user = std::make_shared<Db::User>(user);
+        this->_connectedUser = std::make_shared<Db::User>(user);
         write(201, username.c_str());
-        std::cout << this->_connected_user->_name << " has logged in" << std::endl;
-        sendAllRequests(this->_connected_user->_name, contactHandler, *this);
+        std::cout << this->_connectedUser->_name << " has logged in" << std::endl;
+        sendAllRequests(this->_connectedUser->_name, contactHandler, *this);
     } else {
         serv->getUserHandler().addUser(username);
         user = userHandler.getUser(username);
-        this->_connected_user = std::make_shared<Db::User>(user);
+        this->_connectedUser = std::make_shared<Db::User>(user);
         write(201, username.c_str());
-        std::cout << this->_connected_user << " has been created and logged in" << std::endl;
-        sendAllRequests(this->_connected_user->_name, contactHandler, *this);
+        std::cout << this->_connectedUser << " has been created and logged in" << std::endl;
+        sendAllRequests(this->_connectedUser->_name, contactHandler, *this);
     }
     return 0;
 }
 
-int AsioTCPCli::addContactRequest(const std::string &username)
+int Network::AsioTCPCli::addContactRequest(const std::string &username)
 {
     auto serv = get_server();
     auto contactHandler = serv->getContactHandler();
     auto userHandler = serv->getUserHandler();
     const std::string owner = this->getConnectedUser()->_name;
     const Db::User user = userHandler.getUser(username);
-    AsioTCPCli *user_client = serv->getServer().isUserLogged(user._name);
+    Network::AsioTCPCli *user_client = serv->getServer().isUserLogged(user._name);
 
-    if (!this->_connected_user) {
+    if (!this->_connectedUser) {
         write(500, "Not Connected"); // TODO: change for real code
         return 1;
     }
@@ -98,11 +98,11 @@ static bool checkContact(const Db::ContactHandler &handler, const std::string &u
     return false;
 }
 
-int AsioTCPCli::acceptContact(const std::string &username)
+int Network::AsioTCPCli::acceptContact(const std::string &username)
 {
-    AsioTCPCli *requestOwner;
+    Network::AsioTCPCli *requestOwner;
 
-    if (!this->_connected_user) {
+    if (!this->_connectedUser) {
         write(500, "You must be logged in"); // TODO: send real code
         return 1;
     }
@@ -112,20 +112,20 @@ int AsioTCPCli::acceptContact(const std::string &username)
     Db::User user = userHandler.getUser(username);
 
     if (user._exists) {
-        if (!checkContactRequest(contactHandler, this->_connected_user->_name, username)) {
+        if (!checkContactRequest(contactHandler, this->_connectedUser->_name, username)) {
             write(500, "Request not found"); // TODO: send real code
             return 1;
         }
-        contactHandler.acceptContactRequest(username, this->_connected_user->_name);
+        contactHandler.acceptContactRequest(username, this->_connectedUser->_name);
         requestOwner = serv->getServer().isUserLogged(username);
-        requestOwner->write(203, this->_connected_user->_name.c_str());
+        requestOwner->write(203, this->_connectedUser->_name.c_str());
     }
     return 0;
 }
 
-int AsioTCPCli::denyContact(const std::string &username)
+int Network::AsioTCPCli::denyContact(const std::string &username)
 {
-    if (!this->_connected_user) {
+    if (!this->_connectedUser) {
         write(500, "You must be logged in"); // TODO: send real code
         return 1;
     }
@@ -135,18 +135,18 @@ int AsioTCPCli::denyContact(const std::string &username)
     Db::User user = userHandler.getUser(username);
 
     if (user._exists) {
-        if (!checkContactRequest(contactHandler, username, this->_connected_user->_name)) {
+        if (!checkContactRequest(contactHandler, username, this->_connectedUser->_name)) {
             write(500, "Request not found"); // TODO: send real code
             return 1;
         }
-        contactHandler.dismissContactRequest(this->_connected_user->_name, username);
+        contactHandler.dismissContactRequest(this->_connectedUser->_name, username);
     }
     return 0;
 }
 
-int AsioTCPCli::delContact(const std::string &username)
+int Network::AsioTCPCli::delContact(const std::string &username)
 {
-    if (!this->_connected_user) {
+    if (!this->_connectedUser) {
         write(500, "You must be logged in"); // TODO: send real code
         return 1;
     }
@@ -156,18 +156,18 @@ int AsioTCPCli::delContact(const std::string &username)
     Db::User user = userHandler.getUser(username);
 
     if (user._exists) {
-        if (!checkContact(contactHandler, username, this->_connected_user->_name)) {
+        if (!checkContact(contactHandler, username, this->_connectedUser->_name)) {
             write(500, "Contact not found"); // TODO: send real code
             return 1;
         }
-        contactHandler.removeContact(this->_connected_user->_name, username);
+        contactHandler.removeContact(this->_connectedUser->_name, username);
     }
     return 0;
 }
 
-int AsioTCPCli::getContacts(const std::string &username)
+int Network::AsioTCPCli::getContacts(const std::string &username)
 {
-    if (!this->_connected_user) {
+    if (!this->_connectedUser) {
         write(500, "You must be looged in");
         return 1;
     }
