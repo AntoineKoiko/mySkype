@@ -14,6 +14,7 @@ HomeScreen::HomeScreen(QWidget *parent) : QWidget(parent),
                                           _contactRequestWidget(std::make_unique<ContactRequestWidget>()),
                                           _addContactWidget(std::make_unique<AddContactWidget>()),
                                           _callButton(std::make_unique<QPushButton>(this)),
+                                          _usernameLabel(std::make_unique<QLabel>(this)),
                                           _mainLayout(std::make_unique<QGridLayout>(this))
 {
     setUp_widget();
@@ -24,6 +25,9 @@ HomeScreen::HomeScreen(QWidget *parent) : QWidget(parent),
 
 void HomeScreen::setUp_widget() noexcept
 {
+    _usernameLabel->setAlignment(Qt::AlignCenter);
+    _usernameLabel->setFrameStyle(QFrame::Panel | QFrame::Sunken);
+    _usernameLabel->setFont(QFont("Arial", 16, QFont::Bold));
 
     _callButton->setText("Call");
 
@@ -47,6 +51,8 @@ void HomeScreen::setup_layout() noexcept
     _mainLayout->addWidget(_addContactWidget->getSearchField(), 0, 0, 1, 1);
     _mainLayout->addWidget(_addContactWidget->getAddButton(), 0, 1, 1, 1);
     _mainLayout->addWidget(_addContactWidget->getLabel(), 1, 0, 1, 1);
+
+    _mainLayout->addWidget(_usernameLabel.get(), 0, 3, 1, 2);
 
     _mainLayout->addWidget(_contactRequestWidget->getTitle(), 1, 3, 1, 1);
     _mainLayout->addWidget(_contactRequestWidget->getRequestsList(), 2, 3, 2, 1);
@@ -126,4 +132,10 @@ ListStrWidget *HomeScreen::getContactList() const noexcept
 ListStrWidget *HomeScreen::getContactRequestList() const noexcept
 {
     return _contactRequestWidget->getRequestsList();
+}
+
+void HomeScreen::setUsername(const std::string &username) const noexcept
+{
+    std::string buf = std::string("Hello ") + username + std::string(" !");
+    _usernameLabel->setText(QString::fromStdString(buf));
 }

@@ -13,15 +13,15 @@
 using namespace Babel::Client;
 
 MyWindow::MyWindow(const std::shared_ptr<UserHandler> userHandler,
-                    const std::shared_ptr<Network::TcpClient> client) : QMainWindow(),
-                                                                     _stack(std::make_unique<QStackedWidget>()),
-                                                                     _home(std::make_unique<HomeScreen>(_stack.get())),
-                                                                     _login(std::make_unique<LoginScreen>(_stack.get())),
-                                                                     _callScreen(std::make_unique<CallScreen>(_stack.get())),
-                                                                     _client(client),
-                                                                     _userHandler(userHandler),
-                                                                     _contactHandler(std::make_shared<ContactHandler>(_home->getContactList(), _home->getContactRequestList(), client)),
-                                                                     _requestHandler(_client, _userHandler, _contactHandler)
+                   const std::shared_ptr<Network::TcpClient> client) : QMainWindow(),
+                                                                       _stack(std::make_unique<QStackedWidget>()),
+                                                                       _home(std::make_unique<HomeScreen>(_stack.get())),
+                                                                       _login(std::make_unique<LoginScreen>(_stack.get())),
+                                                                       _callScreen(std::make_unique<CallScreen>(_stack.get())),
+                                                                       _client(client),
+                                                                       _userHandler(userHandler),
+                                                                       _contactHandler(std::make_shared<ContactHandler>(_home->getContactList(), _home->getContactRequestList(), client)),
+                                                                       _requestHandler(_client, _userHandler, _contactHandler)
 
 {
     this->setUp_winodw();
@@ -65,8 +65,10 @@ MyWindow::~MyWindow()
 void MyWindow::on_login_button_clicked()
 {
     qDebug() << _login->getUsernameField()->text();
-    if (_login->getUsernameField()->text().toStdString().size()) {
+    if (_login->getUsernameField()->text().toStdString().size())
+    {
         _userHandler->login(_login->getUsernameField()->text().toStdString());
+        _home->setUsername(_login->getUsernameField()->text().toStdString());
         _login->getUsernameField()->clear();
         _stack->setCurrentWidget(_home.get());
     }
