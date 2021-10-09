@@ -15,7 +15,6 @@ LoginScreen::LoginScreen(QWidget *parent) : QWidget(parent),
                                             _layout(std::make_unique<QVBoxLayout>())
 {
     _welcomeText->setText("Welcome on Babel VOIP Application!");
-    _welcomeText->move(100, 100);
     _welcomeText->setAlignment(Qt::AlignCenter);
     _welcomeText->setFrameStyle(QFrame::Panel | QFrame::Sunken);
     _welcomeText->setFont(QFont("Arial", 24, QFont::Bold));

@@ -34,6 +34,8 @@ public:
     ListStrWidget *getContactList() const noexcept;
     ListStrWidget *getContactRequestList() const noexcept;
 
+    void setUsername(const std::string &username) const noexcept;
+
 private:
     //buttons callback
     void on_addToCallButton_clicked();
@@ -51,6 +53,7 @@ private:
     std::unique_ptr<AddContactWidget> _addContactWidget;
 
     std::unique_ptr<QPushButton> _callButton;
+    std::unique_ptr<QLabel> _usernameLabel;
     std::unique_ptr<QGridLayout> _mainLayout;
 };
 
