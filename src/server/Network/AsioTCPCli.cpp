@@ -15,12 +15,12 @@ using namespace Babel::Server::Network;
 AsioTCPCli::AsioTCPCli(asio::io_context &context)
 : _socket(context), _connectedUser(nullptr)
 {
-    _cmd_map[000] = &AsioTCPCli::login;
-    _cmd_map[001] = &AsioTCPCli::addContactRequest;
-    _cmd_map[002] = &AsioTCPCli::acceptContact;
-    _cmd_map[003] = &AsioTCPCli::denyContact;
-    _cmd_map[004] = &AsioTCPCli::delContact;
-    _cmd_map[005] = &AsioTCPCli::getContacts;
+    _cmdMap[000] = &AsioTCPCli::login;
+    _cmdMap[001] = &AsioTCPCli::addContactRequest;
+    _cmdMap[002] = &AsioTCPCli::acceptContact;
+    _cmdMap[003] = &AsioTCPCli::denyContact;
+    _cmdMap[004] = &AsioTCPCli::delContact;
+    _cmdMap[005] = &AsioTCPCli::getContacts;
 }
 
 AsioTCPCli::~AsioTCPCli()
@@ -32,7 +32,7 @@ asio::ip::tcp::socket &AsioTCPCli::getSocket()
     return _socket;
 }
 
-const std::string AsioTCPCli::get_ip_string() const
+const std::string AsioTCPCli::getIpString() const
 {
     try {
         return _socket.remote_endpoint().address().to_string();
@@ -42,7 +42,7 @@ const std::string AsioTCPCli::get_ip_string() const
     }
 }
 
-void AsioTCPCli::handle_read(const asio::error_code &err, const std::size_t bytes)
+void AsioTCPCli::handleRead(const asio::error_code &err, const std::size_t bytes)
 {
     auto serv = get_server();
 
@@ -63,9 +63,9 @@ void AsioTCPCli::handle_read(const asio::error_code &err, const std::size_t byte
         return;
     }
     if (bytes > 0 && data->size > 0) {
-        auto it = _cmd_map.find(data->code);
+        auto it = _cmdMap.find(data->code);
 
-        if (it != _cmd_map.end())
+        if (it != _cmdMap.end())
             (this->*(it->second))(data->data);
         else
             write(500, "Error");
@@ -75,11 +75,11 @@ void AsioTCPCli::handle_read(const asio::error_code &err, const std::size_t byte
 
 void AsioTCPCli::read()
 {
-    auto handler = std::bind(&AsioTCPCli::handle_read, this, std::placeholders::_1, std::placeholders::_2);
+    auto handler = std::bind(&AsioTCPCli::handleRead, this, std::placeholders::_1, std::placeholders::_2);
     _socket.async_read_some(asio::buffer(_buffer, sizeof(DataPacket)), handler);
 }
 
-void AsioTCPCli::handle_write(const asio::error_code &error, UN const std::size_t bytes)
+void AsioTCPCli::handleWrite(const asio::error_code &error, UN const std::size_t bytes)
 {
     if (error) {
         std::cerr << "Error: " << error.message() << std::endl;
@@ -93,7 +93,7 @@ void AsioTCPCli::write(int code, const char data[])
     data_struct.code = code;
     data_struct.size = strlen(data);
     DataPacket *data_struct_ptr = &data_struct;
-    auto handler = std::bind(&AsioTCPCli::handle_write, this, std::placeholders::_1, std::placeholders::_2);
+    auto handler = std::bind(&AsioTCPCli::handleWrite, this, std::placeholders::_1, std::placeholders::_2);
 
     std::memcpy(data_struct.data, data, data_struct.size);
     _socket.async_write_some(asio::buffer(data_struct_ptr, sizeof(DataPacket)), handler);

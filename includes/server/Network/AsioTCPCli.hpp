@@ -17,18 +17,18 @@ namespace Babel::Server::Network
 {
     class AsioTCPCli : public std::enable_shared_from_this<AsioTCPCli> {
 
-        typedef int (AsioTCPCli::*cmd_func)(const std::string &);
+        typedef int (AsioTCPCli::*cmdFunction)(const std::string &);
 
         public:
             AsioTCPCli(asio::io_context &);
             ~AsioTCPCli();
 
             asio::ip::tcp::socket &getSocket();
-            const std::string get_ip_string() const;
+            const std::string getIpString() const;
             void read();
-            void write(int code, const char data[2048]);
-            void handle_read(const asio::error_code &, const std::size_t);
-            void handle_write(const asio::error_code &, const std::size_t);
+            void write(int code, const char data[2064]);
+            void handleRead(const asio::error_code &, const std::size_t);
+            void handleWrite(const asio::error_code &, const std::size_t);
             const std::shared_ptr<Db::User> getConnectedUser() const;
 
             // cmds
@@ -44,7 +44,7 @@ namespace Babel::Server::Network
             asio::ip::tcp::socket _socket;
             std::shared_ptr<Db::User> _connectedUser;
             unsigned char _buffer[2064];
-            std::map<int, cmd_func> _cmd_map;
+            std::map<int, cmdFunction> _cmdMap;
     };
 }
 

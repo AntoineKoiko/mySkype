@@ -25,7 +25,7 @@ static int sendAllRequests(const std::string &owner, Db::ContactHandler &handler
 
 int Network::AsioTCPCli::login(const std::string &username)
 {
-    std::cout << "Client : " << this->get_ip_string() << " trying to log in as " << username << std::endl;
+    std::cout << "Client : " << this->getIpString() << " trying to log in as " << username << std::endl;
     auto serv = get_server();
     auto userHandler = serv->getUserHandler();
     auto contactHandler = serv->getContactHandler();
