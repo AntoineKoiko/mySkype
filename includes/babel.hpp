@@ -10,7 +10,7 @@
 
 #include <asio.hpp>
 
-#define UN __attribute__((unused))
+#define UN [[maybe_unused]]
 #define READ_SIZE 2048
 #define MAGIC_NUMBER 753159
 
