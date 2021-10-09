@@ -12,6 +12,8 @@
 #include <cstdlib>
 #include "BabelServer.hpp"
 
+using namespace Babel::Server;
+
 int main(int argc, char* argv[])
 {
     int port = 9999;
@@ -19,7 +21,7 @@ int main(int argc, char* argv[])
     if (argc > 1)
         port = std::atoi(argv[1]);
     try {
-        auto serv = std::make_shared<Babel::BabelServer>(port);
+        auto serv = std::make_shared<BabelServer>(port);
 
         get_server(true, serv);
         serv->start();

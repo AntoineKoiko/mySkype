@@ -14,7 +14,7 @@
 
 #include <stdio.h>
 
-namespace Babel {
+namespace Babel::Server {
     class Contact
     {
         public :

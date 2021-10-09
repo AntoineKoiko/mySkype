@@ -10,6 +10,8 @@
 #include "utils.hpp"
 #include <iostream>
 
+using namespace Babel::Server;
+
 AsioTCPCli::AsioTCPCli(asio::io_context &context)
 : _socket(context), _connected_user(nullptr)
 {
@@ -97,7 +99,7 @@ void AsioTCPCli::write(int code, const char data[])
     _socket.async_write_some(asio::buffer(data_struct_ptr, sizeof(DataPacket)), handler);
 }
 
-const std::shared_ptr<Babel::User> AsioTCPCli::getConnectedUser() const
+const std::shared_ptr<User> AsioTCPCli::getConnectedUser() const
 {
     return _connected_user;
 }

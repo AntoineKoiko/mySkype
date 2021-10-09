@@ -8,9 +8,11 @@
 #include "BabelServer.hpp"
 #include <memory>
 
-std::shared_ptr<Babel::BabelServer> get_server(bool set = false, std::shared_ptr<Babel::BabelServer> serv_ptr = nullptr)
+using namespace Babel::Server;
+
+std::shared_ptr<BabelServer> get_server(bool set = false, std::shared_ptr<BabelServer> serv_ptr = nullptr)
 {
-    static std::shared_ptr<Babel::BabelServer> serv = nullptr;
+    static std::shared_ptr<BabelServer> serv = nullptr;
 
     if (set)
         serv = serv_ptr;

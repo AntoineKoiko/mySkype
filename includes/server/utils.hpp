@@ -10,6 +10,6 @@
 
 #include "BabelServer.hpp"
 
-std::shared_ptr<Babel::BabelServer> get_server(bool = false, std::shared_ptr<Babel::BabelServer> = nullptr);
+std::shared_ptr<Babel::Server::BabelServer> get_server(bool = false, std::shared_ptr<Babel::Server::BabelServer> = nullptr);
 
 #endif /* !UTILS_HPP_ */

@@ -7,7 +7,7 @@
 
 #include "DatabaseManager.hpp"
 
-using namespace Babel;
+using namespace Babel::Server;
 
 DatabaseManager::DatabaseManager(const std::string &name) : _name(name)
 {

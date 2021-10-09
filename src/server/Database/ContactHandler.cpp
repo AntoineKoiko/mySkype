@@ -7,7 +7,7 @@
 
 #include "../../../includes/server/Database/ContactHandler.hpp"
 
-using namespace Babel;
+using namespace Babel::Server;
 
 ContactHandler::ContactHandler(const std::shared_ptr<DatabaseManager> dbManager) : _dbManager(dbManager)
 {

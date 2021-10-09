@@ -7,9 +7,9 @@
 
 #include "BabelServer.hpp"
 
-using namespace Babel;
+using namespace Babel::Server;
 
-BabelServer::BabelServer(int port) : _tcp_server(port), _db(std::make_shared<DatabaseManager>("babel.db")), _userHandler(_db), _contactHandler(_db)
+BabelServer::BabelServer(int port) : _tcpServer(port), _db(std::make_shared<DatabaseManager>("babel.db")), _userHandler(_db), _contactHandler(_db)
 {
 }
 
@@ -19,7 +19,7 @@ BabelServer::~BabelServer()
 
 void BabelServer::start()
 {
-    _tcp_server.run();
+    _tcpServer.run();
 }
 
 const std::shared_ptr<DatabaseManager> BabelServer::getDb() const
@@ -39,5 +39,5 @@ const ContactHandler &BabelServer::getContactHandler() const
 
 AsioTCPServer &BabelServer::getServer()
 {
-    return _tcp_server;
+    return _tcpServer;
 }

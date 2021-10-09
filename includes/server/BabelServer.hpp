@@ -16,7 +16,7 @@
 #include "Database/UserHandler.hpp"
 #include "Database/ContactHandler.hpp"
 
-namespace Babel
+namespace Babel::Server
 {
     class BabelServer {
         public:
@@ -34,7 +34,7 @@ namespace Babel
 
         protected:
         private:
-            AsioTCPServer _tcp_server;
+            AsioTCPServer _tcpServer;
             std::shared_ptr<DatabaseManager> _db;
             UserHandler _userHandler;
             ContactHandler _contactHandler;

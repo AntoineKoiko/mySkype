@@ -9,6 +9,8 @@
 #include "AsioTCPServer.hpp"
 #include <cstring>
 
+using namespace Babel::Server;
+
 AsioTCPServer::AsioTCPServer(int port)
 :   _io_context(),
     _acceptor(_io_context, asio::ip::tcp::endpoint(asio::ip::tcp::v4(), port))

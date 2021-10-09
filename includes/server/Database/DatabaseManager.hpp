@@ -20,7 +20,8 @@
 #define INTEGER_IN_TABLE "int"
 #define TEXT_IN_TABLE "text"
 
-namespace Babel {
+namespace Babel::Server {
+
     class DatabaseManager
     {
         public :

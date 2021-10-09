@@ -10,7 +10,7 @@
 #include "Database/ContactHandler.hpp"
 #include "utils.hpp"
 
-using namespace Babel;
+using namespace Babel::Server;
 
 static int sendAllRequests(const std::string &owner, ContactHandler &handler, AsioTCPCli &client)
 {
