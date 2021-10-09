@@ -51,7 +51,7 @@ std::vector<std::string> ListStrWidget::getStrItems() const noexcept
     std::vector<QString> qstr = this->getQStrItems();
     std::vector<std::string> strs;
 
-    for (const QString lt : qstr)
+    for (const QString &lt : qstr)
         strs.push_back(lt.toStdString());
     return strs;
 }
@@ -61,7 +61,7 @@ std::vector<std::string> ListStrWidget::getSelectdStrItems() const noexcept
     std::vector<QString> qstr = this->getSelectdQStrItems();
     std::vector<std::string> strs;
 
-    for (const QString lt : qstr)
+    for (const QString &lt : qstr)
         strs.push_back(lt.toStdString());
     return strs;
 }
