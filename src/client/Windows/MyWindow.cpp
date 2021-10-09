@@ -70,6 +70,7 @@ void MyWindow::on_login_button_clicked()
         _login->getUsernameField()->clear();
         _stack->setCurrentWidget(_home.get());
     }
+}
 
 void MyWindow::on_call_button_clicked()
 {
