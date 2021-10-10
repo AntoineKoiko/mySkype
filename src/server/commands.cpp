@@ -135,11 +135,11 @@ int Network::AsioTCPCli::denyContact(const std::string &username)
     Db::User user = userHandler.getUser(username);
 
     if (user._exists) {
-        if (!checkContactRequest(contactHandler, username, this->_connectedUser->_name)) {
+        if (!checkContactRequest(contactHandler, this->_connectedUser->_name, username)) {
             write(Babel::Res::BAD_REQUEST, "Request not found"); // TODO: send real code
             return 1;
         }
-        contactHandler.dismissContactRequest(this->_connectedUser->_name, username);
+        contactHandler.dismissContactRequest(username, this->_connectedUser->_name);
     }
     return 0;
 }

@@ -51,8 +51,19 @@ void ContactHandler::acceptContactRequest()
 
 void ContactHandler::dismissContactRequest()
 {
+    std::vector<std::string> selected = _pendingContactList->getSelectdStrItems();
+    std::string selectedContact;
+    DataPacket contactPacket;
+
+    for (const std::string &lt : selected) {
+        selectedContact = lt;
+    }
+    contactPacket.code = Babel::Req::REJECT_CONTACT;
+    contactPacket.size = selectedContact.size();
+    std::memcpy(contactPacket.data, selectedContact.c_str(), selectedContact.size());
     _pendingContactList->deleteSelectedRow();
     this->updateData();
+    this->_network->send(DataPacketManager::serialize(contactPacket));
 }
 
 //add directcly contact after request was accepted from the other guy

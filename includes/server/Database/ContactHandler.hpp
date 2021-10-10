@@ -13,6 +13,7 @@
 
 #include "DatabaseManager.hpp"
 #include "Contact.hpp"
+#include "babel.hpp"
 
 #define CONTACT_TABLE_NAME "contact"
 #define CONTACT_REQUEST_TABLE_NAME "contactRequest"
