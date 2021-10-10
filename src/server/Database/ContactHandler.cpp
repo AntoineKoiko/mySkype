@@ -71,7 +71,11 @@ int ContactHandler::addContactRequest(const std::string &owner, const std::strin
 {
     std::vector<std::tuple<const std::string, const std::string, const std::string>> contactRequestSearched
     = {{"owner", "text", owner}, {"pseudo", "text", name}};
+    std::vector<std::tuple<const std::string, const std::string, const std::string>> contactRequestSearchedInv
+    = {{"owner", "text", name}, {"pseudo", "text", owner}};
 
+    if (_dbManager->getEntry(CONTACT_REQUEST_TABLE_NAME, contactRequestSearchedInv).size() != 0)
+        return 1;
     if (_dbManager->getEntry(CONTACT_REQUEST_TABLE_NAME, contactRequestSearched).size() != 0)
         return 1;
     if (_dbManager->getEntry(CONTACT_TABLE_NAME, contactRequestSearched).size() != 0)
