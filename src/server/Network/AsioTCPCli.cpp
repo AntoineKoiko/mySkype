@@ -15,12 +15,12 @@ using namespace Babel::Server::Network;
 AsioTCPCli::AsioTCPCli(asio::io_context &context)
 : _socket(context), _connectedUser(nullptr)
 {
-    _cmdMap[000] = &AsioTCPCli::login;
-    _cmdMap[001] = &AsioTCPCli::addContactRequest;
-    _cmdMap[002] = &AsioTCPCli::acceptContact;
-    _cmdMap[003] = &AsioTCPCli::denyContact;
-    _cmdMap[004] = &AsioTCPCli::delContact;
-    _cmdMap[005] = &AsioTCPCli::getContacts;
+    _cmdMap[Babel::Req::LOGIN] = &AsioTCPCli::login;
+    _cmdMap[Babel::Req::ADD_CONTACT] = &AsioTCPCli::addContactRequest;
+    _cmdMap[Babel::Req::ACCEPT_CONTACT] = &AsioTCPCli::acceptContact;
+    _cmdMap[Babel::Req::REJECT_CONTACT] = &AsioTCPCli::denyContact;
+    _cmdMap[Babel::Req::REMOVE_CONTACT] = &AsioTCPCli::delContact;
+    _cmdMap[Babel::Req::GET_CONTACT_LIST] = &AsioTCPCli::getContacts;
 }
 
 AsioTCPCli::~AsioTCPCli()
@@ -68,7 +68,7 @@ void AsioTCPCli::handleRead(const asio::error_code &err, const std::size_t bytes
         if (it != _cmdMap.end())
             (this->*(it->second))(data->data);
         else
-            write(500, "Error");
+            write(Babel::Res::COMMAND_NOT_FOUND, "Error");
     }
     this->read();
 }

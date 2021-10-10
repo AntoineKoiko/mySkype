@@ -40,7 +40,7 @@ void AsioTCPServer::startAccept()
         if (!err) {
             std::cout << "New Client : " << _clientsList.back()->getIpString() << std::endl;
             _clientsList.back()->read();
-            _clientsList.back()->write(200, _clientsList.back()->getIpString().c_str());
+            _clientsList.back()->write(Babel::Res::CONNECTION_ACCEPTED, _clientsList.back()->getIpString().c_str());
         } else {
             std::cerr << "Error : " << err.message() << std::endl;
         }
