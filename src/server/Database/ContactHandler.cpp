@@ -67,19 +67,22 @@ std::vector<Contact> ContactHandler::getListOfContact(const std::string &owner) 
     return listOfContact;
 }
 
-void ContactHandler::addContactRequest(const std::string &owner, const std::string &name) const
+int ContactHandler::addContactRequest(const std::string &owner, const std::string &name) const
 {
     std::vector<std::tuple<const std::string, const std::string, const std::string>> contactRequestSearched
     = {{"owner", "text", owner}, {"pseudo", "text", name}};
 
     if (_dbManager->getEntry(CONTACT_REQUEST_TABLE_NAME, contactRequestSearched).size() != 0)
-        return;
+        return 1;
+    if (_dbManager->getEntry(CONTACT_TABLE_NAME, contactRequestSearched).size() != 0)
+        return 1;
 
     std::vector<std::tuple<const std::string, const std::string>> newContactRequest
     = {{"int", std::to_string(_dbManager->getNextFreePrimaryKey(CONTACT_REQUEST_TABLE_NAME, CONTACT_PRIMARY_KEY_NAME))},
     {"text", name}, {"text", owner}};
 
     _dbManager->addEntry(CONTACT_REQUEST_TABLE_NAME, newContactRequest);
+    return 0;
 }
 
 void ContactHandler::acceptContactRequest(const std::string &owner, const std::string &name) const

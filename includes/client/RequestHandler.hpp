@@ -37,6 +37,7 @@ private:
     void onContactRequestAccepted(const DataPacket &); //203
     void onGetContacts(const DataPacket &); //206
     void onContactRequest(const DataPacket &); //207
+    void onBadRequest(const DataPacket &); //400
 
     std::shared_ptr<Babel::Client::Network::TcpClient> _client;
     std::shared_ptr<UserHandler> _userHandler;

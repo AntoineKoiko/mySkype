@@ -14,6 +14,7 @@ RequestHandler::RequestHandler(const std::shared_ptr<Babel::Client::Network::Tcp
     _requestMap[203] = &RequestHandler::onContactRequestAccepted;
     _requestMap[206] = &RequestHandler::onGetContacts;
     _requestMap[207] = &RequestHandler::onContactRequest;
+    _requestMap[400] = &RequestHandler::onBadRequest;
     QObject::connect(dynamic_cast<QObject *>(_client.get()), SIGNAL(newPacketReceive()), this, SLOT(onNewPacketReceive()));
 }
 
@@ -93,6 +94,11 @@ void RequestHandler::onGetContacts(const DataPacket &packetReceive)
 void RequestHandler::onContactRequest(const DataPacket &packetReceive)
 {
     this->_contactHandler->addContactRequest(packetReceive.data);
+}
+
+void RequestHandler::onBadRequest(const DataPacket &packetReceive)
+{
+    std::cout << "Bad Request: " << packetReceive.data << std::endl;
 }
 
 #include "moc_RequestHandler.cpp"

@@ -68,7 +68,14 @@ int Network::AsioTCPCli::addContactRequest(const std::string &username)
         write(Babel::Res::BAD_REQUEST, "Doesn't exists"); // TODO: change for real code
         return 1;
     }
-    contactHandler.addContactRequest(owner, username);
+    if (owner == username) {
+        write(Babel::Res::BAD_REQUEST, "Impossible to add yourself as contact");
+        return 1;
+    }
+    if (contactHandler.addContactRequest(owner, username) == 1) {
+        write(Babel::Res::BAD_REQUEST, "Request or Contact already exist");
+        return 1;
+    }
     if (user_client)
         user_client->write(Babel::Res::NEW_CONTACT_REQ, owner.c_str());
     return 0;

@@ -32,7 +32,7 @@ namespace Babel::Server::Db {
 
             std::vector<Contact> getListOfContact(const std::string &owner) const;
 
-            void addContactRequest(const std::string &owner, const std::string &name) const;
+            int addContactRequest(const std::string &owner, const std::string &name) const;
 
             void acceptContactRequest(const std::string &owner, const std::string &name) const;
             void dismissContactRequest(const std::string &owner, const std::string &name) const;
