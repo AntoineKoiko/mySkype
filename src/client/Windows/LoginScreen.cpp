@@ -29,8 +29,6 @@ LoginScreen::LoginScreen(QWidget *parent) : QWidget(parent),
     _layout->addWidget(_loginButton.get(), Qt::AlignCenter);
 
     setLayout(_layout.get());
-
-    this->setStyleSheet("background-color:black;color:white");
 }
 
 LoginScreen::~LoginScreen()
