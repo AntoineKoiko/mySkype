@@ -26,8 +26,13 @@ public:
     QPushButton *getLoginButton() const noexcept;
     QLineEdit *getUsernameField() const noexcept;
 
+    void showBadCharError() const noexcept;
+    void showMissingCharError() const noexcept;
+    void showEmptyUsernameError() const noexcept;
+
 private:
     std::unique_ptr<QLabel> _welcomeText;
+    std::unique_ptr<QLabel> _errorLabel;
     std::unique_ptr<QLineEdit> _usernameField;
     std::unique_ptr<QPushButton> _loginButton;
 

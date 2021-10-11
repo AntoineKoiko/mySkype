@@ -72,19 +72,21 @@ void MyWindow::on_login_button_clicked()
 
     if (username.empty())
     {
-        std::cerr << "empty field" << std::endl;
+        _login->showEmptyUsernameError();
         return;
     }
+
     int check = InputChecker::checkLoginInput(username);
 
     if (check == 1)
     {
-        std::cerr << "ivnalid char" << std::endl;
+        _login->showBadCharError();
         return;
     }
+
     if (check == 2)
     {
-        std::cerr << "need at least one letter" << std::endl;
+        _login->showMissingCharError();
         return;
     }
 
