@@ -70,8 +70,11 @@ void MyWindow::on_login_button_clicked()
     qDebug() << _login->getUsernameField()->text();
     std::string username = _login->getUsernameField()->text().toStdString();
 
-    if (!username.size())
+    if (username.empty())
+    {
+        std::cerr << "empty field" << std::endl;
         return;
+    }
     int check = InputChecker::checkLoginInput(username);
 
     if (check == 1)
@@ -143,8 +146,19 @@ void MyWindow::on_addContactRequest_button_clicked()
     std::string contactUsername = _home->getAddContactWidget()->getFieldContent().toStdString();
     _home->getAddContactWidget()->clearField();
 
-    if (contactUsername.size())
+    if (contactUsername.empty())
+        return;
+
+    int check = InputChecker::checkLoginInput(contactUsername);
+    if (check == 1)
     {
-        _contactHandler->makeContactRequest(contactUsername);
+        std::cerr << "ivnalid char" << std::endl;
+        return;
     }
+    if (check == 2)
+    {
+        std::cerr << "need at least one letter" << std::endl;
+        return;
+    }
+    _contactHandler->makeContactRequest(contactUsername);
 }
