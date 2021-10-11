@@ -10,6 +10,8 @@
 #include <QDebug>
 #include <QListWidget>
 
+#include "InputChecker.hpp"
+
 using namespace Babel::Client;
 
 MyWindow::MyWindow(const std::shared_ptr<UserHandler> userHandler,
@@ -66,13 +68,27 @@ MyWindow::~MyWindow()
 void MyWindow::on_login_button_clicked()
 {
     qDebug() << _login->getUsernameField()->text();
-    if (_login->getUsernameField()->text().toStdString().size())
+    std::string username = _login->getUsernameField()->text().toStdString();
+
+    if (!username.size())
+        return;
+    int check = InputChecker::checkLoginInput(username);
+
+    if (check == 1)
     {
-        _userHandler->login(_login->getUsernameField()->text().toStdString());
-        _home->setUsername(_login->getUsernameField()->text().toStdString());
-        _login->getUsernameField()->clear();
-        //_stack->setCurrentWidget(_home.get());
+        std::cerr << "ivnalid char" << std::endl;
+        return;
     }
+    if (check == 2)
+    {
+        std::cerr << "need at least one letter" << std::endl;
+        return;
+    }
+
+    _userHandler->login(username);
+    _home->setUsername(username);
+    _login->getUsernameField()->clear();
+    //_stack->setCurrentWidget(_home.get());
 }
 
 void MyWindow::successLogin()
@@ -127,7 +143,8 @@ void MyWindow::on_addContactRequest_button_clicked()
     std::string contactUsername = _home->getAddContactWidget()->getFieldContent().toStdString();
     _home->getAddContactWidget()->clearField();
 
-    if (contactUsername.size()) {
+    if (contactUsername.size())
+    {
         _contactHandler->makeContactRequest(contactUsername);
     }
 }

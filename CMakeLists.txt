@@ -49,6 +49,7 @@ set(SRCS_SERVER
 
 set(SRCS_CLIENT
         src/client/main.cpp
+        src/client/InputChecker.cpp
         src/client/Audio/AudioError.cpp
         src/client/Audio/AudioDecoder.cpp
         src/client/Audio/AudioEncoder.cpp
