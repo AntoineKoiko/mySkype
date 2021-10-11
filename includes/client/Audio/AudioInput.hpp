@@ -16,10 +16,11 @@
 #include "Audio.hpp"
 #include "portaudio.h"
 #include "SoundFrameBuffer.hpp"
+#include "IAudioInput.hpp"
 
 namespace Babel::Client::Audio
 {
-    class AudioInput {
+    class AudioInput : public IAudioInput {
         public:
             AudioInput(ICallHandler *callHandler);
             ~AudioInput();
