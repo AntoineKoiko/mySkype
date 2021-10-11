@@ -28,6 +28,9 @@ public:
 
     std::vector<std::string> split_string(const std::string &str, char separator) const;
 
+signals:
+    void loginConfirmed();
+
 private slots:
     void onNewPacketReceive();
 

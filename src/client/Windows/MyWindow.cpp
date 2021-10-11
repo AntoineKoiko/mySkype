@@ -56,6 +56,7 @@ void MyWindow::connect_buttons() noexcept
             this, &MyWindow::on_addContactRequest_button_clicked);
     connect(_callScreen->getHangUpButton(), &QPushButton::released,
             this, &MyWindow::on_hangUp_button_clicked);
+    connect(&_requestHandler, &RequestHandler::loginConfirmed, this, &MyWindow::successLogin);
 }
 
 MyWindow::~MyWindow()
@@ -70,8 +71,13 @@ void MyWindow::on_login_button_clicked()
         _userHandler->login(_login->getUsernameField()->text().toStdString());
         _home->setUsername(_login->getUsernameField()->text().toStdString());
         _login->getUsernameField()->clear();
-        _stack->setCurrentWidget(_home.get());
+        //_stack->setCurrentWidget(_home.get());
     }
+}
+
+void MyWindow::successLogin()
+{
+    _stack->setCurrentWidget(_home.get());
 }
 
 void MyWindow::on_call_button_clicked()
@@ -121,5 +127,7 @@ void MyWindow::on_addContactRequest_button_clicked()
     std::string contactUsername = _home->getAddContactWidget()->getFieldContent().toStdString();
     _home->getAddContactWidget()->clearField();
 
-    _contactHandler->makeContactRequest(contactUsername);
+    if (contactUsername.size()) {
+        _contactHandler->makeContactRequest(contactUsername);
+    }
 }

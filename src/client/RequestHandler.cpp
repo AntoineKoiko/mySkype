@@ -75,6 +75,7 @@ void RequestHandler::onLoggedIn(const DataPacket &packetReceive)
     std::memcpy(packetSend.data, packetReceive.data, packetReceive.size);
     packetSend.size = packetReceive.size;
     this->_client->send(DataPacketManager::serialize(packetSend));
+    emit this->loginConfirmed();
 }
 
 void RequestHandler::onContactRequestAccepted(const DataPacket &packetReceive)
