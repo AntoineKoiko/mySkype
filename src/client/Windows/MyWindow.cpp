@@ -104,6 +104,9 @@ void MyWindow::successLogin()
 void MyWindow::on_call_button_clicked()
 {
     QMessageBox::StandardButton reply;
+    if (!_home->get_toCallList()->count()) {
+        return;
+    }
     reply = QMessageBox::question(this, "Call", "Are you sure to want to make a call?",
                                   QMessageBox::Yes | QMessageBox::No);
 
