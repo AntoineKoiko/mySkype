@@ -110,7 +110,7 @@ int Network::AsioTCPCli::acceptContact(const std::string &username)
     Network::AsioTCPCli *requestOwner;
 
     if (!this->_connectedUser) {
-        write(Babel::Res::NOT_AUTHORIZED, "You must be logged in"); // TODO: send real code
+        write(Babel::Res::NOT_AUTHORIZED, "You must be logged in");
         return 1;
     }
     auto serv = get_server();
@@ -120,7 +120,7 @@ int Network::AsioTCPCli::acceptContact(const std::string &username)
 
     if (user._exists) {
         if (!checkContactRequest(contactHandler, this->_connectedUser->_name, username)) {
-            write(Babel::Res::BAD_REQUEST, "Contact request not found"); // TODO: send real code
+            write(Babel::Res::BAD_REQUEST, "Contact request not found");
             return 1;
         }
         contactHandler.acceptContactRequest(username, this->_connectedUser->_name);
@@ -133,7 +133,7 @@ int Network::AsioTCPCli::acceptContact(const std::string &username)
 int Network::AsioTCPCli::denyContact(const std::string &username)
 {
     if (!this->_connectedUser) {
-        write(Babel::Res::NOT_AUTHORIZED, "You must be logged in"); // TODO: send real code
+        write(Babel::Res::NOT_AUTHORIZED, "You must be logged in");
         return 1;
     }
     auto serv = get_server();
@@ -143,7 +143,7 @@ int Network::AsioTCPCli::denyContact(const std::string &username)
 
     if (user._exists) {
         if (!checkContactRequest(contactHandler, this->_connectedUser->_name, username)) {
-            write(Babel::Res::BAD_REQUEST, "Request not found"); // TODO: send real code
+            write(Babel::Res::BAD_REQUEST, "Request not found");
             return 1;
         }
         contactHandler.dismissContactRequest(username, this->_connectedUser->_name);
@@ -154,7 +154,7 @@ int Network::AsioTCPCli::denyContact(const std::string &username)
 int Network::AsioTCPCli::delContact(const std::string &username)
 {
     if (!this->_connectedUser) {
-        write(Babel::Res::NOT_AUTHORIZED, "You must be logged in"); // TODO: send real code
+        write(Babel::Res::NOT_AUTHORIZED, "You must be logged in");
         return 1;
     }
     auto serv = get_server();
@@ -164,7 +164,7 @@ int Network::AsioTCPCli::delContact(const std::string &username)
 
     if (user._exists) {
         if (!checkContact(contactHandler, username, this->_connectedUser->_name)) {
-            write(Babel::Res::BAD_REQUEST, "Contact not found"); // TODO: send real code
+            write(Babel::Res::BAD_REQUEST, "Contact not found");
             return 1;
         }
         contactHandler.removeContact(this->_connectedUser->_name, username);

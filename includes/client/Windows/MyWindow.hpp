@@ -33,6 +33,7 @@ public:
 
 private slots:
     void handleButton();
+    void successLogin();
 
 private:
     void init_buttons();

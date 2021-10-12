@@ -10,6 +10,8 @@
 #include <QDebug>
 #include <QListWidget>
 
+#include "InputChecker.hpp"
+
 using namespace Babel::Client;
 
 MyWindow::MyWindow(const std::shared_ptr<UserHandler> userHandler,
@@ -56,6 +58,7 @@ void MyWindow::connect_buttons() noexcept
             this, &MyWindow::on_addContactRequest_button_clicked);
     connect(_callScreen->getHangUpButton(), &QPushButton::released,
             this, &MyWindow::on_hangUp_button_clicked);
+    connect(&_requestHandler, &RequestHandler::loginConfirmed, this, &MyWindow::successLogin);
 }
 
 MyWindow::~MyWindow()
@@ -65,13 +68,37 @@ MyWindow::~MyWindow()
 void MyWindow::on_login_button_clicked()
 {
     qDebug() << _login->getUsernameField()->text();
-    if (_login->getUsernameField()->text().toStdString().size())
+    std::string username = _login->getUsernameField()->text().toStdString();
+
+    if (username.empty())
     {
-        _userHandler->login(_login->getUsernameField()->text().toStdString());
-        _home->setUsername(_login->getUsernameField()->text().toStdString());
-        _login->getUsernameField()->clear();
-        _stack->setCurrentWidget(_home.get());
+        _login->showEmptyUsernameError();
+        return;
     }
+
+    int check = InputChecker::checkLoginInput(username);
+
+    if (check == 1)
+    {
+        _login->showBadCharError();
+        return;
+    }
+
+    if (check == 2)
+    {
+        _login->showMissingCharError();
+        return;
+    }
+
+    _userHandler->login(username);
+    _home->setUsername(username);
+    _login->getUsernameField()->clear();
+    //_stack->setCurrentWidget(_home.get());
+}
+
+void MyWindow::successLogin()
+{
+    _stack->setCurrentWidget(_home.get());
 }
 
 void MyWindow::on_call_button_clicked()
@@ -121,5 +148,19 @@ void MyWindow::on_addContactRequest_button_clicked()
     std::string contactUsername = _home->getAddContactWidget()->getFieldContent().toStdString();
     _home->getAddContactWidget()->clearField();
 
+    if (contactUsername.empty())
+        return;
+
+    int check = InputChecker::checkLoginInput(contactUsername);
+    if (check == 1)
+    {
+        std::cerr << "ivnalid char" << std::endl;
+        return;
+    }
+    if (check == 2)
+    {
+        std::cerr << "need at least one letter" << std::endl;
+        return;
+    }
     _contactHandler->makeContactRequest(contactUsername);
 }

@@ -58,8 +58,10 @@ void AsioTCPCli::handleRead(const asio::error_code &err, const std::size_t bytes
     if (bytes <= 0)
         return;
     DataPacket *data = (DataPacket *)&_buffer[0];
+    std::cout << "Request code: " << data->code << std::endl;
     if (data->magic != MAGIC_NUMBER) {
         std::cerr << "Error : wrong magic number" << std::endl;
+        this->read();
         return;
     }
     if (bytes > 0 && data->size > 0) {
