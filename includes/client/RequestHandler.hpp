@@ -36,6 +36,7 @@ private slots:
 
 protected:
 private:
+    void onConnected(const DataPacket &); //200
     void onLoggedIn(const DataPacket &); //201
     void onContactRequestAccepted(const DataPacket &); //203
     void onGetContacts(const DataPacket &); //206

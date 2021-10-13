@@ -25,3 +25,13 @@ void UserHandler::login(const std::string &loginName) noexcept
     std::memcpy(loginPacket.data, loginName.c_str(), loginName.size());
     _network->send(DataPacketManager::serialize(loginPacket));
 }
+
+void UserHandler::setIpAddr(const std::string &ipAddr) noexcept
+{
+    _ipAddr = ipAddr;
+}
+
+std::string UserHandler::getIpAddr() noexcept
+{
+    return _ipAddr;
+}
