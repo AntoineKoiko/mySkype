@@ -24,8 +24,17 @@ void sendToUser(const std::string &username, Network::AsioTCPServer &tcp, std::s
     client->write(211, str.c_str());
 }
 
+void sendToUserJoin(const std::string &username, Network::AsioTCPServer &tcp, std::string &str)
+{
+    auto client = tcp.isUserLogged(username);
+
+    client->write(210, str.c_str());
+}
+
 int Network::AsioTCPCli::callInit(const std::string &args)
 {
+    if (!_connectedUser)
+        return 1;
     auto serv = get_server();
     auto userHandler = serv->getUserHandler();
     std::vector<Db::User> users_list;
@@ -56,6 +65,29 @@ int Network::AsioTCPCli::callInit(const std::string &args)
         sendToUser(token, serv->getServer(), return_str);
         std::cout << s << std::endl;
     }
+    call.users.push_back(*_connectedUser);
     this->write(208, "");
     return 0;
+}
+
+int Network::AsioTCPCli::callAccept(const std::string &)
+{
+    if (!_connectedUser)
+        return 1;
+    auto serv = get_server();
+    auto call = serv->getServer().isUserRequested(_connectedUser->_name);
+    std::string toSend;
+
+    toSend = _connectedUser->_name + ":" + this->getIpString();
+    for (auto it = call->users.begin(); it != call->users.end(); ++it)
+        sendToUserJoin(it->_name, serv->getServer(), toSend);
+    for (auto it = call->users.begin(); it != call->users.end(); ++it) {
+        Network::AsioTCPCli *client = serv->getServer().isUserLogged(it->_name);
+
+        if (!client->getConnectedUser())
+            continue;
+        toSend = client->getConnectedUser()->_name + ":" + client->getIpString();
+    }
+    remove(call->users.begin(), call->users.end(), _connectedUser->_name);
+    call->users.push_back(*_connectedUser);
 }
