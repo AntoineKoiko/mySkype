@@ -80,3 +80,14 @@ std::vector<Call> &AsioTCPServer::getCalls()
 {
     return _calls;
 }
+
+bool AsioTCPServer::isUserRequested(const std::string &username) const
+{
+    for (int i = 0; i < _calls.size(); i++) {
+        for (auto it = _calls[i].users_requested.begin(); it != _calls[i].users_requested.end(); ++it) {
+            if (it->_name == username)
+                return true;
+        }
+    }
+    return false;
+}

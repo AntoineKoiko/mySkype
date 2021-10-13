@@ -17,8 +17,6 @@
 
 using namespace Babel::Server;
 
-// TODO: if user initiating the call is already in a call --> abort
-
 void sendToUser(const std::string &username, Network::AsioTCPServer &tcp, std::string &str)
 {
     auto client = tcp.isUserLogged(username);
@@ -43,22 +41,21 @@ int Network::AsioTCPCli::callInit(const std::string &args)
     while ((pos = s.find(delimiter)) != std::string::npos) {
         token = s.substr(0, pos);
         Babel::Server::Db::User user = userHandler.getUser(token);
-        if (!user._exists) {
+        if (!user._exists || serv->getServer().isUserRequested(token))
             continue;
-        }
+        // TODO : check if user is not requested somewhere else
         call.users_requested.push_back(user);
         return_str = _connectedUser->_name + ":" + this->getIpString();
         sendToUser(token, serv->getServer(), return_str);
         s.erase(0, pos + delimiter.length());
     }
     Babel::Server::Db::User user = userHandler.getUser(token);
-    if (!user._exists) {
-        return 0;
+    if (user._exists && !serv->getServer().isUserRequested(token)) {
+        call.users_requested.push_back(user);
+        return_str = _connectedUser->_name + ":" + this->getIpString();
+        sendToUser(token, serv->getServer(), return_str);
+        std::cout << s << std::endl;
     }
-    call.users_requested.push_back(user);
-    return_str = _connectedUser->_name + ":" + this->getIpString();
-    sendToUser(token, serv->getServer(), return_str);
-    std::cout << s << std::endl;
     this->write(208, "");
     return 0;
 }
