@@ -105,6 +105,7 @@ void MyWindow::successLogin()
 
 void MyWindow::onCallRequest()
 {
+    DataPacket callPacket;
     QMessageBox::StandardButton reply;
     QString boxContent("Do you want to accept call from ");
 
@@ -112,10 +113,15 @@ void MyWindow::onCallRequest()
     boxContent.append(" ?");
     reply = QMessageBox::question(this, "Call", boxContent, QMessageBox::Yes | QMessageBox::No);
 
-    if (reply == QMessageBox::Yes)
+    if (reply == QMessageBox::Yes) {
+        callPacket.code = Babel::Req::ACCEPT_CALL;
+        _client->send(DataPacketManager::serialize(callPacket));
         std::cout << "call accepted" << std::endl;
-    else
+    } else {
+        callPacket.code = Babel::Req::REJECT_CALL;
+        _client->send(DataPacketManager::serialize(callPacket));
         std::cout << "call refused" << std::endl;
+    }
 }
 
 void MyWindow::on_call_button_clicked()
