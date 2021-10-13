@@ -15,6 +15,7 @@ RequestHandler::RequestHandler(const std::shared_ptr<Babel::Client::Network::Tcp
     _requestMap[203] = &RequestHandler::onContactRequestAccepted;
     _requestMap[206] = &RequestHandler::onGetContacts;
     _requestMap[207] = &RequestHandler::onContactRequest;
+    _requestMap[211] = &RequestHandler::onCallRequest;
     _requestMap[400] = &RequestHandler::onBadRequest;
     QObject::connect(dynamic_cast<QObject *>(_client.get()), SIGNAL(newPacketReceive()), this, SLOT(onNewPacketReceive()));
 }
