@@ -41,6 +41,7 @@ set(SRCS_SERVER
        src/server/Database/DatabaseManagerError.cpp
        src/server/main.cpp
        src/server/commands.cpp
+       src/server/calls.cpp
        src/server/utils.cpp
        src/server/Network/AsioTCPServer.cpp
        src/server/Network/AsioTCPCli.cpp

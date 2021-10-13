@@ -23,14 +23,6 @@ AsioTCPServer::~AsioTCPServer()
 {
 }
 
-//TODO Check If always utils
-// void handle_write(asio::error_code err, UN std::size_t bytes)
-// {
-//     if (err) {
-//         std::cerr << "Error : " << err.message() << std::endl;
-//     }
-// }
-
 void AsioTCPServer::startAccept()
 {
     std::shared_ptr<AsioTCPCli> cli = std::make_shared<AsioTCPCli>(_ioContext);
@@ -70,4 +62,21 @@ void AsioTCPServer::disconnectClient(void)
             return;
         }
     }
+}
+
+std::shared_ptr<Call> AsioTCPServer::getUserCall(const std::string &username)
+{
+    for (int i = 0; i < _calls.size(); i++) {
+        for (auto it = _calls[i].users.begin(); it != _calls[i].users.end(); ++it) {
+            if (it->_name == username) {
+                return std::make_shared<Call>(_calls[i]);
+            }
+        }
+    }
+    return nullptr;
+}
+
+std::vector<Call> &AsioTCPServer::getCalls()
+{
+    return _calls;
 }

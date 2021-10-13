@@ -38,7 +38,9 @@ namespace Babel::Server::Network
             int denyContact(const std::string &);
             int delContact(const std::string &);
             int getContacts(const std::string &);
-            // int callInit(const std::string &);
+            int callInit(const std::string &);
+            int callAccept(const std::string &);
+            int callReject(const std::string &);
 
         protected:
         private:
