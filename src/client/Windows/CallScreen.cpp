@@ -17,6 +17,7 @@ CallScreen::CallScreen(QWidget *parent) : QWidget(parent),
 {
     _inCallLabel->setText("In Call With:");
     _inCallLabel->setAlignment(Qt::AlignCenter);
+    _hangUpButton->setText("Hang Up");
 
     setLayout(_layout.get());
 }

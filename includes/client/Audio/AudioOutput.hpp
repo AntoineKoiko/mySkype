@@ -14,10 +14,11 @@
 #include "Audio.hpp"
 #include "portaudio.h"
 #include "SoundFrameBuffer.hpp"
+#include "IAudioOutput.hpp"
 
 namespace Babel::Client::Audio
 {
-    class AudioOutput {
+    class AudioOutput : public IAudioOutput {
         public:
             AudioOutput();
             ~AudioOutput();

@@ -10,6 +10,7 @@
 RequestHandler::RequestHandler(const std::shared_ptr<Babel::Client::Network::TcpClient> client,
                                std::shared_ptr<UserHandler> userHandler, std::shared_ptr<ContactHandler> contactHandler) : _client(client), _userHandler(userHandler), _contactHandler(contactHandler)
 {
+    _requestMap[Babel::Res::CONNECTION_ACCEPTED] = &RequestHandler::onConnected;
     _requestMap[201] = &RequestHandler::onLoggedIn;
     _requestMap[203] = &RequestHandler::onContactRequestAccepted;
     _requestMap[206] = &RequestHandler::onGetContacts;
@@ -65,6 +66,12 @@ void RequestHandler::onNewPacketReceive()
         std::cout << "Impossible to find the command code: " << dataPacket.code << std::endl;
     }
 
+}
+
+void RequestHandler::onConnected(const DataPacket &packetReceive)
+{
+    std::cout << "Connected to server under ip: " << packetReceive.data << std::endl;
+    _userHandler->setIpAddr(std::string(packetReceive.data));
 }
 
 void RequestHandler::onLoggedIn(const DataPacket &packetReceive)
