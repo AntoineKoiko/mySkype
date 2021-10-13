@@ -91,3 +91,8 @@ std::shared_ptr<Call> AsioTCPServer::isUserRequested(const std::string &username
     }
     return nullptr;
 }
+
+void AsioTCPServer::addCall(Call &call)
+{
+    _calls.push_back(call);
+}

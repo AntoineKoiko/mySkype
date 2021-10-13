@@ -81,15 +81,19 @@ int Network::AsioTCPCli::callAccept(const std::string &)
     toSend = _connectedUser->_name + ":" + this->getIpString();
     for (auto it = call->users.begin(); it != call->users.end(); ++it)
         sendToUserJoin(it->_name, serv->getServer(), toSend);
+    toSend = "";
     for (auto it = call->users.begin(); it != call->users.end(); ++it) {
         Network::AsioTCPCli *client = serv->getServer().isUserLogged(it->_name);
 
+        if (toSend.length() > 0)
+            toSend += ";";
         if (!client->getConnectedUser())
             continue;
-        toSend = client->getConnectedUser()->_name + ":" + client->getIpString();
+        toSend += client->getConnectedUser()->_name + ":" + client->getIpString();
     }
     remove(call->users_requested.begin(), call->users_requested.end(), *_connectedUser);
     call->users.push_back(*_connectedUser);
+    this->write(209, toSend.c_str());
     return 0;
 }
 
