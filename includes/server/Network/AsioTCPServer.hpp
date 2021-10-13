@@ -28,6 +28,7 @@ namespace Babel::Server::Network
             AsioTCPCli *isUserLogged(const std::string &) const;
             std::shared_ptr<Call> isUserRequested(const std::string &) const;
             std::shared_ptr<Call> getUserCall(const std::string &);
+            void addCall(Call &);
             void run();
             void disconnectClient(void);
 
