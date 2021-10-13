@@ -26,6 +26,15 @@ MyWindow::MyWindow(const std::shared_ptr<UserHandler> userHandler,
                                                                        _requestHandler(_client, _userHandler, _contactHandler)
 
 {
+    QMessageBox::StandardButton reply;
+    reply = QMessageBox::question(this, "Call", "Do You want to accept a call ?",
+                                  QMessageBox::Yes | QMessageBox::No);
+
+    if (reply == QMessageBox::Yes)
+        std::cout << "call accepted" << std::endl;
+    else
+        std::cout << "call refused" << std::endl;
+
     this->setUp_winodw();
 
     connect_buttons();
@@ -104,7 +113,8 @@ void MyWindow::successLogin()
 void MyWindow::on_call_button_clicked()
 {
     QMessageBox::StandardButton reply;
-    if (!_home->get_toCallList()->count()) {
+    if (!_home->get_toCallList()->count())
+    {
         return;
     }
     reply = QMessageBox::question(this, "Call", "Are you sure to want to make a call?",
