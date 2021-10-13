@@ -88,7 +88,19 @@ int Network::AsioTCPCli::callAccept(const std::string &)
             continue;
         toSend = client->getConnectedUser()->_name + ":" + client->getIpString();
     }
-    remove(call->users.begin(), call->users.end(), *_connectedUser);
+    remove(call->users_requested.begin(), call->users_requested.end(), *_connectedUser);
     call->users.push_back(*_connectedUser);
+    return 0;
+}
+
+int Network::AsioTCPCli::callReject(const std::string &)
+{
+    if (!_connectedUser)
+        return 1;
+    auto serv = get_server();
+    auto call = serv->getServer().isUserRequested(_connectedUser->_name);
+
+    remove(call->users_requested.begin(), call->users_requested.end(), *_connectedUser);
+    // TODO: send reject code to others
     return 0;
 }
