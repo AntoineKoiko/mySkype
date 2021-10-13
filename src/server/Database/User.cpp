@@ -14,3 +14,8 @@ User::User() : _name(""), _exists(false), _isConnected(false)
 }
 
 User::~User() {}
+
+bool User::operator==(const User &rhs) const
+{
+    return _name == rhs._name;
+}

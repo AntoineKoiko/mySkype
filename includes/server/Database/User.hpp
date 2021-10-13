@@ -25,6 +25,8 @@ namespace Babel::Server::Db {
             bool _exists;
             bool _isConnected;
 
+            bool operator==(const User &rhs) const;
+
         protected :
 
         private :

@@ -88,6 +88,7 @@ int Network::AsioTCPCli::callAccept(const std::string &)
             continue;
         toSend = client->getConnectedUser()->_name + ":" + client->getIpString();
     }
-    remove(call->users.begin(), call->users.end(), _connectedUser->_name);
+    remove(call->users.begin(), call->users.end(), *_connectedUser);
     call->users.push_back(*_connectedUser);
+    return 0;
 }
