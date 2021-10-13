@@ -16,17 +16,25 @@
 #include "Udp.hpp"
 #include "AudioEncoder.hpp"
 #include "AudioDecoder.hpp"
+#include "TcpClient.hpp"
+
+#define PORT_SOUND 8085
 
 class CallHandler : public Babel::Client::Audio::ICallHandler
 {
     public:
-        CallHandler();
+        CallHandler(const std::shared_ptr<Babel::Client::Network::TcpClient>);
         ~CallHandler();
 
-        void call(const std::string &contact_to_call);
+        void call(const std::vector<std::string> &contact_to_call, const std::string &myIp);
         void hangup();
+        void acceptCall();
+        void rejectCall();
         void dataRecordedAvailable();
         void dataPacketAvailable(const std::vector<char> &packetSerialize);
+        void addPeopleOnCall(const std::string &name, const std::string &ip);
+        void setCallOwner(const std::string &callOwner);
+        const std::string getCallOwner();
 
     protected:
     private:
@@ -35,6 +43,9 @@ class CallHandler : public Babel::Client::Audio::ICallHandler
         Babel::Client::Network::Udp _udpNetwork;
         Babel::Client::Audio::AudioEncoder _audioEncoder;
         Babel::Client::Audio::AudioDecoder _audioDecoder;
+        std::shared_ptr<Babel::Client::Network::TcpClient> _client;
+        std::vector<std::tuple<std::string, std::string>> _connectedPeople;
+        std::string _callOwner;
 
 private:
 };

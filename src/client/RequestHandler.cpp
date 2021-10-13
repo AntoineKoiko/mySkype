@@ -8,7 +8,7 @@
 #include "RequestHandler.hpp"
 
 RequestHandler::RequestHandler(const std::shared_ptr<Babel::Client::Network::TcpClient> client,
-                               std::shared_ptr<UserHandler> userHandler, std::shared_ptr<ContactHandler> contactHandler) : _client(client), _userHandler(userHandler), _contactHandler(contactHandler)
+                               std::shared_ptr<UserHandler> userHandler, std::shared_ptr<ContactHandler> contactHandler, CallHandler &callHandler) : _client(client), _userHandler(userHandler), _contactHandler(contactHandler), _callHandler(callHandler)
 {
     _requestMap[Babel::Res::CONNECTION_ACCEPTED] = &RequestHandler::onConnected;
     _requestMap[201] = &RequestHandler::onLoggedIn;
@@ -102,6 +102,16 @@ void RequestHandler::onGetContacts(const DataPacket &packetReceive)
 void RequestHandler::onContactRequest(const DataPacket &packetReceive)
 {
     this->_contactHandler->addContactRequest(packetReceive.data);
+}
+
+void RequestHandler::onCallRequest(const DataPacket &packetReceive)
+{
+    std::string content(packetReceive.data);
+    std::vector<std::string> dataParsed = split_string(content, ';');
+
+    _callHandler.addPeopleOnCall(dataParsed[0], dataParsed[1]);
+    _callHandler.setCallOwner(dataParsed[0]);
+    emit this->newCallRequest();
 }
 
 void RequestHandler::onBadRequest(const DataPacket &packetReceive)

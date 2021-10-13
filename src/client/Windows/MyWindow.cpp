@@ -23,18 +23,10 @@ MyWindow::MyWindow(const std::shared_ptr<UserHandler> userHandler,
                                                                        _client(client),
                                                                        _userHandler(userHandler),
                                                                        _contactHandler(std::make_shared<ContactHandler>(_home->getContactList(), _home->getContactRequestList(), client)),
-                                                                       _requestHandler(_client, _userHandler, _contactHandler)
+                                                                       _callHandler(client),
+                                                                       _requestHandler(_client, _userHandler, _contactHandler, _callHandler)
 
 {
-    QMessageBox::StandardButton reply;
-    reply = QMessageBox::question(this, "Call", "Do You want to accept a call ?",
-                                  QMessageBox::Yes | QMessageBox::No);
-
-    if (reply == QMessageBox::Yes)
-        std::cout << "call accepted" << std::endl;
-    else
-        std::cout << "call refused" << std::endl;
-
     this->setUp_winodw();
 
     connect_buttons();
@@ -68,6 +60,7 @@ void MyWindow::connect_buttons() noexcept
     connect(_callScreen->getHangUpButton(), &QPushButton::released,
             this, &MyWindow::on_hangUp_button_clicked);
     connect(&_requestHandler, &RequestHandler::loginConfirmed, this, &MyWindow::successLogin);
+    connect(&_requestHandler, &RequestHandler::newCallRequest, this, &MyWindow::onCallRequest);
 }
 
 MyWindow::~MyWindow()
@@ -110,11 +103,27 @@ void MyWindow::successLogin()
     _stack->setCurrentWidget(_home.get());
 }
 
+void MyWindow::onCallRequest()
+{
+    QMessageBox::StandardButton reply;
+    QString boxContent("Do you want to accept call from ");
+
+    boxContent.append(this->_callHandler.getCallOwner().c_str());
+    boxContent.append(" ?");
+    reply = QMessageBox::question(this, "Call", boxContent, QMessageBox::Yes | QMessageBox::No);
+
+    if (reply == QMessageBox::Yes)
+        std::cout << "call accepted" << std::endl;
+    else
+        std::cout << "call refused" << std::endl;
+}
+
 void MyWindow::on_call_button_clicked()
 {
     QMessageBox::StandardButton reply;
-    if (!_home->get_toCallList()->count())
-    {
+    std::vector<std::string> peoplesOnCall;
+
+    if (!_home->get_toCallList()->count()) {
         return;
     }
     reply = QMessageBox::question(this, "Call", "Are you sure to want to make a call?",
@@ -129,9 +138,10 @@ void MyWindow::on_call_button_clicked()
         {
             QListWidgetItem *item = callList->item(i);
             contacts.push_back(item->text());
+            peoplesOnCall.push_back(item->text().toStdString());
         }
         _callScreen->startCall(contacts);
-        _callHandler.call("toto");
+        _callHandler.call(peoplesOnCall, _userHandler->getIpAddr());
         _stack->setCurrentWidget(_callScreen.get());
     }
     else
@@ -143,6 +153,7 @@ void MyWindow::on_call_button_clicked()
 void MyWindow::on_hangUp_button_clicked()
 {
     _callScreen->stopCall();
+    _callHandler.hangup();
     _stack->setCurrentWidget(_home.get());
 }
 
