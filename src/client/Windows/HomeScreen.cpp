@@ -18,6 +18,8 @@ HomeScreen::HomeScreen(QWidget *parent) : QWidget(parent),
                                           _inputComboBox(std::make_unique<QComboBox>(this)),
                                           _mainLayout(std::make_unique<QGridLayout>(this))
 {
+    this->setStyleSheet("background-color:#8789E8;color:#0E312C;");
+
     setUp_widget();
     setup_layout();
     connect_buttons();

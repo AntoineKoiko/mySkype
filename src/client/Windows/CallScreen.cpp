@@ -15,6 +15,8 @@ CallScreen::CallScreen(QWidget *parent) : QWidget(parent),
                                           _layout(std::make_unique<QVBoxLayout>())
 
 {
+    this->setStyleSheet("background-color:#8789E8;color:#0E312C;");
+
     _inCallLabel->setText("In Call With:");
     _inCallLabel->setAlignment(Qt::AlignCenter);
     _hangUpButton->setText("Hang Up");
