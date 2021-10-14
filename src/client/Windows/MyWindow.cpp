@@ -146,14 +146,7 @@ void MyWindow::on_call_button_clicked()
     if (confirm_call)
     {
         qDebug() << "Say Yes";
-        std::vector<QString> contacts;
-        QListWidget *callList = _home->get_toCallList();
-        for (int i = 0; i < callList->count(); ++i)
-        {
-            QListWidgetItem *item = callList->item(i);
-            contacts.push_back(item->text());
-            peoplesOnCall.push_back(item->text().toStdString());
-        }
+        std::vector<QString> contacts(_home->get_toCallList()->getQStrItems());
         _callScreen->startCall(contacts);
         _callHandler.call(peoplesOnCall, _userHandler->getIpAddr());
         _stack->setCurrentWidget(_callScreen.get());
