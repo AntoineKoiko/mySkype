@@ -85,7 +85,7 @@ HomeScreen::~HomeScreen()
 
 QString HomeScreen::getSelectedDevice() const noexcept
 {
-    _inputComboBox->itemData(_inputComboBox->currentIndex()).toString().toStdString();
+    return _inputComboBox->itemData(_inputComboBox->currentIndex()).toString();
 }
 
 void HomeScreen::on_addToCallButton_clicked()
