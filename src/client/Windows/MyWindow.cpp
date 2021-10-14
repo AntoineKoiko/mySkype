@@ -113,13 +113,17 @@ void MyWindow::onCallRequest()
     boxContent.append(" ?");
     reply = QMessageBox::question(this, "Call", boxContent, QMessageBox::Yes | QMessageBox::No);
 
-    if (reply == QMessageBox::Yes) {
+    if (reply == QMessageBox::Yes)
+    {
         callPacket.code = Babel::Req::ACCEPT_CALL;
         _client->send(DataPacketManager::serialize(callPacket));
         std::cout << "call accepted" << std::endl;
+        _callScreen->startCall(std::vector<QString>());
         _stack->setCurrentWidget(_callScreen.get());
         _callHandler.acceptCall(_userHandler->getIpAddr());
-    } else {
+    }
+    else
+    {
         callPacket.code = Babel::Req::REJECT_CALL;
         _client->send(DataPacketManager::serialize(callPacket));
         std::cout << "call refused" << std::endl;
@@ -131,7 +135,8 @@ void MyWindow::on_call_button_clicked()
     QMessageBox::StandardButton reply;
     std::vector<std::string> peoplesOnCall;
 
-    if (!_home->get_toCallList()->count()) {
+    if (!_home->get_toCallList()->count())
+    {
         return;
     }
     reply = QMessageBox::question(this, "Call", "Are you sure to want to make a call?",

@@ -15,6 +15,7 @@ HomeScreen::HomeScreen(QWidget *parent) : QWidget(parent),
                                           _addContactWidget(std::make_unique<AddContactWidget>()),
                                           _callButton(std::make_unique<QPushButton>(this)),
                                           _usernameLabel(std::make_unique<QLabel>(this)),
+                                          _inputComboBox(std::make_unique<QComboBox>(this)),
                                           _mainLayout(std::make_unique<QGridLayout>(this))
 {
     setUp_widget();
@@ -28,6 +29,11 @@ void HomeScreen::setUp_widget() noexcept
     _usernameLabel->setAlignment(Qt::AlignCenter);
     _usernameLabel->setFrameStyle(QFrame::Panel | QFrame::Sunken);
     _usernameLabel->setFont(QFont("Arial", 16, QFont::Bold));
+
+    _inputComboBox->addItem("micro 1");
+    _inputComboBox->addItem("micro 2");
+    _inputComboBox->addItem("micro 3");
+    _inputComboBox->addItem("micro 4");
 
     _callButton->setText("Call");
 
@@ -51,6 +57,7 @@ void HomeScreen::setup_layout() noexcept
     _mainLayout->addWidget(_addContactWidget->getSearchField(), 0, 0, 1, 1);
     _mainLayout->addWidget(_addContactWidget->getAddButton(), 0, 1, 1, 1);
     _mainLayout->addWidget(_addContactWidget->getLabel(), 1, 0, 1, 1);
+    _mainLayout->addWidget(_inputComboBox.get(), 2, 0, 1, 1);
 
     _mainLayout->addWidget(_usernameLabel.get(), 0, 3, 1, 2);
 
@@ -72,6 +79,11 @@ void HomeScreen::setup_layout() noexcept
 
 HomeScreen::~HomeScreen()
 {
+}
+
+QString HomeScreen::getSelectedDevice() const noexcept
+{
+    _inputComboBox->itemData(_inputComboBox->currentIndex()).toString().toStdString();
 }
 
 void HomeScreen::on_addToCallButton_clicked()

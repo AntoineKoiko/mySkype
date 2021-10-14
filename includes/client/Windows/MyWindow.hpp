@@ -57,12 +57,14 @@ private:
     std::unique_ptr<HomeScreen> _home;
     std::unique_ptr<LoginScreen> _login;
     std::unique_ptr<CallScreen> _callScreen;
+
     std::shared_ptr<Babel::Client::Network::TcpClient> _client;
     std::shared_ptr<UserHandler> _userHandler;
     std::shared_ptr<ContactHandler> _contactHandler;
-    CallHandler _callHandler;
-    RequestHandler _requestHandler;
 
+    CallHandler _callHandler;
+
+    RequestHandler _requestHandler;
 };
 
 #endif /* !MYWINDOW_HPP_ */
