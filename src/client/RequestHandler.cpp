@@ -109,8 +109,15 @@ void RequestHandler::onContactRequest(const DataPacket &packetReceive)
 
 void RequestHandler::onCallAccepted(const DataPacket &packetReceive)
 {
-    std::vector<std::string> usersCall = this->split_string(std::string(packetReceive.data), ';');
+    std::string packetString(packetReceive.data);
+    std::vector<std::string> usersCall;
 
+
+    if (packetString.find(";") != std::string::npos) {
+        usersCall = this->split_string(std::string(packetReceive.data), ';');
+    } else {
+        usersCall.push_back(packetString);
+    }
     for (const auto &userCall: usersCall) {
         std::vector<std::string> userParsed = this->split_string(userCall, ':');
 
