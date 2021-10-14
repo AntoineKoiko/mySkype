@@ -16,6 +16,7 @@ RequestHandler::RequestHandler(const std::shared_ptr<Babel::Client::Network::Tcp
     _requestMap[206] = &RequestHandler::onGetContacts;
     _requestMap[207] = &RequestHandler::onContactRequest;
     _requestMap[209] = &RequestHandler::onCallAccepted;
+    _requestMap[210] = &RequestHandler::onSomeoneJoin;
     _requestMap[211] = &RequestHandler::onCallRequest;
     _requestMap[400] = &RequestHandler::onBadRequest;
     QObject::connect(dynamic_cast<QObject *>(_client.get()), SIGNAL(newPacketReceive()), this, SLOT(onNewPacketReceive()));
@@ -115,6 +116,14 @@ void RequestHandler::onCallAccepted(const DataPacket &packetReceive)
 
         _callHandler.addPeopleOnCall(userParsed[0], userParsed[1]);
     }
+}
+
+void RequestHandler::onSomeoneJoin(const DataPacket &packetReceive)
+{
+    std::string content(packetReceive.data);
+    std::vector<std::string> dataParsed = split_string(content, ':');
+
+    _callHandler.addPeopleOnCall(dataParsed[0], dataParsed[1]);
 }
 
 void RequestHandler::onCallRequest(const DataPacket &packetReceive)

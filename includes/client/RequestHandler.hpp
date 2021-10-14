@@ -44,8 +44,9 @@ private:
     void onContactRequestAccepted(const DataPacket &); //203
     void onGetContacts(const DataPacket &); //206
     void onContactRequest(const DataPacket &); //207
+    void onCallAccepted(const DataPacket &); //209
+    void onSomeoneJoin(const DataPacket &); //210
     void onCallRequest(const DataPacket &); //211
-    void onCallAccepted(const DataPacket &);
     void onBadRequest(const DataPacket &); //400
 
     std::shared_ptr<Babel::Client::Network::TcpClient> _client;
