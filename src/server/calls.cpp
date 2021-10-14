@@ -50,18 +50,21 @@ int Network::AsioTCPCli::callInit(const std::string &args)
     while ((pos = s.find(delimiter)) != std::string::npos) {
         token = s.substr(0, pos);
         Babel::Server::Db::User user = userHandler.getUser(token);
+        Network::AsioTCPCli *client = serv->getServer().isUserLogged(user._name);
         if (!user._exists || serv->getServer().isUserRequested(token))
             continue;
         // TODO : check if user is not requested somewhere else
         call.users_requested.push_back(user);
-        return_str = _connectedUser->_name + ":" + this->getIpString();
+        return_str = _connectedUser->_name + ":" + client->getIpString();
         sendToUser(token, serv->getServer(), return_str);
         s.erase(0, pos + delimiter.length());
     }
     Babel::Server::Db::User user = userHandler.getUser(token);
     if (user._exists && !serv->getServer().isUserRequested(token)) {
+        Network::AsioTCPCli *client = serv->getServer().isUserLogged(user._name);
+
         call.users_requested.push_back(user);
-        return_str = _connectedUser->_name + ":" + this->getIpString();
+        return_str = _connectedUser->_name + ":" + client->getIpString();
         sendToUser(token, serv->getServer(), return_str);
         std::cout << s << std::endl;
     }

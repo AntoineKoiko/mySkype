@@ -117,6 +117,8 @@ void MyWindow::onCallRequest()
         callPacket.code = Babel::Req::ACCEPT_CALL;
         _client->send(DataPacketManager::serialize(callPacket));
         std::cout << "call accepted" << std::endl;
+        _stack->setCurrentWidget(_callScreen.get());
+        _callHandler.acceptCall();
     } else {
         callPacket.code = Babel::Req::REJECT_CALL;
         _client->send(DataPacketManager::serialize(callPacket));

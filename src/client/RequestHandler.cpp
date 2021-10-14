@@ -15,6 +15,7 @@ RequestHandler::RequestHandler(const std::shared_ptr<Babel::Client::Network::Tcp
     _requestMap[203] = &RequestHandler::onContactRequestAccepted;
     _requestMap[206] = &RequestHandler::onGetContacts;
     _requestMap[207] = &RequestHandler::onContactRequest;
+    _requestMap[209] = &RequestHandler::onCallAccepted;
     _requestMap[211] = &RequestHandler::onCallRequest;
     _requestMap[400] = &RequestHandler::onBadRequest;
     QObject::connect(dynamic_cast<QObject *>(_client.get()), SIGNAL(newPacketReceive()), this, SLOT(onNewPacketReceive()));
@@ -105,12 +106,23 @@ void RequestHandler::onContactRequest(const DataPacket &packetReceive)
     this->_contactHandler->addContactRequest(packetReceive.data);
 }
 
+void RequestHandler::onCallAccepted(const DataPacket &packetReceive)
+{
+    std::vector<std::string> usersCall = this->split_string(std::string(packetReceive.data), ';');
+
+    for (const auto &userCall: usersCall) {
+        std::vector<std::string> userParsed = this->split_string(userCall, ':');
+
+        _callHandler.addPeopleOnCall(userParsed[0], userParsed[1]);
+    }
+}
+
 void RequestHandler::onCallRequest(const DataPacket &packetReceive)
 {
     std::string content(packetReceive.data);
-    std::vector<std::string> dataParsed = split_string(content, ';');
+    std::vector<std::string> dataParsed = split_string(content, ':');
 
-    _callHandler.addPeopleOnCall(dataParsed[0], dataParsed[1]);
+    //_callHandler.addPeopleOnCall(dataParsed[0], dataParsed[1]);
     _callHandler.setCallOwner(dataParsed[0]);
     emit this->newCallRequest();
 }
