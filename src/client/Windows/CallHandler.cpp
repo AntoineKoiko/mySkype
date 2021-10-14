@@ -76,7 +76,6 @@ void CallHandler::dataRecordedAvailable()
         packetSerialize = SoundPacketManager::serialize(packet);
         for (auto &people : _connectedPeople) {
             _udpNetwork.send(std::get<0>(people), PORT_SOUND, packetSerialize);
-            std::cout << "On send des packet ip: " << std::get<0>(people) << "name " << std::get<1>(people) << std::endl;
         }
     }
 }
@@ -91,7 +90,6 @@ void CallHandler::dataPacketAvailable(const std::vector<char> &packetSerialize)
     encodedSound.size = packet.payloadSize;
     soundFrame = _audioDecoder.decodeAudio(encodedSound);
     _output.addSound(soundFrame);
-    std::cout << "Receive Packet" << std::endl;
 }
 
 void CallHandler::addPeopleOnCall(const std::string &name, const std::string &ip)
