@@ -15,6 +15,8 @@ LoginScreen::LoginScreen(QWidget *parent) : QWidget(parent),
                                             _loginButton(std::make_unique<QPushButton>(this)),
                                             _layout(std::make_unique<QVBoxLayout>())
 {
+    this->setStyleSheet("background-color:#8789E8;color:#0E312C;");
+
     _welcomeText->setText("Welcome on Babel VOIP Application!");
     _welcomeText->setAlignment(Qt::AlignCenter);
     _welcomeText->setFrameStyle(QFrame::Panel | QFrame::Sunken);
