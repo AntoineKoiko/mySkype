@@ -44,8 +44,9 @@ void CallHandler::call(const std::vector<std::string> &contact_to_call, const st
     return;
 }
 
-void CallHandler::acceptCall()
+void CallHandler::acceptCall(const std::string &myIp)
 {
+    _udpNetwork.connect(PORT_SOUND, myIp);
     _input.startRecording();
     _output.startPlaying();
 }

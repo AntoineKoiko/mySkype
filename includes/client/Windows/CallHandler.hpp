@@ -28,7 +28,7 @@ class CallHandler : public Babel::Client::Audio::ICallHandler
 
         void call(const std::vector<std::string> &contact_to_call, const std::string &myIp);
         void hangup();
-        void acceptCall();
+        void acceptCall(const std::string &myIp);
         void rejectCall();
         void dataRecordedAvailable();
         void dataPacketAvailable(const std::vector<char> &packetSerialize);
