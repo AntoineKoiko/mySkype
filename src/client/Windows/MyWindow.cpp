@@ -10,6 +10,7 @@
 #include <QDebug>
 #include <QListWidget>
 
+#include "Modal.hpp"
 #include "InputChecker.hpp"
 
 using namespace Babel::Client;
@@ -106,14 +107,14 @@ void MyWindow::successLogin()
 void MyWindow::onCallRequest()
 {
     DataPacket callPacket;
-    QMessageBox::StandardButton reply;
+    bool confirm_call = false;
     QString boxContent("Do you want to accept call from ");
 
     boxContent.append(this->_callHandler.getCallOwner().c_str());
     boxContent.append(" ?");
-    reply = QMessageBox::question(this, "Call", boxContent, QMessageBox::Yes | QMessageBox::No);
+    confirm_call = Modal::YesNo(this, QString("Call"), boxContent);
 
-    if (reply == QMessageBox::Yes)
+    if (confirm_call)
     {
         callPacket.code = Babel::Req::ACCEPT_CALL;
         _client->send(DataPacketManager::serialize(callPacket));
@@ -132,17 +133,17 @@ void MyWindow::onCallRequest()
 
 void MyWindow::on_call_button_clicked()
 {
-    QMessageBox::StandardButton reply;
+    bool confirm_call = false;
     std::vector<std::string> peoplesOnCall;
 
     if (!_home->get_toCallList()->count())
     {
         return;
     }
-    reply = QMessageBox::question(this, "Call", "Are you sure to want to make a call?",
-                                  QMessageBox::Yes | QMessageBox::No);
+    confirm_call = Modal::YesNo(this, QString("Call"),
+                                QString("Are you sure to want to make a call?"));
 
-    if (reply == QMessageBox::Yes)
+    if (confirm_call)
     {
         qDebug() << "Say Yes";
         std::vector<QString> contacts;
