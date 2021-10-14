@@ -17,6 +17,7 @@ AudioInput::AudioInput(ICallHandler *callHandler) : _callHandler(callHandler), _
         throw InputError(Pa_GetErrorText(err));
     }
     _params.device = Pa_GetDefaultInputDevice();
+    std::cout << "Mon default Input: " << Pa_GetDefaultInputDevice() << std::endl;
     if (_params.device == paNoDevice) {
         throw InputError("No default input device !");
     }
@@ -24,6 +25,52 @@ AudioInput::AudioInput(ICallHandler *callHandler) : _callHandler(callHandler), _
     _params.sampleFormat = paFloat32;
     _params.suggestedLatency = Pa_GetDeviceInfo(_params.device)->defaultLowInputLatency;
     _params.hostApiSpecificStreamInfo = nullptr;
+    info();
+}
+
+void AudioInput::info()
+{
+    int numDevices = Pa_GetDeviceCount();
+    const   PaDeviceInfo *deviceInfo;
+    int defaultDisplayed;
+
+    printf("Number of devices = %d\n", numDevices);
+    for (int i = 0; i < numDevices; i++)
+    {
+        deviceInfo = Pa_GetDeviceInfo(i);
+        printf("--------------------------------------- device #%d %s\n", i, deviceInfo->name);
+
+        /* Mark global and API specific default devices */
+        defaultDisplayed = 0;
+        if (i == Pa_GetDefaultInputDevice())
+        {
+            printf("[ Default Input");
+            defaultDisplayed = 1;
+        }
+        else if (i == Pa_GetHostApiInfo(deviceInfo->hostApi)->defaultInputDevice)
+        {
+            const PaHostApiInfo *hostInfo = Pa_GetHostApiInfo(deviceInfo->hostApi);
+            printf("[ Default %s Input", hostInfo->name);
+            defaultDisplayed = 1;
+        }
+
+        if (i == Pa_GetDefaultOutputDevice())
+        {
+            printf((defaultDisplayed ? "," : "["));
+            printf(" Default Output");
+            defaultDisplayed = 1;
+        }
+        else if (i == Pa_GetHostApiInfo(deviceInfo->hostApi)->defaultOutputDevice)
+        {
+            const PaHostApiInfo *hostInfo = Pa_GetHostApiInfo(deviceInfo->hostApi);
+            printf((defaultDisplayed ? "," : "["));
+            printf(" Default %s Output", hostInfo->name);
+            defaultDisplayed = 1;
+        }
+
+        if (defaultDisplayed)
+            printf(" ]\n");
+    }
 }
 
 AudioInput::~AudioInput()

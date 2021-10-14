@@ -31,6 +31,7 @@ namespace Babel::Client::Audio
             bool isEmpty() const;
             void stopRecording();
             void close();
+            void info();
 
         protected:
         private:
