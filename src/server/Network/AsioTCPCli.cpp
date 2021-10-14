@@ -67,7 +67,7 @@ void AsioTCPCli::handleRead(const asio::error_code &err, const std::size_t bytes
         this->read();
         return;
     }
-    if (bytes > 0 && data->size > 0) {
+    if ((bytes > 0 && data->size > 0) || data->code == Babel::Req::ACCEPT_CALL) {
         auto it = _cmdMap.find(data->code);
 
         if (it != _cmdMap.end())
