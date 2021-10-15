@@ -11,6 +11,7 @@ using namespace Babel::Client::Network;
 
 TcpClient::TcpClient(QObject *parent) : QObject(parent)
 {
+    _toRead = 0;
     _socket = std::make_unique<QTcpSocket>();
     QObject::connect(this->_socket.get(), SIGNAL(connected()), this, SLOT(socketConnected()));
     QObject::connect(this->_socket.get(), SIGNAL(disconnected()), this, SLOT(socketConnectionClosed()));
@@ -51,7 +52,11 @@ std::vector<char> TcpClient::getData()
     std::vector<char> data;
 
     data.resize(0);
+    while (_dataPacket.empty()) {
+        std::cout << "C'EST VIIIIIIIIIDE PUTAING" << std::endl;
+    }
     if (_dataPacket.empty()) {
+        std::cout << "Aucun packet en attente !" << std::endl;
         return data;
     }
     data = this->_dataPacket.front();
@@ -63,7 +68,31 @@ void TcpClient::socketReadyRead()
 {
     std::vector<char> container;
     container.resize(sizeof(DataPacket));
+//    qint64 nbBytesRead = 0;
+//    qint64 readState = 0;
+    //std::cout << "Read size : " << sizeof(DataPacket) << std::endl;
 
+    //while (nbBytesRead != sizeof(DataPacket)) {
+//        std::cout << "\nbytesread in read: " << sizeof(DataPacket) + _toRead << std::endl << std::endl;
+//    nbBytesRead = this->_socket->read(container.data(), sizeof(DataPacket) + _toRead);
+//    std::cout << "\nbytesread: " << nbBytesRead << std::endl << std::endl;
+//    for (size_t i = 0; i < container.size(); i++) {
+//        container[i] = container[i + _toRead];
+//    }
+//    container.resize(sizeof(DataPacket));
+//    _toRead = sizeof(DataPacket) + _toRead - nbBytesRead;
+//        std::cout << "readState: " << readState << std::endl;
+//        if (readState == -1) {
+//            std::cout << "readState -1" << std::endl; 
+            //break;
+//        }
+//        nbBytesRead += readState;
+//        std::cout << "nbBytesRead: " << nbBytesRead << std::endl;
+//        readState = this->_socket->read(container.data()+nbBytesRead, sizeof(DataPacket) - nbBytesRead);
+//        std::cout << "readState: " << readState << std::endl;
+    //}
+
+    //std::cout << "On recoit un packet de taille : " << this->_socket->read(container.data(), sizeof(DataPacket)) << std::endl;
     this->_socket->read(container.data(), sizeof(DataPacket));
     _dataPacket.push(container);
     emit this->newPacketReceive();

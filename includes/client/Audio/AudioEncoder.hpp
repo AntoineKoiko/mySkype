@@ -8,14 +8,11 @@
 #ifndef AUDIOENCODER_HPP_
 #define AUDIOENCODER_HPP_
 
-#include "opus.h"
-#include "Audio.hpp"
-#include "SoundEncoded.hpp"
-#include "SoundFrameBuffer.hpp"
+#include "IAudioEncoder.hpp"
 
 namespace Babel::Client::Audio
 {
-    class AudioEncoder {
+    class AudioEncoder : public IAudioEncoder {
         public:
             AudioEncoder();
             ~AudioEncoder();

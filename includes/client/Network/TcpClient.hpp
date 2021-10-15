@@ -33,7 +33,9 @@ namespace Babel::Client::Network
         protected:
         private:
             std::unique_ptr<QTcpSocket> _socket;
+//            std::vector<char> _internalBuffer;
             std::queue<std::vector<char>> _dataPacket;
+//            qint64 _toRead;
 
         signals:
             void newPacketReceive();
