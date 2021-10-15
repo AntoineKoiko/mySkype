@@ -14,6 +14,8 @@
 #define READ_SIZE 2048
 #define MAGIC_NUMBER 753159
 
+#pragma pack(push, 1)
+
 struct DataPacket {
     DataPacket() {
         this->magic = MAGIC_NUMBER;
@@ -26,6 +28,8 @@ struct DataPacket {
     std::size_t size;
     char data[READ_SIZE];
 };
+
+#pragma pack(pop)
 
 namespace Babel::Res
 {
