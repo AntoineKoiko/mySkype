@@ -45,13 +45,29 @@ const std::string AsioTCPCli::getIpString() const
     }
 }
 
+static bool removeFromCallByUsername(const std::string &username)
+{
+    auto serv = get_server();
+    auto call = serv->getServer().getUserCall(username);
+
+    for (auto i = 0; i < call->users.size(); i++) {
+        if (call->users[i]._name == username)
+            call->users.erase(call->users.begin() + i);
+    }
+    for (auto i = 0; i < call->users_requested.size(); i++) {
+        if (call->users_requested[i]._name == username)
+            call->users_requested.erase(call->users_requested.begin() + i);
+    }
+}
+
 void AsioTCPCli::handleRead(const asio::error_code &err, const std::size_t bytes)
 {
     auto serv = get_server();
 
     if (err == asio::error::eof || err == asio::error::connection_reset ) {
         std::cout << (this->_connectedUser ? this->_connectedUser->_name : "unknow") << " disconnected" << std::endl;
-        // TODO: retiré le user des calls
+        if (this->_connectedUser && _connectedUser->_exists)
+            removeFromCallByUsername(_connectedUser->_name);
         this->_socket.close();
         serv->getServer().disconnectClient();
         return;

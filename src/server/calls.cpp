@@ -97,7 +97,7 @@ int Network::AsioTCPCli::callAccept(const std::string &)
     }
     std::string toSend = _connectedUser->_name + ":" + this->getIpString();
     for (auto it = call->users.begin(); it != call->users.end(); ++it) {
-        sendToUserJoin(it->_name, serv->getServer(), toSend); //Send new people on call notification
+        sendToUserJoin(it->_name, serv->getServer(), toSend);
     }
     toSend.clear();
     for (auto it = call->users.begin(); it != call->users.end(); ++it) {
