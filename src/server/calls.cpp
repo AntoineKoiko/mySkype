@@ -17,20 +17,26 @@
 
 using namespace Babel::Server;
 
-void sendToUser(const std::string &username, Network::AsioTCPServer &tcp, std::string &str)
+int sendToUser(const std::string &username, Network::AsioTCPServer &tcp, std::string &str)
 {
     auto client = tcp.isUserLogged(username);
 
-    if (client)
+    if (client) {
         client->write(Babel::Res::CALL_REQUEST, str.c_str());
+        return 0;
+    }
+    return 1;
 }
 
-void sendToUserJoin(const std::string &username, Network::AsioTCPServer &tcp, std::string &str)
+int sendToUserJoin(const std::string &username, Network::AsioTCPServer &tcp, std::string &str)
 {
     auto client = tcp.isUserLogged(username);
 
-    if (client)
+    if (client) {
         client->write(Babel::Res::JOIN_CALL, str.c_str());
+        return 0;
+    }
+    return 1;
 }
 
 int Network::AsioTCPCli::callInit(const std::string &args)
@@ -54,7 +60,9 @@ int Network::AsioTCPCli::callInit(const std::string &args)
             continue;
         call.users_requested.push_back(user);
         return_str = _connectedUser->_name + ":" + this->getIpString();
-        sendToUser(argument, serv->getServer(), return_str);
+        if (sendToUser(argument, serv->getServer(), return_str)) {
+            // remove(call.users_requested.begin(), call.users_requested.end(), user);
+        }
     }
     call.users.push_back(*_connectedUser);
     serv->getServer().addCall(call);
@@ -82,7 +90,7 @@ int Network::AsioTCPCli::callAccept(const std::string &)
 
         if (toSend.length() > 0)
             toSend += ";";
-        if (!client->getConnectedUser())
+        if (client && !client->getConnectedUser())
             continue;
         toSend += client->getConnectedUser()->_name + ":" + client->getIpString();
     }
@@ -100,8 +108,15 @@ int Network::AsioTCPCli::callReject(const std::string &)
     auto call = serv->getServer().isUserRequested(_connectedUser->_name);
 
     remove(call->users_requested.begin(), call->users_requested.end(), *_connectedUser);
-    // TODO: send reject code to others
     return 0;
 }
 
-// TODO: hangup command
+int Network::AsioTCPCli::callHangup(const std::string &)
+{
+    //TODO : retirer le user de tous les calls
+    auto serv = get_server();
+    auto call = serv->getServer().getUserCall(_connectedUser->_name);
+
+    // remove(call->users.begin(), call->users.end(), _connectedUser);
+    this->write(213, "");
+}

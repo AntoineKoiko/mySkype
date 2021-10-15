@@ -57,6 +57,7 @@ namespace Babel::Req
     const int CALL_SOMEONE = 100;
     const int ACCEPT_CALL = 101;
     const int REJECT_CALL = 102;
+    const int HANG_UP = 103;
 }
 
 #endif /* !BABEL_HPP_ */
