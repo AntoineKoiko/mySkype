@@ -15,10 +15,11 @@
 #include <deque>
 #include "AsioTCPCli.hpp"
 #include "call.hpp"
+#include "ITCPServer.hpp"
 
 namespace Babel::Server::Network
 {
-    class AsioTCPServer {
+    class AsioTCPServer : public ITCPServer {
         public:
             AsioTCPServer(int port = 9999);
             ~AsioTCPServer();

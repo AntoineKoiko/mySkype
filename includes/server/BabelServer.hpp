@@ -15,6 +15,7 @@
 #include "DatabaseManager.hpp"
 #include "UserHandler.hpp"
 #include "ContactHandler.hpp"
+#include "ITCPServer.hpp"
 
 namespace Babel::Server
 {
