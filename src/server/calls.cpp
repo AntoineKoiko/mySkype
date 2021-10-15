@@ -17,6 +17,21 @@
 
 using namespace Babel::Server;
 
+static bool removeFromCallByUsername(const std::string &username)
+{
+    auto serv = get_server();
+    auto call = serv->getServer().getUserCall(username);
+
+    for (auto i = 0; i < call->users.size(); i++) {
+        if (call->users[i]._name == username)
+            call->users.erase(call->users.begin() + i);
+    }
+    for (auto i = 0; i < call->users_requested.size(); i++) {
+        if (call->users_requested[i]._name == username)
+            call->users_requested.erase(call->users_requested.begin() + i);
+    }
+}
+
 int sendToUser(const std::string &username, Network::AsioTCPServer &tcp, std::string &str)
 {
     auto client = tcp.isUserLogged(username);
@@ -61,7 +76,7 @@ int Network::AsioTCPCli::callInit(const std::string &args)
         call.users_requested.push_back(user);
         return_str = _connectedUser->_name + ":" + this->getIpString();
         if (sendToUser(argument, serv->getServer(), return_str)) {
-            // remove(call.users_requested.begin(), call.users_requested.end(), user);
+            removeFromCallByUsername(user._name);
         }
     }
     call.users.push_back(*_connectedUser);
@@ -113,10 +128,9 @@ int Network::AsioTCPCli::callReject(const std::string &)
 
 int Network::AsioTCPCli::callHangup(const std::string &)
 {
-    //TODO : retirer le user de tous les calls
     auto serv = get_server();
     auto call = serv->getServer().getUserCall(_connectedUser->_name);
 
-    // remove(call->users.begin(), call->users.end(), _connectedUser);
+    removeFromCallByUsername(_connectedUser->_name);
     this->write(213, "");
 }
