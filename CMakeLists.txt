@@ -67,6 +67,7 @@ set(SRCS_CLIENT
         src/client/Windows/Contact.cpp
         src/client/Windows/ContactRequestWidget.cpp
         src/client/Windows/AddContactWidget.cpp
+        src/client/Windows/Modal.cpp
         src/client/Network/SoundPacketManager.cpp
         src/client/Network/Udp.cpp
         src/client/Windows/CallScreen.cpp

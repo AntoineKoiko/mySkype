@@ -21,7 +21,9 @@ AsioTCPCli::AsioTCPCli(asio::io_context &context)
     _cmdMap[Babel::Req::REJECT_CONTACT] = &AsioTCPCli::denyContact;
     _cmdMap[Babel::Req::REMOVE_CONTACT] = &AsioTCPCli::delContact;
     _cmdMap[Babel::Req::GET_CONTACT_LIST] = &AsioTCPCli::getContacts;
-    _cmdMap[Babel::Req::CALL_SOMEONE] = &AsioTCPCli::getContacts;
+    _cmdMap[Babel::Req::CALL_SOMEONE] = &AsioTCPCli::callInit;
+    _cmdMap[Babel::Req::ACCEPT_CALL] = &AsioTCPCli::callAccept;
+    _cmdMap[Babel::Req::REJECT_CALL] = &AsioTCPCli::callReject;
 }
 
 AsioTCPCli::~AsioTCPCli()
@@ -66,7 +68,7 @@ void AsioTCPCli::handleRead(const asio::error_code &err, const std::size_t bytes
         this->read();
         return;
     }
-    if (bytes > 0 && data->size > 0) {
+    if ((bytes > 0 && data->size > 0) || data->code == Babel::Req::ACCEPT_CALL) {
         auto it = _cmdMap.find(data->code);
 
         if (it != _cmdMap.end())

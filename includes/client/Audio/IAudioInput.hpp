@@ -28,10 +28,12 @@ namespace Babel::Client::Audio
 
             virtual void startRecording() = 0;
             virtual void stopRecording() = 0;
-            
+
             virtual SoundFrameBuffer getSound() = 0;
 
             virtual bool isEmpty() const = 0;
+
+            virtual void info() = 0;
     };
 }
 

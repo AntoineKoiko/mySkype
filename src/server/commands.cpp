@@ -126,7 +126,9 @@ int Network::AsioTCPCli::acceptContact(const std::string &username)
         }
         contactHandler.acceptContactRequest(username, this->_connectedUser->_name);
         requestOwner = serv->getServer().isUserLogged(username);
-        requestOwner->write(Babel::Res::ACCEPT_CTC_REQ, this->_connectedUser->_name.c_str());
+        if (requestOwner != nullptr) {
+            requestOwner->write(Babel::Res::ACCEPT_CTC_REQ, this->_connectedUser->_name.c_str());
+        }
     }
     return 0;
 }

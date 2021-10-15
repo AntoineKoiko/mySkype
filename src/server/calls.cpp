@@ -21,7 +21,7 @@ void sendToUser(const std::string &username, Network::AsioTCPServer &tcp, std::s
 {
     auto client = tcp.isUserLogged(username);
 
-    if (client) // TODO: si client null -> le retirer des calls
+    if (client)
         client->write(Babel::Res::CALL_REQUEST, str.c_str());
 }
 
@@ -29,7 +29,7 @@ void sendToUserJoin(const std::string &username, Network::AsioTCPServer &tcp, st
 {
     auto client = tcp.isUserLogged(username);
 
-    if (client) // TODO: si client null -> le retirer des calls
+    if (client)
         client->write(Babel::Res::JOIN_CALL, str.c_str());
 }
 
@@ -40,35 +40,25 @@ int Network::AsioTCPCli::callInit(const std::string &args)
     auto serv = get_server();
     auto userHandler = serv->getUserHandler();
     std::vector<Db::User> users_list;
-    std::size_t pos = 0;
-    std::string token;
-    std::string s = args;
-    std::string delimiter = ";";
+    std::string s(args);
     std::string return_str;
     Call call;
+    std::vector<std::string> argumentList;
 
     if (serv->getServer().getUserCall(_connectedUser->_name))
         return -1;
-    while ((pos = s.find(delimiter)) != std::string::npos) {
-        token = s.substr(0, pos);
-        Babel::Server::Db::User user = userHandler.getUser(token);
-        if (!user._exists || serv->getServer().isUserRequested(token))
+    argumentList = splitString(s, ";");
+    for (const auto &argument : argumentList) {
+        Babel::Server::Db::User user = userHandler.getUser(argument);
+        if (!user._exists || serv->getServer().isUserRequested(argument) || serv->getServer().getUserCall(argument))
             continue;
-        // TODO : check if user is not requested somewhere else
         call.users_requested.push_back(user);
         return_str = _connectedUser->_name + ":" + this->getIpString();
-        sendToUser(token, serv->getServer(), return_str);
-        s.erase(0, pos + delimiter.length());
-    }
-    Babel::Server::Db::User user = userHandler.getUser(token);
-    if (user._exists && !serv->getServer().isUserRequested(token)) {
-        call.users_requested.push_back(user);
-        return_str = _connectedUser->_name + ":" + this->getIpString();
-        sendToUser(token, serv->getServer(), return_str);
-        std::cout << s << std::endl;
+        sendToUser(argument, serv->getServer(), return_str);
     }
     call.users.push_back(*_connectedUser);
-    this->write(208, "");
+    serv->getServer().addCall(call);
+    this->write(Babel::Res::CALL_TAKEN, "");
     return 0;
 }
 
@@ -78,12 +68,15 @@ int Network::AsioTCPCli::callAccept(const std::string &)
         return 1;
     auto serv = get_server();
     auto call = serv->getServer().isUserRequested(_connectedUser->_name);
-    std::string toSend;
 
-    toSend = _connectedUser->_name + ":" + this->getIpString();
-    for (auto it = call->users.begin(); it != call->users.end(); ++it)
-        sendToUserJoin(it->_name, serv->getServer(), toSend);
-    toSend = "";
+    if (call == nullptr) {
+        return 1;
+    }
+    std::string toSend = _connectedUser->_name + ":" + this->getIpString();
+    for (auto it = call->users.begin(); it != call->users.end(); ++it) {
+        sendToUserJoin(it->_name, serv->getServer(), toSend); //Send new people on call notification
+    }
+    toSend.clear();
     for (auto it = call->users.begin(); it != call->users.end(); ++it) {
         Network::AsioTCPCli *client = serv->getServer().isUserLogged(it->_name);
 
@@ -95,7 +88,7 @@ int Network::AsioTCPCli::callAccept(const std::string &)
     }
     remove(call->users_requested.begin(), call->users_requested.end(), *_connectedUser);
     call->users.push_back(*_connectedUser);
-    this->write(209, toSend.c_str());
+    this->write(Babel::Res::CALL_ACCEPTED, toSend.c_str());
     return 0;
 }
 

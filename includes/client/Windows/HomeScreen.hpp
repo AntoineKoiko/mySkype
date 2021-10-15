@@ -11,6 +11,7 @@
 #include <QWidget>
 #include <QGridLayout>
 #include <QPushButton>
+#include <QComboBox>
 
 #include "TitledListWithButton.hpp"
 #include "ContactRequestWidget.hpp"
@@ -35,6 +36,7 @@ public:
     ListStrWidget *getContactRequestList() const noexcept;
 
     void setUsername(const std::string &username) const noexcept;
+    QString getSelectedDevice() const noexcept;
 
 private:
     //buttons callback
@@ -54,6 +56,7 @@ private:
 
     std::unique_ptr<QPushButton> _callButton;
     std::unique_ptr<QLabel> _usernameLabel;
+    std::unique_ptr<QComboBox> _inputComboBox;
     std::unique_ptr<QGridLayout> _mainLayout;
 };
 

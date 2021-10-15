@@ -50,18 +50,23 @@ private:
     void on_acceptContactRequest_button_clicked();
     void on_dismissContactRequest_button_clicked();
     void on_addContactRequest_button_clicked();
+    void onCallRequest();
+    void onCallAccepted();
+    void onSomeoneJoined();
 
 private:
     std::unique_ptr<QStackedWidget> _stack;
     std::unique_ptr<HomeScreen> _home;
     std::unique_ptr<LoginScreen> _login;
     std::unique_ptr<CallScreen> _callScreen;
+
     std::shared_ptr<Babel::Client::Network::TcpClient> _client;
     std::shared_ptr<UserHandler> _userHandler;
     std::shared_ptr<ContactHandler> _contactHandler;
-    RequestHandler _requestHandler;
 
     CallHandler _callHandler;
+
+    RequestHandler _requestHandler;
 };
 
 #endif /* !MYWINDOW_HPP_ */

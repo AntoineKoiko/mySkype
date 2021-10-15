@@ -8,13 +8,16 @@
 #include "RequestHandler.hpp"
 
 RequestHandler::RequestHandler(const std::shared_ptr<Babel::Client::Network::TcpClient> client,
-                               std::shared_ptr<UserHandler> userHandler, std::shared_ptr<ContactHandler> contactHandler) : _client(client), _userHandler(userHandler), _contactHandler(contactHandler)
+                               std::shared_ptr<UserHandler> userHandler, std::shared_ptr<ContactHandler> contactHandler, CallHandler &callHandler) : _client(client), _userHandler(userHandler), _contactHandler(contactHandler), _callHandler(callHandler)
 {
     _requestMap[Babel::Res::CONNECTION_ACCEPTED] = &RequestHandler::onConnected;
     _requestMap[201] = &RequestHandler::onLoggedIn;
     _requestMap[203] = &RequestHandler::onContactRequestAccepted;
     _requestMap[206] = &RequestHandler::onGetContacts;
     _requestMap[207] = &RequestHandler::onContactRequest;
+    _requestMap[209] = &RequestHandler::onCallAccepted;
+    _requestMap[210] = &RequestHandler::onSomeoneJoin;
+    _requestMap[211] = &RequestHandler::onCallRequest;
     _requestMap[400] = &RequestHandler::onBadRequest;
     QObject::connect(dynamic_cast<QObject *>(_client.get()), SIGNAL(newPacketReceive()), this, SLOT(onNewPacketReceive()));
 }
@@ -102,6 +105,44 @@ void RequestHandler::onGetContacts(const DataPacket &packetReceive)
 void RequestHandler::onContactRequest(const DataPacket &packetReceive)
 {
     this->_contactHandler->addContactRequest(packetReceive.data);
+}
+
+void RequestHandler::onCallAccepted(const DataPacket &packetReceive)
+{
+    std::string packetString(packetReceive.data);
+    std::vector<std::string> usersCall;
+
+    std::cout << "On call accept -> " << packetReceive.data << std::endl;
+    if (packetString.find(";") != std::string::npos) {
+        usersCall = this->split_string(std::string(packetReceive.data), ';');
+    } else {
+        usersCall.push_back(packetString);
+    }
+    for (const auto &userCall: usersCall) { 
+        std::vector<std::string> userParsed = this->split_string(userCall, ':');
+        std::cout << "name -> " << userParsed[0] << " + ip -> " << userParsed[1] << std::endl;
+        _callHandler.addPeopleOnCall(userParsed[0], userParsed[1]);
+    }
+    emit this->newCallAccepted();
+}
+
+void RequestHandler::onSomeoneJoin(const DataPacket &packetReceive)
+{
+    std::string content(packetReceive.data);
+    std::vector<std::string> dataParsed = split_string(content, ':');
+
+    _callHandler.addPeopleOnCall(dataParsed[0], dataParsed[1]);
+    emit this->newCallJoining();
+}
+
+void RequestHandler::onCallRequest(const DataPacket &packetReceive)
+{
+    std::string content(packetReceive.data);
+    std::vector<std::string> dataParsed = split_string(content, ':');
+
+    //_callHandler.addPeopleOnCall(dataParsed[0], dataParsed[1]);
+    _callHandler.setCallOwner(dataParsed[0]);
+    emit this->newCallRequest();
 }
 
 void RequestHandler::onBadRequest(const DataPacket &packetReceive)

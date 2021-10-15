@@ -40,6 +40,10 @@ namespace Babel::Res
     const int NOT_AUTHORIZED = 403;
     const int COMMAND_NOT_FOUND = 404;
     const int SERVER_ERROR = 500;
+    const int CALL_TAKEN = 208;
+    const int CALL_ACCEPTED = 209;
+    const int JOIN_CALL = 210;
+    const int CALL_REQUEST = 211;
 }
 
 namespace Babel::Req

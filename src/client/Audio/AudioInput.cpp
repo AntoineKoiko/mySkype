@@ -13,11 +13,16 @@ AudioInput::AudioInput(ICallHandler *callHandler) : _callHandler(callHandler), _
 {
     PaError err = Pa_Initialize();
 
-    if (err != paNoError) {
+    if (err != paNoError)
+    {
         throw InputError(Pa_GetErrorText(err));
     }
+    info();
+
     _params.device = Pa_GetDefaultInputDevice();
-    if (_params.device == paNoDevice) {
+    std::cout << "Mon default Input: " << Pa_GetDefaultInputDevice() << std::endl;
+    if (_params.device == paNoDevice)
+    {
         throw InputError("No default input device !");
     }
     _params.channelCount = Audio::NumberOfChannels;
@@ -26,14 +31,62 @@ AudioInput::AudioInput(ICallHandler *callHandler) : _callHandler(callHandler), _
     _params.hostApiSpecificStreamInfo = nullptr;
 }
 
+void AudioInput::info()
+{
+    int numDevices = Pa_GetDeviceCount();
+    const PaDeviceInfo *deviceInfo;
+    int defaultDisplayed;
+
+    printf("Number of devices = %d\n", numDevices);
+    for (int i = 0; i < numDevices; i++)
+    {
+        deviceInfo = Pa_GetDeviceInfo(i);
+        printf("--------------------------------------- device #%d %s\n", i, deviceInfo->name);
+
+        /* Mark global and API specific default devices */
+        defaultDisplayed = 0;
+        if (i == Pa_GetDefaultInputDevice())
+        {
+            printf("[ Default Input");
+            defaultDisplayed = 1;
+        }
+        else if (i == Pa_GetHostApiInfo(deviceInfo->hostApi)->defaultInputDevice)
+        {
+            const PaHostApiInfo *hostInfo = Pa_GetHostApiInfo(deviceInfo->hostApi);
+            printf("[ Default %s Input", hostInfo->name);
+            defaultDisplayed = 1;
+        }
+
+        if (i == Pa_GetDefaultOutputDevice())
+        {
+            printf((defaultDisplayed ? "," : "["));
+            printf(" Default Output");
+            defaultDisplayed = 1;
+        }
+        else if (i == Pa_GetHostApiInfo(deviceInfo->hostApi)->defaultOutputDevice)
+        {
+            const PaHostApiInfo *hostInfo = Pa_GetHostApiInfo(deviceInfo->hostApi);
+            printf((defaultDisplayed ? "," : "["));
+            printf(" Default %s Output", hostInfo->name);
+            defaultDisplayed = 1;
+        }
+
+        if (defaultDisplayed)
+            printf(" ]\n");
+    }
+}
+
 AudioInput::~AudioInput()
 {
     PaError err;
 
     err = Pa_Terminate();
-    if (err != paNoError) {
+    if (err != paNoError)
+    {
         std::cerr << "Error: Pa_Terminate(): " << Pa_GetErrorText(err) << std::endl;
-    } else {
+    }
+    else
+    {
         std::cout << "Successfuly destroy Audio" << std::endl;
     }
 }
@@ -51,17 +104,20 @@ void AudioInput::openInputStream()
         paClipOff,
         this->callback,
         this);
-    if (err != paNoError) {
+    if (err != paNoError)
+    {
         throw InputError(Pa_GetErrorText(err));
     }
 }
 
 void AudioInput::startRecording()
 {
-     if (!_isRecording) {
+    if (!_isRecording)
+    {
         PaError err;
         err = Pa_StartStream(_stream);
-        if (err != paNoError) {
+        if (err != paNoError)
+        {
             throw InputError(Pa_GetErrorText(err));
         }
         _isRecording = true;
@@ -84,10 +140,12 @@ bool AudioInput::isEmpty() const
 
 void AudioInput::stopRecording()
 {
-    if (_isRecording) {
+    if (_isRecording)
+    {
         PaError err;
         err = Pa_StopStream(_stream);
-        if (err != paNoError) {
+        if (err != paNoError)
+        {
             throw InputError(Pa_GetErrorText(err));
         }
         _isRecording = false;
@@ -95,17 +153,18 @@ void AudioInput::stopRecording()
 }
 
 int AudioInput::callback(const void *inputBuffer, [[maybe_unused]] void *outputBuffer,
-                   [[maybe_unused]] unsigned long framesPerBuffer,
-                   [[maybe_unused]] const PaStreamCallbackTimeInfo *timeInfo,
-                   [[maybe_unused]] PaStreamCallbackFlags statusFlags,
-                   void *userData)
+                         [[maybe_unused]] unsigned long framesPerBuffer,
+                         [[maybe_unused]] const PaStreamCallbackTimeInfo *timeInfo,
+                         [[maybe_unused]] PaStreamCallbackFlags statusFlags,
+                         void *userData)
 {
     auto _this = static_cast<AudioInput *>(userData);
     float *audioRecorded = (float *)inputBuffer;
     SoundFrameBuffer soundBuffer;
 
-    if (audioRecorded) {
-        std::copy(audioRecorded, audioRecorded+Audio::BufferSize, soundBuffer.frames.begin());
+    if (audioRecorded)
+    {
+        std::copy(audioRecorded, audioRecorded + Audio::BufferSize, soundBuffer.frames.begin());
         _this->_sound.push(soundBuffer);
     }
     _this->_callHandler->dataRecordedAvailable();
@@ -116,7 +175,8 @@ void AudioInput::close()
 {
     PaError err = Pa_CloseStream(_stream);
 
-    if (err != paNoError) {
+    if (err != paNoError)
+    {
         throw InputError(Pa_GetErrorText(err));
     }
 }
