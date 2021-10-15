@@ -112,17 +112,18 @@ void RequestHandler::onCallAccepted(const DataPacket &packetReceive)
     std::string packetString(packetReceive.data);
     std::vector<std::string> usersCall;
 
-
+    std::cout << "On call accept -> " << packetReceive.data << std::endl;
     if (packetString.find(";") != std::string::npos) {
         usersCall = this->split_string(std::string(packetReceive.data), ';');
     } else {
         usersCall.push_back(packetString);
     }
-    for (const auto &userCall: usersCall) {
+    for (const auto &userCall: usersCall) { 
         std::vector<std::string> userParsed = this->split_string(userCall, ':');
-
+        std::cout << "name -> " << userParsed[0] << " + ip -> " << userParsed[1] << std::endl;
         _callHandler.addPeopleOnCall(userParsed[0], userParsed[1]);
     }
+    emit this->newCallAccepted();
 }
 
 void RequestHandler::onSomeoneJoin(const DataPacket &packetReceive)
@@ -131,6 +132,7 @@ void RequestHandler::onSomeoneJoin(const DataPacket &packetReceive)
     std::vector<std::string> dataParsed = split_string(content, ':');
 
     _callHandler.addPeopleOnCall(dataParsed[0], dataParsed[1]);
+    emit this->newCallJoining();
 }
 
 void RequestHandler::onCallRequest(const DataPacket &packetReceive)

@@ -106,3 +106,8 @@ const std::string CallHandler::getCallOwner()
 {
     return _callOwner;
 }
+
+const std::vector<std::tuple<std::string, std::string>> CallHandler::getConnectedPeople()
+{
+    return _connectedPeople;
+}

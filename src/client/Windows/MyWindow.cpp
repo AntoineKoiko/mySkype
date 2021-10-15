@@ -62,6 +62,8 @@ void MyWindow::connect_buttons() noexcept
             this, &MyWindow::on_hangUp_button_clicked);
     connect(&_requestHandler, &RequestHandler::loginConfirmed, this, &MyWindow::successLogin);
     connect(&_requestHandler, &RequestHandler::newCallRequest, this, &MyWindow::onCallRequest);
+    connect(&_requestHandler, &RequestHandler::newCallAccepted, this, &MyWindow::onCallAccepted);
+    connect(&_requestHandler, &RequestHandler::newCallJoining, this, &MyWindow::onSomeoneJoined);
 }
 
 MyWindow::~MyWindow()
@@ -129,6 +131,28 @@ void MyWindow::onCallRequest()
         _client->send(DataPacketManager::serialize(callPacket));
         std::cout << "call refused" << std::endl;
     }
+}
+
+void MyWindow::onCallAccepted()
+{
+    std::vector<std::tuple<std::string, std::string>> peopleConnected = _callHandler.getConnectedPeople();
+    std::vector<QString> peopleConnectedAsQString = {};
+
+    for (auto &people : peopleConnected) {
+        peopleConnectedAsQString.push_back(QString::fromStdString(std::get<0>(people)));
+    }
+    _callScreen->startCall(peopleConnectedAsQString);
+}
+
+void MyWindow::onSomeoneJoined()
+{
+    std::vector<std::tuple<std::string, std::string>> peopleConnected = _callHandler.getConnectedPeople();
+    std::vector<QString> peopleConnectedAsQString = {};
+
+    for (auto &people : peopleConnected) {
+        peopleConnectedAsQString.push_back(QString::fromStdString(std::get<0>(people)));
+    }
+    _callScreen->startCall(peopleConnectedAsQString);
 }
 
 void MyWindow::on_call_button_clicked()

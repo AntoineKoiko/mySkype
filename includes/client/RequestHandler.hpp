@@ -33,6 +33,8 @@ public:
 signals:
     void loginConfirmed();
     void newCallRequest();
+    void newCallAccepted();
+    void newCallJoining();
 
 private slots:
     void onNewPacketReceive();

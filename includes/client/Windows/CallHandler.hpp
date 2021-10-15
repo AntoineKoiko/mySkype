@@ -35,6 +35,7 @@ class CallHandler : public Babel::Client::Audio::ICallHandler
         void addPeopleOnCall(const std::string &name, const std::string &ip);
         void setCallOwner(const std::string &callOwner);
         const std::string getCallOwner();
+        const std::vector<std::tuple<std::string, std::string>> getConnectedPeople();
 
     protected:
     private:

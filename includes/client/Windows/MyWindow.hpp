@@ -51,6 +51,8 @@ private:
     void on_dismissContactRequest_button_clicked();
     void on_addContactRequest_button_clicked();
     void onCallRequest();
+    void onCallAccepted();
+    void onSomeoneJoined();
 
 private:
     std::unique_ptr<QStackedWidget> _stack;
