@@ -41,6 +41,7 @@ namespace Babel::Server::Network
             int callInit(const std::string &);
             int callAccept(const std::string &);
             int callReject(const std::string &);
+            int callHangup(const std::string &);
 
         protected:
         private:

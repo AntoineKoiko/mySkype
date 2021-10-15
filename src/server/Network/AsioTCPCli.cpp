@@ -49,6 +49,7 @@ void AsioTCPCli::handleRead(const asio::error_code &err, const std::size_t bytes
 
     if (err == asio::error::eof || err == asio::error::connection_reset ) {
         std::cout << (this->_connectedUser ? this->_connectedUser->_name : "unknow") << " disconnected" << std::endl;
+        // TODO: retiré le user des calls
         this->_socket.close();
         serv->getServer().disconnectClient();
         return;

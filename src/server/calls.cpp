@@ -21,14 +21,16 @@ void sendToUser(const std::string &username, Network::AsioTCPServer &tcp, std::s
 {
     auto client = tcp.isUserLogged(username);
 
-    client->write(211, str.c_str());
+    if (client) // TODO: si client null -> le retirer des calls
+        client->write(Babel::Res::CALL_REQUEST, str.c_str());
 }
 
 void sendToUserJoin(const std::string &username, Network::AsioTCPServer &tcp, std::string &str)
 {
     auto client = tcp.isUserLogged(username);
 
-    client->write(210, str.c_str());
+    if (client) // TODO: si client null -> le retirer des calls
+        client->write(Babel::Res::JOIN_CALL, str.c_str());
 }
 
 int Network::AsioTCPCli::callInit(const std::string &args)
@@ -108,3 +110,5 @@ int Network::AsioTCPCli::callReject(const std::string &)
     // TODO: send reject code to others
     return 0;
 }
+
+// TODO: hangup command
