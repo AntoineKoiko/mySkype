@@ -21,14 +21,16 @@ void sendToUser(const std::string &username, Network::AsioTCPServer &tcp, std::s
 {
     auto client = tcp.isUserLogged(username);
 
-    client->write(Babel::Res::CALL_REQUEST, str.c_str());
+    if (client)
+        client->write(Babel::Res::CALL_REQUEST, str.c_str());
 }
 
 void sendToUserJoin(const std::string &username, Network::AsioTCPServer &tcp, std::string &str)
 {
     auto client = tcp.isUserLogged(username);
 
-    client->write(Babel::Res::JOIN_CALL, str.c_str());
+    if (client)
+        client->write(Babel::Res::JOIN_CALL, str.c_str());
 }
 
 int Network::AsioTCPCli::callInit(const std::string &args)
@@ -48,9 +50,8 @@ int Network::AsioTCPCli::callInit(const std::string &args)
     argumentList = splitString(s, ";");
     for (const auto &argument : argumentList) {
         Babel::Server::Db::User user = userHandler.getUser(argument);
-        if (!user._exists || serv->getServer().isUserRequested(argument))
+        if (!user._exists || serv->getServer().isUserRequested(argument) || serv->getServer().getUserCall(argument))
             continue;
-        // TODO : check if user is not requested somewhere else
         call.users_requested.push_back(user);
         return_str = _connectedUser->_name + ":" + this->getIpString();
         sendToUser(argument, serv->getServer(), return_str);
