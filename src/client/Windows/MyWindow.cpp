@@ -139,7 +139,7 @@ void MyWindow::onCallAccepted()
     std::vector<QString> peopleConnectedAsQString = {};
 
     for (auto &people : peopleConnected) {
-        peopleConnectedAsQString.push_back(QString::fromStdString(std::get<0>(people)));
+        peopleConnectedAsQString.push_back(QString::fromStdString(std::get<1>(people)));
     }
     _callScreen->startCall(peopleConnectedAsQString);
 }
@@ -150,7 +150,7 @@ void MyWindow::onSomeoneJoined()
     std::vector<QString> peopleConnectedAsQString = {};
 
     for (auto &people : peopleConnected) {
-        peopleConnectedAsQString.push_back(QString::fromStdString(std::get<0>(people)));
+        peopleConnectedAsQString.push_back(QString::fromStdString(std::get<1>(people)));
     }
     _callScreen->startCall(peopleConnectedAsQString);
 }
@@ -178,7 +178,7 @@ void MyWindow::on_call_button_clicked()
             contacts.push_back(item->text());
             peoplesOnCall.push_back(item->text().toStdString());
         }
-        _callScreen->startCall(contacts);
+        _callScreen->startCall(std::vector<QString>());
         _callHandler.call(peoplesOnCall, _userHandler->getIpAddr());
         _stack->setCurrentWidget(_callScreen.get());
     }
