@@ -11,7 +11,7 @@ using namespace Babel::Client::Network;
 
 TcpClient::TcpClient(QObject *parent) : QObject(parent)
 {
-    _toRead = 0;
+//    _toRead = 0;
     _socket = std::make_unique<QTcpSocket>();
     QObject::connect(this->_socket.get(), SIGNAL(connected()), this, SLOT(socketConnected()));
     QObject::connect(this->_socket.get(), SIGNAL(disconnected()), this, SLOT(socketConnectionClosed()));
