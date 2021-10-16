@@ -29,6 +29,9 @@ public:
     QString getFieldContent() const noexcept;
     void clearField() noexcept;
 
+    void showRequestSended() const noexcept;
+    void showContactNameUnknown() const noexcept;
+
 private:
     std::unique_ptr<QLineEdit> _searchField;
     std::unique_ptr<QPushButton> _addButton;

@@ -105,6 +105,16 @@ void MyWindow::successLogin()
     _stack->setCurrentWidget(_home.get());
 }
 
+void MyWindow::makeContactRequestSucceed()
+{
+    _home->contaactRequestSucceed();
+}
+
+void MyWindow::makeContactRequestFailed()
+{
+    _home->contactRequestFailed();
+}
+
 void MyWindow::onCallRequest()
 {
     DataPacket callPacket;

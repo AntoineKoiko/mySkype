@@ -14,7 +14,7 @@ AddContactWidget::AddContactWidget() : QWidget(),
 {
     _addButton->setText("Add");
     _searchField->setPlaceholderText("Contact name");
-    _confirmationLabel->setText("contact added");
+    _confirmationLabel->setText("");
 }
 
 AddContactWidget::~AddContactWidget()
@@ -44,4 +44,16 @@ QString AddContactWidget::getFieldContent() const noexcept
 void AddContactWidget::clearField() noexcept
 {
     _searchField->clear();
+}
+
+void AddContactWidget::showContactNameUnknown() const noexcept
+{
+    _confirmationLabel->setStyleSheet("color:red;");
+    _confirmationLabel->setText("Contact Request Failed!");
+}
+
+void AddContactWidget::showRequestSended() const noexcept
+{
+    _confirmationLabel->setStyleSheet("color:green;");
+    _confirmationLabel->setText("Contact request transmited!");
 }

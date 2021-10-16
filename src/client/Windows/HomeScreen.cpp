@@ -88,6 +88,16 @@ QString HomeScreen::getSelectedDevice() const noexcept
     return _inputComboBox->itemData(_inputComboBox->currentIndex()).toString();
 }
 
+void HomeScreen::contaactRequestSucceed() const noexcept
+{
+    _addContactWidget->showRequestSended();
+}
+
+void HomeScreen::contactRequestFailed() const noexcept
+{
+    _addContactWidget->showContactNameUnknown();
+}
+
 // SLOTS
 
 void HomeScreen::onAddToCallButtonClicked()

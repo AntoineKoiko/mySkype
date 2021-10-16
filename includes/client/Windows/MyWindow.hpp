@@ -34,6 +34,8 @@ public:
 private slots:
     void handleButton();
     void successLogin();
+    void makeContactRequestSucceed();
+    void makeContactRequestFailed();
 
 private:
     void initButtons();

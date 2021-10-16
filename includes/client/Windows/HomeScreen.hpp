@@ -38,6 +38,9 @@ public:
     void setUsername(const std::string &username) const noexcept;
     QString getSelectedDevice() const noexcept;
 
+    void contaactRequestSucceed() const noexcept;
+    void contactRequestFailed() const noexcept;
+
 private:
     //buttons callback
     void onAddToCallButtonClicked();
