@@ -9,13 +9,14 @@
 
 using namespace Babel::Client::Network;
 
-Udp::Udp(Babel::Client::Audio::ICallHandler *callHandler, QObject *parent) : _socket(nullptr), _callHandler(callHandler), QObject(parent)
+Udp::Udp(Babel::Client::Audio::ICallHandler *callHandler, QObject *parent) : QObject(parent), _socket(nullptr), _callHandler(callHandler)
 {
 }
 
 Udp::~Udp()
 {
-    if (_socket != nullptr && _socket->isOpen()) {
+    if (_socket != nullptr && _socket->isOpen())
+    {
         _socket->close();
     }
 }
