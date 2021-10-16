@@ -23,6 +23,7 @@ namespace Babel::Client::Network
             ~Udp();
 
             void connect(const int port, const std::string &hostAddr);
+            void disconnect();
             void send(const std::string &sender, int port, const std::vector<char> &packet) const;
 
         private:

@@ -28,6 +28,11 @@ void Udp::connect(const int port, const std::string &hostAddr)
     QObject::connect(_socket.get(), &QUdpSocket::readyRead, this, &Udp::receiveDatagrams);
 }
 
+void Udp::disconnect()
+{
+    _socket->disconnectFromHost();
+}
+
 void Udp::receiveDatagrams() const
 {
     QByteArray buffer;
@@ -38,9 +43,6 @@ void Udp::receiveDatagrams() const
     _socket->readDatagram(buffer.data(), buffer.size(), &sender, &senderPort);
     std::vector<char> bufferToCompress(buffer.begin(), buffer.end());
     _callHandler->dataPacketAvailable(bufferToCompress);
-    (void)buffer;
-    (void)sender;
-    (void)senderPort;
 }
 
 void Udp::send(const std::string &sender, int port, const std::vector<char> &packet) const

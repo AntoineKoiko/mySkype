@@ -22,8 +22,6 @@ class ITCPServer {
     protected:
     private:
         virtual void startAccept() = 0;
-
-        std::deque<std::shared_ptr<ITCPCli>> _clientsList;
 };
 
 #endif /* !ITCPSERVER_HPP_ */

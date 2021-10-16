@@ -57,6 +57,7 @@ void CallHandler::hangup()
 {
     _input.stopRecording();
     _output.stopPlaying();
+    _udpNetwork.disconnect();
 }
 
 void CallHandler::dataRecordedAvailable()
