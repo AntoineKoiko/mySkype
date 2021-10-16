@@ -9,19 +9,21 @@
 #define AUDIOENCODER_HPP_
 
 #include "IAudioEncoder.hpp"
+#include "opus.h"
 
 namespace Babel::Client::Audio
 {
-    class AudioEncoder : public IAudioEncoder {
-        public:
-            AudioEncoder();
-            ~AudioEncoder();
+    class AudioEncoder : public IAudioEncoder
+    {
+    public:
+        AudioEncoder();
+        ~AudioEncoder();
 
-            SoundEncoded encodeAudio(const Audio::SoundFrameBuffer &buffer) const;
+        SoundEncoded encodeAudio(const Audio::SoundFrameBuffer &buffer) const;
 
-        protected:
-        private:
-            OpusEncoder *_encoder;
+    protected:
+    private:
+        OpusEncoder *_encoder;
     };
 }
 

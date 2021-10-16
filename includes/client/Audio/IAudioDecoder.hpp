@@ -8,18 +8,18 @@
 #ifndef IAUDIODECODER_HPP_
 #define IAUDIODECODER_HPP_
 
-#include "opus.h"
 #include "Audio.hpp"
 #include "SoundEncoded.hpp"
 #include "SoundFrameBuffer.hpp"
 
 namespace Babel::Client::Audio
 {
-    class IAudioDecoder {
-        public:
-            virtual ~IAudioDecoder() = default;
+    class IAudioDecoder
+    {
+    public:
+        virtual ~IAudioDecoder() = default;
 
-            virtual SoundFrameBuffer decodeAudio(const SoundEncoded &encoded) const = 0;
+        virtual SoundFrameBuffer decodeAudio(const SoundEncoded &encoded) const = 0;
     };
 }
 
