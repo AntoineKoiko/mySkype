@@ -13,7 +13,7 @@
 using namespace Babel::Server::Network;
 
 AsioTCPCli::AsioTCPCli(asio::io_context &context)
-: _socket(context), _connectedUser(nullptr)
+    : _socket(context), _connectedUser(nullptr)
 {
     _cmdMap[Babel::Req::LOGIN] = &AsioTCPCli::login;
     _cmdMap[Babel::Req::ADD_CONTACT] = &AsioTCPCli::addContactRequest;
@@ -37,9 +37,12 @@ asio::ip::tcp::socket &AsioTCPCli::getSocket()
 
 const std::string AsioTCPCli::getIpString() const
 {
-    try {
+    try
+    {
         return _socket.remote_endpoint().address().to_string();
-    } catch (const std::exception &err) {
+    }
+    catch (const std::exception &err)
+    {
         std::cerr << "Error : " << err.what() << std::endl;
         return "error";
     }
@@ -50,28 +53,34 @@ static bool removeFromCallByUsername(const std::string &username)
     auto serv = get_server();
     auto call = serv->getServer().getUserCall(username);
 
-    for (auto i = 0; i < call->users.size(); i++) {
+    for (std::size_t i = 0; i < call->users.size(); i++)
+    {
         if (call->users[i]._name == username)
             call->users.erase(call->users.begin() + i);
     }
-    for (auto i = 0; i < call->users_requested.size(); i++) {
+    for (std::size_t i = 0; i < call->users_requested.size(); i++)
+    {
         if (call->users_requested[i]._name == username)
             call->users_requested.erase(call->users_requested.begin() + i);
     }
+    return true;
 }
 
 void AsioTCPCli::handleRead(const asio::error_code &err, const std::size_t bytes)
 {
     auto serv = get_server();
 
-    if (err == asio::error::eof || err == asio::error::connection_reset ) {
+    if (err == asio::error::eof || err == asio::error::connection_reset)
+    {
         std::cout << (this->_connectedUser ? this->_connectedUser->_name : "unknow") << " disconnected" << std::endl;
         if (this->_connectedUser && _connectedUser->_exists)
             removeFromCallByUsername(_connectedUser->_name);
         this->_socket.close();
         serv->getServer().disconnectClient();
         return;
-    } else if (err) {
+    }
+    else if (err)
+    {
         std::cerr << "Error : " << err.message() << std::endl;
         return;
     }
@@ -79,12 +88,14 @@ void AsioTCPCli::handleRead(const asio::error_code &err, const std::size_t bytes
         return;
     DataPacket *data = (DataPacket *)&_buffer[0];
     std::cout << "Request code: " << data->code << std::endl;
-    if (data->magic != MAGIC_NUMBER) {
+    if (data->magic != MAGIC_NUMBER)
+    {
         std::cerr << "Error : wrong magic number" << std::endl;
         this->read();
         return;
     }
-    if ((bytes > 0 && data->size > 0) || data->code == Babel::Req::ACCEPT_CALL) {
+    if ((bytes > 0 && data->size > 0) || data->code == Babel::Req::ACCEPT_CALL)
+    {
         auto it = _cmdMap.find(data->code);
 
         if (it != _cmdMap.end())
@@ -103,7 +114,8 @@ void AsioTCPCli::read()
 
 void AsioTCPCli::handleWrite(const asio::error_code &error, UN const std::size_t bytes)
 {
-    if (error) {
+    if (error)
+    {
         std::cerr << "Error: " << error.message() << std::endl;
     }
 }
