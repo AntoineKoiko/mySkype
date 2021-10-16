@@ -17,20 +17,41 @@
 
 using namespace Babel::Server;
 
-void sendToUser(const std::string &username, Network::AsioTCPServer &tcp, std::string &str)
+static bool removeFromCallByUsername(const std::string &username)
 {
-    auto client = tcp.isUserLogged(username);
+    auto serv = get_server();
+    auto call = serv->getServer().getUserCall(username);
 
-    if (client)
-        client->write(Babel::Res::CALL_REQUEST, str.c_str());
+    for (auto i = 0; i < call->users.size(); i++) {
+        if (call->users[i]._name == username)
+            call->users.erase(call->users.begin() + i);
+    }
+    for (auto i = 0; i < call->users_requested.size(); i++) {
+        if (call->users_requested[i]._name == username)
+            call->users_requested.erase(call->users_requested.begin() + i);
+    }
 }
 
-void sendToUserJoin(const std::string &username, Network::AsioTCPServer &tcp, std::string &str)
+int sendToUser(const std::string &username, Network::AsioTCPServer &tcp, std::string &str)
 {
     auto client = tcp.isUserLogged(username);
 
-    if (client)
+    if (client) {
+        client->write(Babel::Res::CALL_REQUEST, str.c_str());
+        return 0;
+    }
+    return 1;
+}
+
+int sendToUserJoin(const std::string &username, Network::AsioTCPServer &tcp, std::string &str)
+{
+    auto client = tcp.isUserLogged(username);
+
+    if (client) {
         client->write(Babel::Res::JOIN_CALL, str.c_str());
+        return 0;
+    }
+    return 1;
 }
 
 int Network::AsioTCPCli::callInit(const std::string &args)
@@ -54,7 +75,9 @@ int Network::AsioTCPCli::callInit(const std::string &args)
             continue;
         call.users_requested.push_back(user);
         return_str = _connectedUser->_name + ":" + this->getIpString();
-        sendToUser(argument, serv->getServer(), return_str);
+        if (sendToUser(argument, serv->getServer(), return_str)) {
+            removeFromCallByUsername(user._name);
+        }
     }
     call.users.push_back(*_connectedUser);
     serv->getServer().addCall(call);
@@ -74,7 +97,7 @@ int Network::AsioTCPCli::callAccept(const std::string &)
     }
     std::string toSend = _connectedUser->_name + ":" + this->getIpString();
     for (auto it = call->users.begin(); it != call->users.end(); ++it) {
-        sendToUserJoin(it->_name, serv->getServer(), toSend); //Send new people on call notification
+        sendToUserJoin(it->_name, serv->getServer(), toSend);
     }
     toSend.clear();
     for (auto it = call->users.begin(); it != call->users.end(); ++it) {
@@ -82,7 +105,7 @@ int Network::AsioTCPCli::callAccept(const std::string &)
 
         if (toSend.length() > 0)
             toSend += ";";
-        if (!client->getConnectedUser())
+        if (client && !client->getConnectedUser())
             continue;
         toSend += client->getConnectedUser()->_name + ":" + client->getIpString();
     }
@@ -100,6 +123,14 @@ int Network::AsioTCPCli::callReject(const std::string &)
     auto call = serv->getServer().isUserRequested(_connectedUser->_name);
 
     remove(call->users_requested.begin(), call->users_requested.end(), *_connectedUser);
-    // TODO: send reject code to others
     return 0;
+}
+
+int Network::AsioTCPCli::callHangup(const std::string &)
+{
+    auto serv = get_server();
+    auto call = serv->getServer().getUserCall(_connectedUser->_name);
+
+    removeFromCallByUsername(_connectedUser->_name);
+    this->write(213, "");
 }
