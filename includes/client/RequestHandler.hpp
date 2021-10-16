@@ -44,6 +44,7 @@ private:
     void onConnected(const DataPacket &);              //200
     void onLoggedIn(const DataPacket &);               //201
     void onContactRequestAccepted(const DataPacket &); //203
+    void onContactReqestTransmited(const DataPacket &);//205
     void onGetContacts(const DataPacket &);            //206
     void onContactRequest(const DataPacket &);         //207
     void onCallAccepted(const DataPacket &);           //209

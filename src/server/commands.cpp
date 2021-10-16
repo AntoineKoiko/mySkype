@@ -78,7 +78,7 @@ int Network::AsioTCPCli::addContactRequest(const std::string &username)
     }
     if (user_client)
         user_client->write(Babel::Res::NEW_CONTACT_REQ, owner.c_str());
-    this->write(205, username.c_str());
+    this->write(Babel::Res::CONTACT_REQ_OK, username.c_str());
     return 0;
 }
 

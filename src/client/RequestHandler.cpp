@@ -11,14 +11,15 @@ RequestHandler::RequestHandler(const std::shared_ptr<Babel::Client::Network::Tcp
                                std::shared_ptr<UserHandler> userHandler, std::shared_ptr<ContactHandler> contactHandler, CallHandler &callHandler) : _client(client), _userHandler(userHandler), _contactHandler(contactHandler), _callHandler(callHandler)
 {
     _requestMap[Babel::Res::CONNECTION_ACCEPTED] = &RequestHandler::onConnected;
-    _requestMap[201] = &RequestHandler::onLoggedIn;
-    _requestMap[203] = &RequestHandler::onContactRequestAccepted;
-    _requestMap[206] = &RequestHandler::onGetContacts;
-    _requestMap[207] = &RequestHandler::onContactRequest;
-    _requestMap[209] = &RequestHandler::onCallAccepted;
-    _requestMap[210] = &RequestHandler::onSomeoneJoin;
-    _requestMap[211] = &RequestHandler::onCallRequest;
-    _requestMap[400] = &RequestHandler::onBadRequest;
+    _requestMap[Babel::Res::LOGGED_IN] = &RequestHandler::onLoggedIn;
+    _requestMap[Babel::Res::ACCEPT_CTC_REQ] = &RequestHandler::onContactRequestAccepted;
+    _requestMap[Babel::Res::CONTACT_REQ_OK] = &RequestHandler::onContactReqestTransmited;
+    _requestMap[Babel::Res::CONTACTS_LIST] = &RequestHandler::onGetContacts;
+    _requestMap[Babel::Res::NEW_CONTACT_REQ] = &RequestHandler::onContactRequest;
+    _requestMap[Babel::Res::CALL_ACCEPTED] = &RequestHandler::onCallAccepted;
+    _requestMap[Babel::Res::JOIN_CALL] = &RequestHandler::onSomeoneJoin;
+    _requestMap[Babel::Res::CALL_REQUEST] = &RequestHandler::onCallRequest;
+    _requestMap[Babel::Res::BAD_REQUEST] = &RequestHandler::onBadRequest;
     QObject::connect(dynamic_cast<QObject *>(_client.get()), SIGNAL(newPacketReceive()), this, SLOT(onNewPacketReceive()));
 }
 
@@ -96,6 +97,11 @@ void RequestHandler::onContactRequestAccepted(const DataPacket &packetReceive)
     this->_contactHandler->addContact(std::string(packetReceive.data));
 }
 
+void RequestHandler::onContactReqestTransmited(const DataPacket &)
+{
+    //emit contact request OK
+}
+
 void RequestHandler::onGetContacts(const DataPacket &packetReceive)
 {
     std::vector<std::string> contactList = this->splitString(std::string(packetReceive.data), ';');
@@ -155,7 +161,14 @@ void RequestHandler::onCallRequest(const DataPacket &packetReceive)
 
 void RequestHandler::onBadRequest(const DataPacket &packetReceive)
 {
+    std::string errorText(packetReceive.data);
+
     std::cout << "Bad Request: " << packetReceive.data << std::endl;
+    if (errorText == "Doesn't exists" || errorText == "Impossible to add yourself as contact"
+        || errorText == "Request or Contact already exist") {
+            //emit contactRequestFailed
+        }
+
 }
 
 #include "moc_RequestHandler.cpp"

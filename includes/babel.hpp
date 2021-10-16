@@ -37,6 +37,7 @@ namespace Babel::Res
     const int LOGGED_IN = 201;
     const int ACCEPT_CTC_REQ = 203;
     const int DISMISS_CTC_REQ = 204;
+    const int CONTACT_REQ_OK = 205;
     const int CONTACTS_LIST = 206;
     const int NEW_CONTACT_REQ = 207;
     const int BAD_REQUEST = 400;
