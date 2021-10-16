@@ -85,9 +85,7 @@ void RequestHandler::onLoggedIn(const DataPacket &packetReceive)
 {
     DataPacket packetSend;
 
-    packetSend.code = 005;
-    std::memcpy(packetSend.data, packetReceive.data, packetReceive.size);
-    packetSend.size = packetReceive.size;
+    packetSend = DataPacketManager::createPacket(005, std::string(packetReceive.data));
     this->_client->send(DataPacketManager::serialize(packetSend));
     emit this->loginConfirmed();
 }

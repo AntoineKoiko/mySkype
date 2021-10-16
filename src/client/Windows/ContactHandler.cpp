@@ -37,15 +37,14 @@ void ContactHandler::acceptContactRequest()
     std::string selectedContact;
     DataPacket contactPacket;
 
-    for (const std::string &lt : selected) {
+    for (const std::string &lt : selected)
+    {
         _contactList->addItem(QString::fromStdString(lt));
         selectedContact = lt;
     }
     _pendingContactList->deleteSelectedRow();
     this->updateData();
-    contactPacket.code = 002;
-    contactPacket.size = selectedContact.size();
-    std::memcpy(contactPacket.data, selectedContact.c_str(), selectedContact.size());
+    contactPacket = DataPacketManager::createPacket(002, selectedContact);
     this->_network->send(DataPacketManager::serialize(contactPacket));
 }
 
@@ -55,12 +54,11 @@ void ContactHandler::dismissContactRequest()
     std::string selectedContact;
     DataPacket contactPacket;
 
-    for (const std::string &lt : selected) {
+    for (const std::string &lt : selected)
+    {
         selectedContact = lt;
     }
-    contactPacket.code = Babel::Req::REJECT_CONTACT;
-    contactPacket.size = selectedContact.size();
-    std::memcpy(contactPacket.data, selectedContact.c_str(), selectedContact.size());
+    contactPacket = DataPacketManager::createPacket(Babel::Req::REJECT_CONTACT, selectedContact);
     _pendingContactList->deleteSelectedRow();
     this->updateData();
     this->_network->send(DataPacketManager::serialize(contactPacket));
@@ -88,9 +86,7 @@ bool ContactHandler::makeContactRequest(const std::string &username)
 {
     DataPacket contactPacket;
 
-    contactPacket.code = 001;
-    contactPacket.size = username.size();
-    std::memcpy(contactPacket.data, username.c_str(), username.size());
+    contactPacket = DataPacketManager::createPacket(001, username);
     std::cout << "Make contact request to: " << username << std::endl;
     //need to have NetworkAPI
     // if we decide to send packet from here
