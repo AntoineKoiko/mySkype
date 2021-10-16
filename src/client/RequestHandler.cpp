@@ -26,7 +26,7 @@ RequestHandler::~RequestHandler()
 {
 }
 
-std::vector<std::string> RequestHandler::split_string(const std::string &str, char separator) const
+std::vector<std::string> RequestHandler::splitString(const std::string &str, char separator) const
 {
     std::vector<std::string> ret;
     std::size_t i = 0;
@@ -55,7 +55,8 @@ void RequestHandler::onNewPacketReceive()
     DataPacket dataPacket = DataPacketManager::deserialize(data);
 
     std::cout << "On receive un nouveau packet via RequestHandler" << std::endl;
-    if (dataPacket.magic != MAGIC_NUMBER) {
+    if (dataPacket.magic != MAGIC_NUMBER)
+    {
         std::cout << "Wrong magic number" << std::endl;
         return;
     }
@@ -63,12 +64,14 @@ void RequestHandler::onNewPacketReceive()
     std::cout << "content: " << dataPacket.data << std::endl;
     auto it = _requestMap.find(dataPacket.code);
 
-    if (it != _requestMap.end()) {
+    if (it != _requestMap.end())
+    {
         (this->*(it->second))(dataPacket);
-    } else {
+    }
+    else
+    {
         std::cout << "Impossible to find the command code: " << dataPacket.code << std::endl;
     }
-
 }
 
 void RequestHandler::onConnected(const DataPacket &packetReceive)
@@ -95,9 +98,10 @@ void RequestHandler::onContactRequestAccepted(const DataPacket &packetReceive)
 
 void RequestHandler::onGetContacts(const DataPacket &packetReceive)
 {
-    std::vector<std::string> contactList = this->split_string(std::string(packetReceive.data), ';');
+    std::vector<std::string> contactList = this->splitString(std::string(packetReceive.data), ';');
 
-    for (auto &contact : contactList) {
+    for (auto &contact : contactList)
+    {
         this->_contactHandler->addContact(contact);
     }
 }
@@ -113,13 +117,17 @@ void RequestHandler::onCallAccepted(const DataPacket &packetReceive)
     std::vector<std::string> usersCall;
 
     std::cout << "On call accept -> " << packetReceive.data << std::endl;
-    if (packetString.find(";") != std::string::npos) {
-        usersCall = this->split_string(std::string(packetReceive.data), ';');
-    } else {
+    if (packetString.find(";") != std::string::npos)
+    {
+        usersCall = this->splitString(std::string(packetReceive.data), ';');
+    }
+    else
+    {
         usersCall.push_back(packetString);
     }
-    for (const auto &userCall: usersCall) { 
-        std::vector<std::string> userParsed = this->split_string(userCall, ':');
+    for (const auto &userCall : usersCall)
+    {
+        std::vector<std::string> userParsed = this->splitString(userCall, ':');
         std::cout << "name -> " << userParsed[0] << " + ip -> " << userParsed[1] << std::endl;
         _callHandler.addPeopleOnCall(userParsed[0], userParsed[1]);
     }
@@ -129,7 +137,7 @@ void RequestHandler::onCallAccepted(const DataPacket &packetReceive)
 void RequestHandler::onSomeoneJoin(const DataPacket &packetReceive)
 {
     std::string content(packetReceive.data);
-    std::vector<std::string> dataParsed = split_string(content, ':');
+    std::vector<std::string> dataParsed = splitString(content, ':');
 
     _callHandler.addPeopleOnCall(dataParsed[0], dataParsed[1]);
     emit this->newCallJoining();
@@ -138,7 +146,7 @@ void RequestHandler::onSomeoneJoin(const DataPacket &packetReceive)
 void RequestHandler::onCallRequest(const DataPacket &packetReceive)
 {
     std::string content(packetReceive.data);
-    std::vector<std::string> dataParsed = split_string(content, ':');
+    std::vector<std::string> dataParsed = splitString(content, ':');
 
     //_callHandler.addPeopleOnCall(dataParsed[0], dataParsed[1]);
     _callHandler.setCallOwner(dataParsed[0]);

@@ -28,7 +28,7 @@ public:
                    CallHandler &callHandler);
     ~RequestHandler();
 
-    std::vector<std::string> split_string(const std::string &str, char separator) const;
+    std::vector<std::string> splitString(const std::string &str, char separator) const;
 
 signals:
     void loginConfirmed();
@@ -41,15 +41,15 @@ private slots:
 
 protected:
 private:
-    void onConnected(const DataPacket &); //200
-    void onLoggedIn(const DataPacket &); //201
+    void onConnected(const DataPacket &);              //200
+    void onLoggedIn(const DataPacket &);               //201
     void onContactRequestAccepted(const DataPacket &); //203
-    void onGetContacts(const DataPacket &); //206
-    void onContactRequest(const DataPacket &); //207
-    void onCallAccepted(const DataPacket &); //209
-    void onSomeoneJoin(const DataPacket &); //210
-    void onCallRequest(const DataPacket &); //211
-    void onBadRequest(const DataPacket &); //400
+    void onGetContacts(const DataPacket &);            //206
+    void onContactRequest(const DataPacket &);         //207
+    void onCallAccepted(const DataPacket &);           //209
+    void onSomeoneJoin(const DataPacket &);            //210
+    void onCallRequest(const DataPacket &);            //211
+    void onBadRequest(const DataPacket &);             //400
 
     std::shared_ptr<Babel::Client::Network::TcpClient> _client;
     std::shared_ptr<UserHandler> _userHandler;
