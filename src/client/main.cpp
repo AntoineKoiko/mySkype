@@ -22,7 +22,7 @@ int main(int argc, char *argv[])
     QApplication app(argc, argv);
     auto client = std::make_shared<Network::TcpClient>();
     auto userHandler = std::make_shared<UserHandler>(client);
-    MyWindow window(userHandler, client);
+    std::unique_ptr<MyWindow> window = nullptr;
     int port = 0;
 
     if (argc != 3) {
@@ -33,7 +33,13 @@ int main(int argc, char *argv[])
     if (port == 0) {
         return 84;
     }
+    try {
+        window = std::make_unique<MyWindow>(userHandler, client);
+    } catch (const std::exception &e) {
+        std::cerr << e.what() << std::endl;
+        return 84;
+    }
     client->connect(argv[1], port);
-    window.show();
+    window->show();
     return app.exec();
 }
