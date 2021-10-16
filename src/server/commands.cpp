@@ -61,11 +61,11 @@ int Network::AsioTCPCli::addContactRequest(const std::string &username)
     Network::AsioTCPCli *user_client = serv->getServer().isUserLogged(user._name);
 
     if (!this->_connectedUser) {
-        write(Babel::Res::NOT_AUTHORIZED, "Not Connected"); // TODO: change for real code
+        write(Babel::Res::NOT_AUTHORIZED, "Not Connected");
         return 1;
     }
     if (!user._exists) {
-        write(Babel::Res::BAD_REQUEST, "Doesn't exists"); // TODO: change for real code
+        write(Babel::Res::BAD_REQUEST, "Doesn't exists");
         return 1;
     }
     if (owner == username) {
