@@ -13,6 +13,7 @@ RequestHandler::RequestHandler(const std::shared_ptr<Babel::Client::Network::Tcp
     _requestMap[Babel::Res::CONNECTION_ACCEPTED] = &RequestHandler::onConnected;
     _requestMap[Babel::Res::LOGGED_IN] = &RequestHandler::onLoggedIn;
     _requestMap[Babel::Res::ACCEPT_CTC_REQ] = &RequestHandler::onContactRequestAccepted;
+    _requestMap[Babel::Res::CONTACT_REQ_OK] = &RequestHandler::onContactReqestTransmited;
     _requestMap[Babel::Res::CONTACTS_LIST] = &RequestHandler::onGetContacts;
     _requestMap[Babel::Res::NEW_CONTACT_REQ] = &RequestHandler::onContactRequest;
     _requestMap[Babel::Res::CALL_ACCEPTED] = &RequestHandler::onCallAccepted;
@@ -96,6 +97,11 @@ void RequestHandler::onContactRequestAccepted(const DataPacket &packetReceive)
     this->_contactHandler->addContact(std::string(packetReceive.data));
 }
 
+void RequestHandler::onContactReqestTransmited(const DataPacket &)
+{
+    //emit contact request OK
+}
+
 void RequestHandler::onGetContacts(const DataPacket &packetReceive)
 {
     std::vector<std::string> contactList = this->splitString(std::string(packetReceive.data), ';');
@@ -155,7 +161,14 @@ void RequestHandler::onCallRequest(const DataPacket &packetReceive)
 
 void RequestHandler::onBadRequest(const DataPacket &packetReceive)
 {
+    std::string errorText(packetReceive.data);
+
     std::cout << "Bad Request: " << packetReceive.data << std::endl;
+    if (errorText == "Doesn't exists" || errorText == "Impossible to add yourself as contact"
+        || errorText == "Request or Contact already exist") {
+            //emit contactRequestFailed
+        }
+
 }
 
 #include "moc_RequestHandler.cpp"
