@@ -8,13 +8,6 @@
 #ifndef IAUDIOINPUT_HPP_
 #define IAUDIOINPUT_HPP_
 
-#include <iostream>
-#include <queue>
-#include <cstring>
-#include <algorithm>
-#include "ICallHandler.hpp"
-#include "Audio.hpp"
-#include "portaudio.h"
 #include "SoundFrameBuffer.hpp"
 
 namespace Babel::Client::Audio

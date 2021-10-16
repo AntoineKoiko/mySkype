@@ -8,11 +8,6 @@
 #ifndef IAUDIOOUTPUT_HPP_
 #define IAUDIOOUTPUT_HPP_
 
-#include <iostream>
-#include <queue>
-#include <cstring>
-#include "Audio.hpp"
-#include "portaudio.h"
 #include "SoundFrameBuffer.hpp"
 
 namespace Babel::Client::Audio
@@ -28,7 +23,7 @@ namespace Babel::Client::Audio
             virtual void stopPlaying() = 0;
 
             virtual void addSound(const SoundFrameBuffer &sound) = 0;
-            
+
             virtual bool isEmpty() const = 0;
     };
 }
