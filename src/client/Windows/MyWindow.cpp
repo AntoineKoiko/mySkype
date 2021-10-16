@@ -50,7 +50,7 @@ void MyWindow::connect_buttons() noexcept
 {
     connect(_login->getLoginButton(), &QPushButton::released,
             this, &MyWindow::on_login_button_clicked);
-    connect(_home->get_call_button(), &QPushButton::released,
+    connect(_home->getCallButton(), &QPushButton::released,
             this, &MyWindow::on_call_button_clicked);
     connect(_home->getAcceptContactButton(), &QPushButton::released,
             this, &MyWindow::on_acceptContactRequest_button_clicked);
@@ -138,7 +138,8 @@ void MyWindow::onCallAccepted()
     std::vector<std::tuple<std::string, std::string>> peopleConnected = _callHandler.getConnectedPeople();
     std::vector<QString> peopleConnectedAsQString = {};
 
-    for (auto &people : peopleConnected) {
+    for (auto &people : peopleConnected)
+    {
         peopleConnectedAsQString.push_back(QString::fromStdString(std::get<1>(people)));
     }
     _callScreen->startCall(peopleConnectedAsQString);
@@ -149,7 +150,8 @@ void MyWindow::onSomeoneJoined()
     std::vector<std::tuple<std::string, std::string>> peopleConnected = _callHandler.getConnectedPeople();
     std::vector<QString> peopleConnectedAsQString = {};
 
-    for (auto &people : peopleConnected) {
+    for (auto &people : peopleConnected)
+    {
         peopleConnectedAsQString.push_back(QString::fromStdString(std::get<1>(people)));
     }
     _callScreen->startCall(peopleConnectedAsQString);
@@ -160,7 +162,7 @@ void MyWindow::on_call_button_clicked()
     bool confirm_call = false;
     std::vector<std::string> peoplesOnCall;
 
-    if (!_home->get_toCallList()->count())
+    if (!_home->getToCallList()->count())
     {
         return;
     }
@@ -171,7 +173,7 @@ void MyWindow::on_call_button_clicked()
     {
         qDebug() << "Say Yes";
         std::vector<QString> contacts;
-        QListWidget *callList = _home->get_toCallList();
+        QListWidget *callList = _home->getToCallList();
         for (int i = 0; i < callList->count(); ++i)
         {
             QListWidgetItem *item = callList->item(i);

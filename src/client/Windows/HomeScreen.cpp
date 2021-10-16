@@ -20,13 +20,13 @@ HomeScreen::HomeScreen(QWidget *parent) : QWidget(parent),
 {
     this->setStyleSheet("background-color:#8789E8;color:#0E312C;");
 
-    setUp_widget();
-    setup_layout();
-    connect_buttons();
+    setUpWidget();
+    setupLayout();
+    connectButtons();
     setLayout(_mainLayout.get());
 }
 
-void HomeScreen::setUp_widget() noexcept
+void HomeScreen::setUpWidget() noexcept
 {
     _usernameLabel->setAlignment(Qt::AlignCenter);
     _usernameLabel->setFrameStyle(QFrame::Panel | QFrame::Sunken);
@@ -46,15 +46,15 @@ void HomeScreen::setUp_widget() noexcept
     _toCallWidget->getButton()->setText("Cancel to Call");
 }
 
-void HomeScreen::connect_buttons() noexcept
+void HomeScreen::connectButtons() noexcept
 {
     connect(_contactWidget->getButton(), &QPushButton::clicked,
-            this, &HomeScreen::on_addToCallButton_clicked);
+            this, &HomeScreen::onAddToCallButtonClicked);
     connect(_toCallWidget->getButton(), &QPushButton::clicked,
-            this, &HomeScreen::on_cancelToCallButton_clicked);
+            this, &HomeScreen::onCancelToCallButtonClicked);
 }
 
-void HomeScreen::setup_layout() noexcept
+void HomeScreen::setupLayout() noexcept
 {
     _mainLayout->addWidget(_addContactWidget->getSearchField(), 0, 0, 1, 1);
     _mainLayout->addWidget(_addContactWidget->getAddButton(), 0, 1, 1, 1);
@@ -88,7 +88,9 @@ QString HomeScreen::getSelectedDevice() const noexcept
     return _inputComboBox->itemData(_inputComboBox->currentIndex()).toString();
 }
 
-void HomeScreen::on_addToCallButton_clicked()
+// SLOTS
+
+void HomeScreen::onAddToCallButtonClicked()
 {
     std::vector<QString> selected = _contactWidget->getList()->getSelectdQStrItems();
     ListStrWidget *toCallList = _toCallWidget->getList();
@@ -103,12 +105,12 @@ void HomeScreen::on_addToCallButton_clicked()
     }
 }
 
-void HomeScreen::on_cancelToCallButton_clicked()
+void HomeScreen::onCancelToCallButtonClicked()
 {
     _toCallWidget->getList()->deleteSelectedRow();
 }
 
-QPushButton *HomeScreen::get_call_button() const noexcept
+QPushButton *HomeScreen::getCallButton() const noexcept
 {
     return _callButton.get();
 }
@@ -128,7 +130,7 @@ QPushButton *HomeScreen::getAddContactButton() const noexcept
     return _addContactWidget->getAddButton();
 }
 
-ListStrWidget *HomeScreen::get_toCallList() const noexcept
+ListStrWidget *HomeScreen::getToCallList() const noexcept
 {
     return _toCallWidget->getList();
 }

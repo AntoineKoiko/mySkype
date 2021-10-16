@@ -26,11 +26,11 @@ public:
     explicit HomeScreen(QWidget *parent);
     ~HomeScreen();
 
-    QPushButton *get_call_button() const noexcept;
+    QPushButton *getCallButton() const noexcept;
     QPushButton *getAcceptContactButton() const noexcept;
     QPushButton *getDismissContactButton() const noexcept;
     QPushButton *getAddContactButton() const noexcept;
-    ListStrWidget *get_toCallList() const noexcept;
+    ListStrWidget *getToCallList() const noexcept;
     AddContactWidget *getAddContactWidget() const noexcept;
     ListStrWidget *getContactList() const noexcept;
     ListStrWidget *getContactRequestList() const noexcept;
@@ -40,13 +40,13 @@ public:
 
 private:
     //buttons callback
-    void on_addToCallButton_clicked();
-    void on_cancelToCallButton_clicked();
+    void onAddToCallButtonClicked();
+    void onCancelToCallButtonClicked();
 
     //setup
-    void setUp_widget() noexcept;
-    void connect_buttons() noexcept;
-    void setup_layout() noexcept;
+    void setUpWidget() noexcept;
+    void connectButtons() noexcept;
+    void setupLayout() noexcept;
 
 private:
     std::unique_ptr<TitledListWithButton> _contactWidget;
