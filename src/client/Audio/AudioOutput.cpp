@@ -74,7 +74,6 @@ void AudioOutput::addSound(const SoundFrameBuffer &sound)
     _sound.push(sound);
 }
 
-//TODO REMOVE: TEST FUNCTION SEEMS USELESS FOR BABEL
 bool AudioOutput::isEmpty() const
 {
     return _sound.empty();

@@ -31,7 +31,6 @@ namespace Babel::Server::Db {
 
             User getUser(const std::string &name) const;
 
-            //TODO: CHECK IF ALWAYS UTILS
             void connectUser(const std::string &name) const;
             void disconnectUser(const std::string &name) const;
 
