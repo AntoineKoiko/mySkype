@@ -13,7 +13,6 @@ CallHandler::CallHandler(const std::shared_ptr<Babel::Client::Network::TcpClient
     std::cout << "->: ctor CallHandler" << std::endl;
     _input.openInputStream();
     _output.openOutputStream();
-    //_connectedPeople.push_back(std::make_tuple("173.42.31.4", "Michel"));
 }
 
 CallHandler::~CallHandler()

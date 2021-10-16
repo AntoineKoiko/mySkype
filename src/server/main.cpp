@@ -26,7 +26,7 @@ int main(int argc, char* argv[])
         get_server(true, serv);
         serv->start();
     } catch(const std::exception& e) {
-        std::cerr << e.what() << '\n';
+        std::cerr << e.what() << std::endl;
         return Babel::Server::errorCode;
     }
     return Babel::Server::successCode;

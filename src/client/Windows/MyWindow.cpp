@@ -99,7 +99,6 @@ void MyWindow::onLoginButtonClicked()
     _userHandler->login(username);
     _home->setUsername(username);
     _login->getUsernameField()->clear();
-    //_stack->setCurrentWidget(_home.get());
 }
 
 void MyWindow::successLogin()

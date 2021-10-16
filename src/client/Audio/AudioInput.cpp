@@ -17,10 +17,7 @@ AudioInput::AudioInput(ICallHandler *callHandler) : _callHandler(callHandler), _
     {
         throw InputError(Pa_GetErrorText(err));
     }
-    info();
-
     _params.device = Pa_GetDefaultInputDevice();
-    std::cout << "Mon default Input: " << Pa_GetDefaultInputDevice() << std::endl;
     if (_params.device == paNoDevice)
     {
         throw InputError("No default input device !");

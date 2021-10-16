@@ -152,7 +152,6 @@ void RequestHandler::onCallRequest(const DataPacket &packetReceive)
     std::string content(packetReceive.data);
     std::vector<std::string> dataParsed = splitString(content, ':');
 
-    //_callHandler.addPeopleOnCall(dataParsed[0], dataParsed[1]);
     _callHandler.setCallOwner(dataParsed[0]);
     emit this->newCallRequest();
 }
