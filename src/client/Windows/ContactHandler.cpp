@@ -44,7 +44,7 @@ void ContactHandler::acceptContactRequest()
     }
     _pendingContactList->deleteSelectedRow();
     this->updateData();
-    contactPacket = DataPacketManager::createPacket(002, selectedContact);
+    contactPacket = DataPacketManager::createPacket(Babel::Req::ACCEPT_CONTACT, selectedContact);
     this->_network->send(DataPacketManager::serialize(contactPacket));
 }
 
@@ -86,7 +86,7 @@ bool ContactHandler::makeContactRequest(const std::string &username)
 {
     DataPacket contactPacket;
 
-    contactPacket = DataPacketManager::createPacket(001, username);
+    contactPacket = DataPacketManager::createPacket(Babel::Req::ADD_CONTACT, username);
     std::cout << "Make contact request to: " << username << std::endl;
     //need to have NetworkAPI
     // if we decide to send packet from here

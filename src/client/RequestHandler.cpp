@@ -85,7 +85,7 @@ void RequestHandler::onLoggedIn(const DataPacket &packetReceive)
 {
     DataPacket packetSend;
 
-    packetSend = DataPacketManager::createPacket(005, std::string(packetReceive.data));
+    packetSend = DataPacketManager::createPacket(Babel::Req::GET_CONTACT_LIST, std::string(packetReceive.data));
     this->_client->send(DataPacketManager::serialize(packetSend));
     emit this->loginConfirmed();
 }

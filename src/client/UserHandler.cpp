@@ -20,7 +20,7 @@ void UserHandler::login(const std::string &loginName) noexcept
     DataPacket loginPacket;
 
     _loginName = loginName;
-    loginPacket = DataPacketManager::createPacket(000, loginName);
+    loginPacket = DataPacketManager::createPacket(Babel::Req::LOGIN, loginName);
     _network->send(DataPacketManager::serialize(loginPacket));
 }
 
