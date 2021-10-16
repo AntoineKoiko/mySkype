@@ -52,8 +52,11 @@ void AddContactWidget::showContactNameUnknown() const noexcept
     _confirmationLabel->setText("Contact Request Failed!");
 }
 
+#include <iostream>
+
 void AddContactWidget::showRequestSended() const noexcept
 {
+    std::cout << "show request sended" << std::endl;
     _confirmationLabel->setStyleSheet("color:green;");
     _confirmationLabel->setText("Contact request transmited!");
 }

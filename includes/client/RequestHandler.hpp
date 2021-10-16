@@ -35,22 +35,24 @@ signals:
     void newCallRequest();
     void newCallAccepted();
     void newCallJoining();
+    void contactRequestSucceed();
+    void contactRequestFailed();
 
 private slots:
     void onNewPacketReceive();
 
 protected:
 private:
-    void onConnected(const DataPacket &);              //200
-    void onLoggedIn(const DataPacket &);               //201
-    void onContactRequestAccepted(const DataPacket &); //203
-    void onContactReqestTransmited(const DataPacket &);//205
-    void onGetContacts(const DataPacket &);            //206
-    void onContactRequest(const DataPacket &);         //207
-    void onCallAccepted(const DataPacket &);           //209
-    void onSomeoneJoin(const DataPacket &);            //210
-    void onCallRequest(const DataPacket &);            //211
-    void onBadRequest(const DataPacket &);             //400
+    void onConnected(const DataPacket &);               //200
+    void onLoggedIn(const DataPacket &);                //201
+    void onContactRequestAccepted(const DataPacket &);  //203
+    void onContactReqestTransmited(const DataPacket &); //205
+    void onGetContacts(const DataPacket &);             //206
+    void onContactRequest(const DataPacket &);          //207
+    void onCallAccepted(const DataPacket &);            //209
+    void onSomeoneJoin(const DataPacket &);             //210
+    void onCallRequest(const DataPacket &);             //211
+    void onBadRequest(const DataPacket &);              //400
 
     std::shared_ptr<Babel::Client::Network::TcpClient> _client;
     std::shared_ptr<UserHandler> _userHandler;

@@ -99,7 +99,7 @@ void RequestHandler::onContactRequestAccepted(const DataPacket &packetReceive)
 
 void RequestHandler::onContactReqestTransmited(const DataPacket &)
 {
-    //emit contact request OK
+    emit this->contactRequestSucceed();
 }
 
 void RequestHandler::onGetContacts(const DataPacket &packetReceive)
@@ -164,11 +164,10 @@ void RequestHandler::onBadRequest(const DataPacket &packetReceive)
     std::string errorText(packetReceive.data);
 
     std::cout << "Bad Request: " << packetReceive.data << std::endl;
-    if (errorText == "Doesn't exists" || errorText == "Impossible to add yourself as contact"
-        || errorText == "Request or Contact already exist") {
-            //emit contactRequestFailed
-        }
-
+    if (errorText == "Doesn't exists" || errorText == "Impossible to add yourself as contact" || errorText == "Request or Contact already exist")
+    {
+        emit this->contactRequestFailed();
+    }
 }
 
 #include "moc_RequestHandler.cpp"

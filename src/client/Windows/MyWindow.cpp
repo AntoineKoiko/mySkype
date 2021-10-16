@@ -63,6 +63,8 @@ void MyWindow::connectButtons() noexcept
     connect(&_requestHandler, &RequestHandler::newCallRequest, this, &MyWindow::onCallRequest);
     connect(&_requestHandler, &RequestHandler::newCallAccepted, this, &MyWindow::onCallAccepted);
     connect(&_requestHandler, &RequestHandler::newCallJoining, this, &MyWindow::onSomeoneJoined);
+    connect(&_requestHandler, &RequestHandler::contactRequestSucceed, this, &MyWindow::makeContactRequestSucceed);
+    connect(&_requestHandler, &RequestHandler::contactRequestFailed, this, &MyWindow::makeContactRequestFailed);
 }
 
 MyWindow::~MyWindow()
@@ -107,6 +109,8 @@ void MyWindow::successLogin()
 
 void MyWindow::makeContactRequestSucceed()
 {
+    std::cout << "show request sended in MyWindow" << std::endl;
+
     _home->contaactRequestSucceed();
 }
 
