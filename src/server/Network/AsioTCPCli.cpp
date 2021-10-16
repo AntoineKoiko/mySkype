@@ -24,6 +24,7 @@ AsioTCPCli::AsioTCPCli(asio::io_context &context)
     _cmdMap[Babel::Req::CALL_SOMEONE] = &AsioTCPCli::callInit;
     _cmdMap[Babel::Req::ACCEPT_CALL] = &AsioTCPCli::callAccept;
     _cmdMap[Babel::Req::REJECT_CALL] = &AsioTCPCli::callReject;
+    _cmdMap[Babel::Req::HANG_UP] = &AsioTCPCli::callHangup;
 }
 
 AsioTCPCli::~AsioTCPCli()
@@ -53,6 +54,9 @@ static bool removeFromCallByUsername(const std::string &username)
     auto serv = get_server();
     auto call = serv->getServer().getUserCall(username);
 
+    if (call == nullptr) {
+        return true;
+    }
     for (std::size_t i = 0; i < call->users.size(); i++)
     {
         if (call->users[i]._name == username)
@@ -94,7 +98,7 @@ void AsioTCPCli::handleRead(const asio::error_code &err, const std::size_t bytes
         this->read();
         return;
     }
-    if ((bytes > 0 && data->size > 0) || data->code == Babel::Req::ACCEPT_CALL)
+    if ((bytes > 0 && data->size > 0) || data->code == Babel::Req::ACCEPT_CALL || data->code == Babel::Req::HANG_UP)
     {
         auto it = _cmdMap.find(data->code);
 
@@ -112,11 +116,18 @@ void AsioTCPCli::read()
     _socket.async_read_some(asio::buffer(_buffer, sizeof(DataPacket)), handler);
 }
 
-void AsioTCPCli::handleWrite(const asio::error_code &error, UN const std::size_t bytes)
+void AsioTCPCli::handleWrite(int code, const asio::error_code &error, const std::size_t bytes)
 {
     if (error)
     {
         std::cerr << "Error: " << error.message() << std::endl;
+    }
+    if (bytes) {
+        if (_connectedUser) {
+            std::cout << "Code : " << code << " user: " << _connectedUser->_name << " bytes: " << bytes << std::endl;
+        } else {
+            std::cout << "Code : " << code << " bytes: " << bytes << std::endl;
+        }
     }
 }
 
@@ -127,7 +138,7 @@ void AsioTCPCli::write(int code, const char data[])
     data_struct.code = code;
     data_struct.size = strlen(data);
     DataPacket *data_struct_ptr = &data_struct;
-    auto handler = std::bind(&AsioTCPCli::handleWrite, this, std::placeholders::_1, std::placeholders::_2);
+    auto handler = std::bind(&AsioTCPCli::handleWrite, this, data_struct.code, std::placeholders::_1, std::placeholders::_2);
 
     std::memcpy(data_struct.data, data, data_struct.size);
     _socket.async_write_some(asio::buffer(data_struct_ptr, sizeof(DataPacket)), handler);

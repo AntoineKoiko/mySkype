@@ -71,7 +71,7 @@ void AsioTCPServer::disconnectClient(void)
     }
 }
 
-std::shared_ptr<Call> AsioTCPServer::getUserCall(const std::string &username)
+Call *AsioTCPServer::getUserCall(const std::string &username)
 {
     for (std::size_t i = 0; i < _calls.size(); i++)
     {
@@ -79,7 +79,7 @@ std::shared_ptr<Call> AsioTCPServer::getUserCall(const std::string &username)
         {
             if (it->_name == username)
             {
-                return std::make_shared<Call>(_calls[i]);
+                return &_calls[i];
             }
         }
     }
@@ -91,14 +91,14 @@ std::vector<Call> &AsioTCPServer::getCalls()
     return _calls;
 }
 
-std::shared_ptr<Call> AsioTCPServer::isUserRequested(const std::string &username) const
+Call *AsioTCPServer::isUserRequested(const std::string &username)
 {
     for (std::size_t i = 0; i < _calls.size(); i++)
     {
         for (auto it = _calls[i].users_requested.begin(); it != _calls[i].users_requested.end(); ++it)
         {
             if (it->_name == username)
-                return std::make_shared<Call>(_calls[i]);
+                return &_calls[i];
         }
     }
     return nullptr;

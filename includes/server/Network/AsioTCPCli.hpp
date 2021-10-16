@@ -28,7 +28,7 @@ namespace Babel::Server::Network
             void read();
             void write(int code, const char data[2064]);
             void handleRead(const asio::error_code &, const std::size_t);
-            void handleWrite(const asio::error_code &, const std::size_t);
+            void handleWrite(int code, const asio::error_code &error, const std::size_t bytes);
             const std::shared_ptr<Db::User> getConnectedUser() const;
 
             // cmds

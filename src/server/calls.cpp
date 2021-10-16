@@ -21,6 +21,9 @@ static bool removeFromCallByUsername(const std::string &username)
     auto serv = get_server();
     auto call = serv->getServer().getUserCall(username);
 
+    if (call == nullptr) {
+        return true;
+    }
     for (std::size_t i = 0; i < call->users.size(); i++)
     {
         if (call->users[i]._name == username)
@@ -131,6 +134,8 @@ int Network::AsioTCPCli::callReject(const std::string &)
     auto serv = get_server();
     auto call = serv->getServer().isUserRequested(_connectedUser->_name);
 
+    if (call == nullptr)
+        return 1;
     remove(call->users_requested.begin(), call->users_requested.end(), *_connectedUser);
     return 0;
 }
@@ -140,6 +145,9 @@ int Network::AsioTCPCli::callHangup(const std::string &)
     auto serv = get_server();
     auto call = serv->getServer().getUserCall(_connectedUser->_name);
 
+    if (call == nullptr) {
+        return 1;
+    }
     removeFromCallByUsername(_connectedUser->_name);
     this->write(213, "");
     return 0;
