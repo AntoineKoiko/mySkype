@@ -204,8 +204,12 @@ void MyWindow::onCallButtonClicked()
 
 void MyWindow::onHangUpButtonClicked()
 {
+    DataPacket packet;
+
+    packet = DataPacketManager::createPacket(103, std::string{""});
     _callScreen->stopCall();
     _callHandler.hangup();
+    _client->send(DataPacketManager::serialize(packet));
     _stack->setCurrentWidget(_home.get());
 }
 
