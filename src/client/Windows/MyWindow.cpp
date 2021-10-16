@@ -28,12 +28,11 @@ MyWindow::MyWindow(const std::shared_ptr<UserHandler> userHandler,
                                                                        _requestHandler(_client, _userHandler, _contactHandler, _callHandler)
 
 {
-    this->setUp_winodw();
-
-    connect_buttons();
+    setUpWindow();
+    connectButtons();
 }
 
-void MyWindow::setUp_winodw()
+void MyWindow::setUpWindow()
 {
     resize(1200, 800);
     setWindowTitle("Babel");
@@ -46,20 +45,20 @@ void MyWindow::setUp_winodw()
     setCentralWidget(_stack.get());
 }
 
-void MyWindow::connect_buttons() noexcept
+void MyWindow::connectButtons() noexcept
 {
     connect(_login->getLoginButton(), &QPushButton::released,
-            this, &MyWindow::on_login_button_clicked);
+            this, &MyWindow::onLoginButtonClicked);
     connect(_home->getCallButton(), &QPushButton::released,
-            this, &MyWindow::on_call_button_clicked);
+            this, &MyWindow::onCallButtonClicked);
     connect(_home->getAcceptContactButton(), &QPushButton::released,
-            this, &MyWindow::on_acceptContactRequest_button_clicked);
+            this, &MyWindow::onAcceptContactRequestButtonClicked);
     connect(_home->getDismissContactButton(), &QPushButton::released,
-            this, &MyWindow::on_dismissContactRequest_button_clicked);
+            this, &MyWindow::onDismissContactRequestButtonClicked);
     connect(_home->getAddContactButton(), &QPushButton::released,
-            this, &MyWindow::on_addContactRequest_button_clicked);
+            this, &MyWindow::onAddContactRequestButtonClicked);
     connect(_callScreen->getHangUpButton(), &QPushButton::released,
-            this, &MyWindow::on_hangUp_button_clicked);
+            this, &MyWindow::onHangUpButtonClicked);
     connect(&_requestHandler, &RequestHandler::loginConfirmed, this, &MyWindow::successLogin);
     connect(&_requestHandler, &RequestHandler::newCallRequest, this, &MyWindow::onCallRequest);
     connect(&_requestHandler, &RequestHandler::newCallAccepted, this, &MyWindow::onCallAccepted);
@@ -70,7 +69,7 @@ MyWindow::~MyWindow()
 {
 }
 
-void MyWindow::on_login_button_clicked()
+void MyWindow::onLoginButtonClicked()
 {
     qDebug() << _login->getUsernameField()->text();
     std::string username = _login->getUsernameField()->text().toStdString();
@@ -157,7 +156,7 @@ void MyWindow::onSomeoneJoined()
     _callScreen->startCall(peopleConnectedAsQString);
 }
 
-void MyWindow::on_call_button_clicked()
+void MyWindow::onCallButtonClicked()
 {
     bool confirm_call = false;
     std::vector<std::string> peoplesOnCall;
@@ -190,24 +189,24 @@ void MyWindow::on_call_button_clicked()
     }
 }
 
-void MyWindow::on_hangUp_button_clicked()
+void MyWindow::onHangUpButtonClicked()
 {
     _callScreen->stopCall();
     _callHandler.hangup();
     _stack->setCurrentWidget(_home.get());
 }
 
-void MyWindow::on_acceptContactRequest_button_clicked()
+void MyWindow::onAcceptContactRequestButtonClicked()
 {
     _contactHandler->acceptContactRequest();
 }
 
-void MyWindow::on_dismissContactRequest_button_clicked()
+void MyWindow::onDismissContactRequestButtonClicked()
 {
     _contactHandler->dismissContactRequest();
 }
 
-void MyWindow::on_addContactRequest_button_clicked()
+void MyWindow::onAddContactRequestButtonClicked()
 {
     std::string contactUsername = _home->getAddContactWidget()->getFieldContent().toStdString();
     _home->getAddContactWidget()->clearField();

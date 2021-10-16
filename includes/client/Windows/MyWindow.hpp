@@ -36,20 +36,18 @@ private slots:
     void successLogin();
 
 private:
-    void init_buttons();
-
-private:
-    void setUp_winodw();
-    void connect_buttons() noexcept;
+    void initButtons();
+    void setUpWindow();
+    void connectButtons() noexcept;
 
 private:
     //callback functions
-    void on_login_button_clicked();
-    void on_call_button_clicked();
-    void on_hangUp_button_clicked();
-    void on_acceptContactRequest_button_clicked();
-    void on_dismissContactRequest_button_clicked();
-    void on_addContactRequest_button_clicked();
+    void onLoginButtonClicked();
+    void onCallButtonClicked();
+    void onHangUpButtonClicked();
+    void onAcceptContactRequestButtonClicked();
+    void onDismissContactRequestButtonClicked();
+    void onAddContactRequestButtonClicked();
     void onCallRequest();
     void onCallAccepted();
     void onSomeoneJoined();
