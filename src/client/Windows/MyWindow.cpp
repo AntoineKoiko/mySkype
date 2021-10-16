@@ -210,6 +210,7 @@ void MyWindow::onHangUpButtonClicked()
     _callScreen->stopCall();
     _callHandler.hangup();
     _client->send(DataPacketManager::serialize(packet));
+    _callScreen->stopCall();
     _stack->setCurrentWidget(_home.get());
 }
 
