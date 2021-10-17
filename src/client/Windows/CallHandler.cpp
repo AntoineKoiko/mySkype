@@ -8,18 +8,22 @@
 #include "CallHandler.hpp"
 #include "SoundPacketManager.hpp"
 
-CallHandler::CallHandler(const std::shared_ptr<Babel::Client::Network::TcpClient> client) : _input(this), _udpNetwork(this), _client(client)
+CallHandler::CallHandler(const std::shared_ptr<Babel::Client::Network::TcpClient> client) : _udpNetwork(this), _client(client)
 {
     std::cout << "->: ctor CallHandler" << std::endl;
-    _input.openInputStream();
-    _output.openOutputStream();
+    _audioDecoder = std::make_unique<Babel::Client::Audio::AudioDecoder>();
+    _audioEncoder = std::make_unique<Babel::Client::Audio::AudioEncoder>();
+    _input = std::make_unique<Babel::Client::Audio::AudioInput>(this);
+    _output = std::make_unique<Babel::Client::Audio::AudioOutput>();
+    _input->openInputStream();
+    _output->openOutputStream();
 }
 
 CallHandler::~CallHandler()
 {
     std::cout << "-> dtor CallHandler" << std::endl;
-    _input.close();
-    _output.close();
+    _input->close();
+    _output->close();
 }
 
 void CallHandler::call(const std::vector<std::string> &contact_to_call, const std::string &myIp)
@@ -34,8 +38,8 @@ void CallHandler::call(const std::vector<std::string> &contact_to_call, const st
     }
     _connectedPeople.clear();
     _udpNetwork.connect(PORT_SOUND, myIp);
-    _input.startRecording();
-    _output.startPlaying();
+    _input->startRecording();
+    _output->startPlaying();
     data = DataPacketManager::createPacket(Babel::Req::CALL_SOMEONE, contacts);
     _client->send(DataPacketManager::serialize(data));
     std::cout << "Call Start" << std::endl;
@@ -46,8 +50,8 @@ void CallHandler::acceptCall(const std::string &myIp)
 {
     _connectedPeople.clear();
     _udpNetwork.connect(PORT_SOUND, myIp);
-    _input.startRecording();
-    _output.startPlaying();
+    _input->startRecording();
+    _output->startPlaying();
 }
 
 void CallHandler::rejectCall()
@@ -56,8 +60,8 @@ void CallHandler::rejectCall()
 
 void CallHandler::hangup()
 {
-    _input.stopRecording();
-    _output.stopPlaying();
+    _input->stopRecording();
+    _output->stopPlaying();
     _udpNetwork.disconnect();
 }
 
@@ -68,10 +72,10 @@ void CallHandler::dataRecordedAvailable()
     Babel::Client::Network::SoundPacket packet;
     std::vector<char> packetSerialize;
 
-    while (!_input.isEmpty())
+    while (!_input->isEmpty())
     {
-        soundFrame = _input.getSound();
-        encoded = _audioEncoder.encodeAudio(soundFrame);
+        soundFrame = _input->getSound();
+        encoded = _audioEncoder->encodeAudio(soundFrame);
         packet = SoundPacketManager::createPacket(encoded);
         packetSerialize = SoundPacketManager::serialize(packet);
         for (auto &people : _connectedPeople)
@@ -89,8 +93,8 @@ void CallHandler::dataPacketAvailable(const std::vector<char> &packetSerialize)
 
     encodedSound.encodedSound = std::vector<unsigned char>(packet.soundPayload, packet.soundPayload + packet.payloadSize);
     encodedSound.size = packet.payloadSize;
-    soundFrame = _audioDecoder.decodeAudio(encodedSound);
-    _output.addSound(soundFrame);
+    soundFrame = _audioDecoder->decodeAudio(encodedSound);
+    _output->addSound(soundFrame);
 }
 
 void CallHandler::addPeopleOnCall(const std::string &name, const std::string &ip)

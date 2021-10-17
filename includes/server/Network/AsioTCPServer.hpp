@@ -24,7 +24,6 @@ namespace Babel::Server::Network
             AsioTCPServer(int port = 9999);
             ~AsioTCPServer();
 
-            asio::ip::tcp::socket &getSocket() const;
             std::vector<Call> &getCalls();
             AsioTCPCli *isUserLogged(const std::string &) const;
             Call *isUserRequested(const std::string &);

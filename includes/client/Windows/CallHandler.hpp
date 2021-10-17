@@ -13,8 +13,12 @@
 #include "ICallHandler.hpp"
 #include "AudioInput.hpp"
 #include "AudioOutput.hpp"
+#include "IAudioInput.hpp"
+#include "IAudioOutput.hpp"
 #include "Udp.hpp"
+#include "IAudioEncoder.hpp"
 #include "AudioEncoder.hpp"
+#include "IAudioDecoder.hpp"
 #include "AudioDecoder.hpp"
 #include "TcpClient.hpp"
 
@@ -39,11 +43,11 @@ class CallHandler : public Babel::Client::Audio::ICallHandler
 
     protected:
     private:
-        Babel::Client::Audio::AudioInput _input;
-        Babel::Client::Audio::AudioOutput _output;
+        std::unique_ptr<Babel::Client::Audio::AudioInput> _input;
+        std::unique_ptr<Babel::Client::Audio::AudioOutput> _output;
         Babel::Client::Network::Udp _udpNetwork;
-        Babel::Client::Audio::AudioEncoder _audioEncoder;
-        Babel::Client::Audio::AudioDecoder _audioDecoder;
+        std::unique_ptr<Babel::Client::Audio::IAudioEncoder> _audioEncoder;
+        std::unique_ptr<Babel::Client::Audio::IAudioDecoder> _audioDecoder;
         std::shared_ptr<Babel::Client::Network::TcpClient> _client;
         std::vector<std::tuple<std::string, std::string>> _connectedPeople;
         std::string _callOwner;

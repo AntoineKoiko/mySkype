@@ -32,7 +32,7 @@ int Network::AsioTCPCli::login(const std::string &username)
     Db::User user = userHandler.getUser(username);
 
     if (user._exists) {
-        if (serv->getServer().isUserLogged(username)) {
+        if (serv->getServer()->isUserLogged(username)) {
             write(Babel::Res::ALREADY_LOGGED, username.c_str());
             return 1;
         }
@@ -58,7 +58,7 @@ int Network::AsioTCPCli::addContactRequest(const std::string &username)
     auto userHandler = serv->getUserHandler();
     const std::string owner = this->getConnectedUser()->_name;
     const Db::User user = userHandler.getUser(username);
-    Network::AsioTCPCli *user_client = serv->getServer().isUserLogged(user._name);
+    Network::AsioTCPCli *user_client = serv->getServer()->isUserLogged(user._name);
 
     if (!this->_connectedUser) {
         write(Babel::Res::NOT_AUTHORIZED, "Not Connected");
@@ -125,7 +125,7 @@ int Network::AsioTCPCli::acceptContact(const std::string &username)
             return 1;
         }
         contactHandler.acceptContactRequest(username, this->_connectedUser->_name);
-        requestOwner = serv->getServer().isUserLogged(username);
+        requestOwner = serv->getServer()->isUserLogged(username);
         if (requestOwner != nullptr) {
             requestOwner->write(Babel::Res::ACCEPT_CTC_REQ, this->_connectedUser->_name.c_str());
         }

@@ -52,7 +52,7 @@ const std::string AsioTCPCli::getIpString() const
 static bool removeFromCallByUsername(const std::string &username)
 {
     auto serv = get_server();
-    auto call = serv->getServer().getUserCall(username);
+    auto call = serv->getServer()->getUserCall(username);
 
     if (call == nullptr) {
         return true;
@@ -80,7 +80,7 @@ void AsioTCPCli::handleRead(const asio::error_code &err, const std::size_t bytes
         if (this->_connectedUser && _connectedUser->_exists)
             removeFromCallByUsername(_connectedUser->_name);
         this->_socket.close();
-        serv->getServer().disconnectClient();
+        serv->getServer()->disconnectClient();
         return;
     }
     else if (err)

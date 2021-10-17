@@ -5,10 +5,6 @@
 ** main
 */
 
-#include "AudioDecoder.hpp"
-#include "AudioEncoder.hpp"
-#include "AudioInput.hpp"
-#include "AudioOutput.hpp"
 #include <QApplication>
 #include "MyWindow.hpp"
 #include "TcpClient.hpp"

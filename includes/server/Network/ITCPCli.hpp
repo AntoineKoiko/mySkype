@@ -10,16 +10,19 @@
 
 #include <iostream>
 
-class ITCPCli {
-    public:
-        virtual ~ITCPCli() = default;
+namespace Babel::Server::Network
+{
+    class ITCPCli {
+        public:
+            virtual ~ITCPCli() = default;
 
-        virtual void read() = 0;
-        virtual void write(int code, const char data[2064]) = 0;
-        virtual const std::string getIpString() const = 0;
+            virtual void read() = 0;
+            virtual void write(int code, const char data[2064]) = 0;
+            virtual const std::string getIpString() const = 0;
 
-    protected:
-    private:
-};
+        protected:
+        private:
+    };
+}
 
 #endif /* !ITCPCLI_HPP_ */
